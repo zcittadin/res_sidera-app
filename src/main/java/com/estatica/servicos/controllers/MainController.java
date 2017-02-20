@@ -5,7 +5,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import com.estatica.servicos.dto.StyleClockDTO;
+import com.estatice.servicos.objectproperties.StyleClockProperty;
 
 import eu.hansolo.medusa.Clock;
 import eu.hansolo.medusa.LcdDesign;
@@ -64,8 +64,6 @@ public class MainController implements Initializable {
 	@FXML
 	private Clock clock;
 
-	//private StyleClockDTO clockStyle = new StyleClockDTO();
-
 	private static ImageViewResizer imgClienteResizer;
 	private static ImageViewResizer imgExitResizer;
 	private static Timeline tmlBtClockGrow = new Timeline();
@@ -75,7 +73,7 @@ public class MainController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
-		StyleClockDTO.lcdDesignProperty().addListener(new ChangeListener<LcdDesign>() {
+		StyleClockProperty.lcdDesignProperty().addListener(new ChangeListener<LcdDesign>() {
 			@Override
 			public void changed(ObservableValue<? extends LcdDesign> observable, LcdDesign oldValue,
 					LcdDesign newValue) {
@@ -112,7 +110,7 @@ public class MainController implements Initializable {
 		mainContainer.setScreen(screen1ID);
 		centralPane.getChildren().addAll(mainContainer);
 		clock.setLcdDesign(LcdDesign.STANDARD_GREEN);
-		StyleClockDTO.lcdDesignProperty().set(LcdDesign.STANDARD_GREEN);
+		StyleClockProperty.lcdDesignProperty().set(LcdDesign.STANDARD_GREEN);
 	}
 
 	@FXML

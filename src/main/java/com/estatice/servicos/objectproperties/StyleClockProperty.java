@@ -1,10 +1,10 @@
-package com.estatica.servicos.dto;
+package com.estatice.servicos.objectproperties;
 
 import eu.hansolo.medusa.LcdDesign;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
-public class StyleClockDTO {
+public class StyleClockProperty {
 
 	private static ObjectProperty<LcdDesign> lcdDesign = new SimpleObjectProperty<>();
 

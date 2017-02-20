@@ -12,11 +12,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainPane" maxHeight="440.0" maxWidth="680.0" prefHeight="440.0" prefWidth="680.0" styleClass="myGradient" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.estatica.servicos.controllers.ConfigClockStyleController">
+<AnchorPane fx:id="mainPane" maxHeight="442.0" maxWidth="680.0" prefHeight="442.0" prefWidth="670.0" styleClass="myGradient" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.estatica.servicos.controllers.ConfigClockStyleController">
    <children>
-      <BorderPane prefHeight="200.0" prefWidth="680.0">
+      <BorderPane prefHeight="200.0" prefWidth="670.0">
          <center>
-            <HBox prefHeight="313.0" prefWidth="680.0" BorderPane.alignment="CENTER">
+            <HBox prefHeight="313.0" prefWidth="670.0" BorderPane.alignment="CENTER">
                <children>
                   <VBox alignment="CENTER_LEFT" prefHeight="392.0" prefWidth="170.0" spacing="15.0">
                      <children>
@@ -282,7 +282,7 @@
                         <Insets left="30.0" />
                      </padding>
                   </VBox>
-                  <VBox prefHeight="392.0" prefWidth="170.0" spacing="15.0">
+                  <VBox prefHeight="392.0" prefWidth="150.0" spacing="15.0">
                      <children>
                         <RadioButton fx:id="rdGrayPurple" mnemonicParsing="false" onAction="#setGrayPurple" text="Gray Purple" textFill="WHITE">
                            <font>
@@ -376,7 +376,7 @@
             </HBox>
          </center>
          <top>
-            <AnchorPane prefHeight="63.0" prefWidth="680.0" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="63.0" prefWidth="670.0" BorderPane.alignment="CENTER">
                <children>
                   <Label layoutX="14.0" layoutY="18.0" text="Selecione um estilo para o mostrador do relógio do sistema:" textFill="WHITE">
                      <font>
@@ -387,17 +387,17 @@
             </AnchorPane>
          </top>
          <bottom>
-            <AnchorPane prefHeight="74.0" prefWidth="680.0" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="74.0" prefWidth="670.0" BorderPane.alignment="CENTER">
                <children>
                   <Button fx:id="btOk" layoutX="305.0" layoutY="35.0" mnemonicParsing="false" onAction="#exit" prefHeight="25.0" prefWidth="71.0" text="Ok">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Separator layoutY="13.0" prefWidth="680.0" />
                </children>
             </AnchorPane>
          </bottom>
       </BorderPane>
+      <Separator halignment="RIGHT" layoutY="388.0" prefWidth="670.0" />
    </children>
 </AnchorPane>

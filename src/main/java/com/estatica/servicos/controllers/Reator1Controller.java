@@ -34,6 +34,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -59,6 +60,8 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	private AnchorPane mainPane;
 	@FXML
 	private LineChart<String, Number> chartReator;
+	@FXML
+	private CategoryAxis xAxis;
 	@FXML
 	private NumberAxis yAxisTemp;
 	@FXML
@@ -106,8 +109,6 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	private static Timeline btNovoTimeLine;
 	private static FadeTransition statusTransition;
 	private static FadeTransition estaticaFadeTransition;
-	// private static ScaleTransition growUpTransition;
-	// private static ScaleTransition shrinkTransition;
 	private static ImageViewResizer imgResizer;
 	private static XYChart.Series<String, Number> tempSeries;
 	private static DateTimeFormatter horasFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -160,9 +161,9 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 			}
 		}, color));
 
-		/*modService.setConnectionParams("COM10", 9600);
+		modService.setConnectionParams("COM10", 9600);
 		modService.openConnection();
-		scanModbusSlaves.play();*/
+		scanModbusSlaves.play();
 
 	}
 
@@ -183,10 +184,11 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 			}
 		}
 		imgSwitch.setCursor(Cursor.OPEN_HAND);
+		makeToast("Lote finalizado com sucesso.");
 	}
 
 	private void initProcess() {
-		tempSeries.getData().add(new XYChart.Data<>(horasFormatter.format(LocalDateTime.now()), 15));
+		plotTemp();
 		lblStatus.setTextFill(Color.web("#1654ff"));
 		lblStatus.setText("Em andamento");
 		tempChartAnimation.play();
@@ -240,11 +242,6 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 		estaticaFadeTransition.setFromValue(0.2);
 		estaticaFadeTransition.setToValue(1.0);
 		estaticaFadeTransition.play();
-		// if(shrinkTransition.getStatus() == Status.RUNNING)
-		// shrinkTransition.stop();
-		// imgEstatica.setFitWidth(138);
-		// imgEstatica.setFitHeight(42);
-		// growUpTransition.playFromStart();
 	}
 
 	@FXML
@@ -252,11 +249,6 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 		estaticaFadeTransition.setFromValue(1.0);
 		estaticaFadeTransition.setToValue(0.2);
 		estaticaFadeTransition.play();
-		// if(growUpTransition.getStatus() == Status.RUNNING)
-		// growUpTransition.stop();
-		// imgEstatica.setFitWidth(138);
-		// imgEstatica.setFitHeight(42);
-		// shrinkTransition.playFromStart();
 	}
 
 	private void initLineChart() {
@@ -284,18 +276,6 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 
 		estaticaFadeTransition = new FadeTransition(Duration.millis(1000), imgEstatica);
 		estaticaFadeTransition.setCycleCount(1);
-
-		// growUpTransition = new ScaleTransition(Duration.millis(700),
-		// imgEstatica);
-		// growUpTransition.setByX(0.1);
-		// growUpTransition.setByY(0.1);
-		// growUpTransition.setCycleCount(1);
-		//
-		// shrinkTransition = new ScaleTransition(Duration.millis(700),
-		// imgEstatica);
-		// shrinkTransition.setByX(-0.1);
-		// shrinkTransition.setByY(-0.1);
-		// shrinkTransition.setCycleCount(1);
 
 		btNovoTimeLine = new Timeline(new KeyFrame(Duration.ZERO, new KeyValue(color, startColor)),
 				new KeyFrame(Duration.millis(500), new KeyValue(color, endColor)));
@@ -376,7 +356,7 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 					clearLineChart();
 					isReady = Boolean.TRUE;
 					Reator1DTO.setConfirmation(Boolean.FALSE);
-					makeToast();
+					makeToast("Lote configurado com sucesso.");
 				}
 			}
 
@@ -400,8 +380,8 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 		estaticaFadeTransition.play();
 	}
 
-	private void makeToast() {
-		String toastMsg = "Lote configurado com sucesso.";
+	private void makeToast(String message) {
+		String toastMsg = message;
 		int toastMsgTime = 5000;
 		int fadeInTime = 600;
 		int fadeOutTime = 600;

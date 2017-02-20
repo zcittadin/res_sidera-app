@@ -115,10 +115,6 @@ public class ConfigProcessoController implements Initializable {
 				btOk.setDisable(Boolean.TRUE);
 				btCancelar.setDisable(Boolean.TRUE);
 
-				double d = Double.parseDouble(txtQuantidade.getText().replace(".", "").replace(",", "."));
-
-				System.out.println("Valor: " + d);
-				
 				Produto produto = new Produto(null, Integer.parseInt(txtProduto.getText()),
 						Integer.parseInt(txtLote.getText()), "Reator 1", txtOperador.getText(),
 						Double.parseDouble(txtQuantidade.getText().replace(".", "").replace(",", ".")), null, null);
