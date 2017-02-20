@@ -388,7 +388,7 @@
          <bottom>
             <AnchorPane prefHeight="74.0" prefWidth="680.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="btOk" layoutX="314.0" layoutY="34.0" mnemonicParsing="false" onAction="#exit" text="Ok">
+                  <Button fx:id="btOk" layoutX="305.0" layoutY="25.0" mnemonicParsing="false" onAction="#exit" prefHeight="25.0" prefWidth="71.0" text="Ok">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>

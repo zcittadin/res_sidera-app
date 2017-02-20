@@ -13,6 +13,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -62,6 +64,8 @@ public class MainController implements Initializable {
 	@FXML
 	private Clock clock;
 
+	//private StyleClockDTO clockStyle = new StyleClockDTO();
+
 	private static ImageViewResizer imgClienteResizer;
 	private static ImageViewResizer imgExitResizer;
 	private static Timeline tmlBtClockGrow = new Timeline();
@@ -70,6 +74,14 @@ public class MainController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+
+		StyleClockDTO.lcdDesignProperty().addListener(new ChangeListener<LcdDesign>() {
+			@Override
+			public void changed(ObservableValue<? extends LcdDesign> observable, LcdDesign oldValue,
+					LcdDesign newValue) {
+				clock.setLcdDesign(newValue);
+			}
+		});
 
 		imgCliente.setImage(new Image("/img/resicolor.png"));
 		imgClienteResizer = new ImageViewResizer(imgCliente, 124, 70);
@@ -100,7 +112,7 @@ public class MainController implements Initializable {
 		mainContainer.setScreen(screen1ID);
 		centralPane.getChildren().addAll(mainContainer);
 		clock.setLcdDesign(LcdDesign.STANDARD_GREEN);
-		StyleClockDTO.setStyle(LcdDesign.STANDARD_GREEN);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.STANDARD_GREEN);
 	}
 
 	@FXML
@@ -161,7 +173,7 @@ public class MainController implements Initializable {
 		stage.initOwner(imgExit.getScene().getWindow());
 		stage.setResizable(Boolean.FALSE);
 		stage.showAndWait();
-		clock.setLcdDesign(StyleClockDTO.getStyle());
+		//clock.setLcdDesign(StyleClockDTO.getStyle());
 	}
 
 	@FXML

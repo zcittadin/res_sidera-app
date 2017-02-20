@@ -106,187 +106,187 @@ public class ConfigClockStyleController implements Initializable {
 
 	@FXML
 	public void setStdGreen() {
-		StyleClockDTO.setStyle(LcdDesign.STANDARD_GREEN);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.STANDARD_GREEN);
 	}
 
 	@FXML
 	public void setBlue() {
-		StyleClockDTO.setStyle(LcdDesign.BLUE);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.BLUE);
 	}
 
 	@FXML
 	public void setRed() {
-		StyleClockDTO.setStyle(LcdDesign.RED);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.RED);
 	}
 
 	@FXML
 	public void setBeige() {
-		StyleClockDTO.setStyle(LcdDesign.BEIGE);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.BEIGE);
 	}
 
 	@FXML
 	public void setYellow() {
-		StyleClockDTO.setStyle(LcdDesign.YELLOW);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.YELLOW);
 	}
 
 	@FXML
 	public void setWhite() {
-		StyleClockDTO.setStyle(LcdDesign.WHITE);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.WHITE);
 	}
 
 	@FXML
 	public void setGray() {
-		StyleClockDTO.setStyle(LcdDesign.GRAY);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.GRAY);
 	}
 
 	@FXML
 	public void setBlack() {
-		StyleClockDTO.setStyle(LcdDesign.BLACK);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.BLACK);
 	}
 
 	@FXML
 	public void setGreen() {
-		StyleClockDTO.setStyle(LcdDesign.GREEN);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.GREEN);
 	}
 
 	@FXML
 	public void setGreenDarkGreen() {
-		StyleClockDTO.setStyle(LcdDesign.GREEN_DARKGREEN);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.GREEN_DARKGREEN);
 	}
 
 	@FXML
 	public void setBlue2() {
-		StyleClockDTO.setStyle(LcdDesign.BLUE2);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.BLUE2);
 	}
 
 	@FXML
 	public void setBlueBlack() {
-		StyleClockDTO.setStyle(LcdDesign.BLUE_BLACK);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.BLUE_BLACK);
 	}
 
 	@FXML
 	public void setBlueDarkBlue() {
-		StyleClockDTO.setStyle(LcdDesign.BLUE_DARKBLUE);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.BLUE_DARKBLUE);
 	}
 
 	@FXML
 	public void setBlueLightBlue() {
-		StyleClockDTO.setStyle(LcdDesign.BLUE_LIGHTBLUE);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.BLUE_LIGHTBLUE);
 	}
 
 	@FXML
 	public void setBlueGray() {
-		StyleClockDTO.setStyle(LcdDesign.BLUE_GRAY);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.BLUE_GRAY);
 	}
 
 	@FXML
 	public void setStandard() {
-		StyleClockDTO.setStyle(LcdDesign.STANDARD);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.STANDARD);
 	}
 
 	@FXML
 	public void setLightGreen() {
-		StyleClockDTO.setStyle(LcdDesign.LIGHTGREEN);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.LIGHTGREEN);
 	}
 
 	@FXML
 	public void setBlueBlue() {
-		StyleClockDTO.setStyle(LcdDesign.BLUE_BLUE);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.BLUE_BLUE);
 	}
 
 	@FXML
 	public void setRedDarkRed() {
-		StyleClockDTO.setStyle(LcdDesign.RED_DARKRED);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.RED_DARKRED);
 	}
 
 	@FXML
 	public void setDarkBlue() {
-		StyleClockDTO.setStyle(LcdDesign.DARKBLUE);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.DARKBLUE);
 	}
 
 	@FXML
 	public void setPurple() {
-		StyleClockDTO.setStyle(LcdDesign.PURPLE);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.PURPLE);
 	}
 
 	@FXML
 	public void setBlackRed() {
-		StyleClockDTO.setStyle(LcdDesign.BLACK_RED);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.BLACK_RED);
 	}
 
 	@FXML
 	public void setDarkGreen() {
-		StyleClockDTO.setStyle(LcdDesign.DARKGREEN);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.DARKGREEN);
 	}
 
 	@FXML
 	public void setAmber() {
-		StyleClockDTO.setStyle(LcdDesign.AMBER);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.AMBER);
 	}
 
 	@FXML
 	public void setLightBlue() {
-		StyleClockDTO.setStyle(LcdDesign.LIGHTBLUE);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.LIGHTBLUE);
 	}
 
 	@FXML
 	public void setGreenBlack() {
-		StyleClockDTO.setStyle(LcdDesign.GREEN_BLACK);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.GREEN_BLACK);
 	}
 
 	@FXML
 	public void setYellowBlack() {
-		StyleClockDTO.setStyle(LcdDesign.YELLOW_BLACK);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.YELLOW_BLACK);
 	}
 
 	@FXML
 	public void setBlackYellow() {
-		StyleClockDTO.setStyle(LcdDesign.BLACK_YELLOW);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.BLACK_YELLOW);
 	}
 
 	@FXML
 	public void setLightGreenBlack() {
-		StyleClockDTO.setStyle(LcdDesign.LIGHTGREEN_BLACK);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.LIGHTGREEN_BLACK);
 	}
 
 	@FXML
 	public void setDarkPurple() {
-		StyleClockDTO.setStyle(LcdDesign.DARKPURPLE);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.DARKPURPLE);
 	}
 
 	@FXML
 	public void setDarkAmber() {
-		StyleClockDTO.setStyle(LcdDesign.DARKAMBER);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.DARKAMBER);
 	}
 
 	@FXML
 	public void setBlueLightBlue2() {
-		StyleClockDTO.setStyle(LcdDesign.BLUE_LIGHTBLUE2);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.BLUE_LIGHTBLUE2);
 	}
 
 	@FXML
 	public void setGrayPurple() {
-		StyleClockDTO.setStyle(LcdDesign.GRAY_PURPLE);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.GRAY_PURPLE);
 	}
 
 	@FXML
 	public void setYoctopuce() {
-		StyleClockDTO.setStyle(LcdDesign.YOCTOPUCE);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.YOCTOPUCE);
 	}
 
 	@FXML
 	public void setSections() {
-		StyleClockDTO.setStyle(LcdDesign.SECTIONS);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.SECTIONS);
 	}
 
 	@FXML
 	public void setFlatCustom() {
-		StyleClockDTO.setStyle(LcdDesign.FLAT_CUSTOM);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.FLAT_CUSTOM);
 	}
 
 	@FXML
 	public void setOrange() {
-		StyleClockDTO.setStyle(LcdDesign.ORANGE);
+		StyleClockDTO.lcdDesignProperty().set(LcdDesign.ORANGE);
 	}
 
 	@FXML
@@ -297,115 +297,115 @@ public class ConfigClockStyleController implements Initializable {
 
 	private void initSelection() {
 
-		if (StyleClockDTO.getStyle() == LcdDesign.AMBER) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.AMBER) {
 			rdAmber.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.BEIGE) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.BEIGE) {
 			rdBeige.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.BLACK) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.BLACK) {
 			rdBlack.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.BLACK_RED) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.BLACK_RED) {
 			rdBlackRed.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.BLACK_YELLOW) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.BLACK_YELLOW) {
 			rdBlackYellow.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.BLUE) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.BLUE) {
 			rdBlue.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.BLUE2) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.BLUE2) {
 			rdBlue2.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.BLUE_BLACK) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.BLUE_BLACK) {
 			rdBlueBlack.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.BLUE_BLUE) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.BLUE_BLUE) {
 			rdBlueBlue.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.BLUE_DARKBLUE) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.BLUE_DARKBLUE) {
 			rdBlueDarkBlue.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.BLUE_GRAY) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.BLUE_GRAY) {
 			rdBlueGray.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.BLUE_LIGHTBLUE) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.BLUE_LIGHTBLUE) {
 			rdBlueLightBlue.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.BLUE_LIGHTBLUE2) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.BLUE_LIGHTBLUE2) {
 			rdBlueLightBlue2.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.DARKAMBER) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.DARKAMBER) {
 			rdDarkAmber.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.DARKBLUE) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.DARKBLUE) {
 			rdDarkBlue.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.DARKGREEN) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.DARKGREEN) {
 			rdDarkGreen.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.DARKPURPLE) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.DARKPURPLE) {
 			rdDarkPurple.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.FLAT_CUSTOM) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.FLAT_CUSTOM) {
 			rdFlatCustom.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.GRAY) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.GRAY) {
 			rdGray.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.GRAY_PURPLE) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.GRAY_PURPLE) {
 			rdGrayPurple.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.GREEN) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.GREEN) {
 			rdGreen.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.GREEN_BLACK) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.GREEN_BLACK) {
 			rdGreenBlack.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.GREEN_DARKGREEN) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.GREEN_DARKGREEN) {
 			rdGreenDarkGreen.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.LIGHTBLUE) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.LIGHTBLUE) {
 			rdLightBlue.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.LIGHTGREEN) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.LIGHTGREEN) {
 			rdLightGreen.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.LIGHTGREEN_BLACK) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.LIGHTGREEN_BLACK) {
 			rdLightGreenBlack.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.ORANGE) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.ORANGE) {
 			rdOrange.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.PURPLE) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.PURPLE) {
 			rdPurple.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.RED) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.RED) {
 			rdRed.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.RED_DARKRED) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.RED_DARKRED) {
 			rdRedDarkRed.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.SECTIONS) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.SECTIONS) {
 			rdSections.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.STANDARD) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.STANDARD) {
 			rdStandard.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.STANDARD_GREEN) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.STANDARD_GREEN) {
 			rdStandardGreen.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.WHITE) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.WHITE) {
 			rdWhite.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.YELLOW) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.YELLOW) {
 			rdYellow.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.YELLOW_BLACK) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.YELLOW_BLACK) {
 			rdYellowBlack.setSelected(Boolean.TRUE);
 		}
-		if (StyleClockDTO.getStyle() == LcdDesign.YOCTOPUCE) {
+		if (StyleClockDTO.lcdDesignProperty().get() == LcdDesign.YOCTOPUCE) {
 			rdYoctopuce.setSelected(Boolean.TRUE);
 		}
 	}
