@@ -9,6 +9,9 @@ import com.estatica.servicos.dto.StyleClockDTO;
 
 import eu.hansolo.medusa.Clock;
 import eu.hansolo.medusa.LcdDesign;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,6 +29,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import zan.inc.custom.components.ImageViewResizer;
 
 public class MainController implements Initializable {
@@ -60,6 +64,8 @@ public class MainController implements Initializable {
 
 	private static ImageViewResizer imgClienteResizer;
 	private static ImageViewResizer imgExitResizer;
+	private static Timeline tmlBtClockGrow = new Timeline();
+	private static Timeline tmlBtClockShrink = new Timeline();
 	ScreensController mainContainer = new ScreensController();
 
 	@Override
@@ -77,6 +83,11 @@ public class MainController implements Initializable {
 		Tooltip.install(imgExit, new Tooltip("Sair do sistema"));
 		Tooltip.install(btStyleClock, new Tooltip("Alterar estilo do relógio"));
 		Tooltip.install(imgCliente, new Tooltip("Resicolor Tintas e Solventes"));
+
+		tmlBtClockGrow.getKeyFrames()
+				.addAll(new KeyFrame(Duration.seconds(0.3), new KeyValue(btStyleClock.translateXProperty(), -117)));
+		tmlBtClockShrink.getKeyFrames()
+				.addAll(new KeyFrame(Duration.seconds(0.3), new KeyValue(btStyleClock.translateXProperty(), 0)));
 
 		mainContainer.loadScreen(screen1ID, screen1File);
 		mainContainer.loadScreen(screen2ID, screen2File);
@@ -165,6 +176,16 @@ public class MainController implements Initializable {
 		stage.initOwner(imgCliente.getScene().getWindow());
 		stage.setResizable(Boolean.FALSE);
 		stage.showAndWait();
+	}
+
+	@FXML
+	private void hoverBtClock() {
+		tmlBtClockGrow.play();
+	}
+
+	@FXML
+	private void unhoverBtClock() {
+		tmlBtClockShrink.play();
 	}
 
 }

@@ -19,6 +19,11 @@
          <top>
             <AnchorPane prefHeight="82.0" prefWidth="1366.0" styleClass="myGradient" stylesheets="@style.css" BorderPane.alignment="CENTER">
                <children>
+                  <Button fx:id="btStyleClock" layoutX="1219.0" layoutY="8.0" mnemonicParsing="false" onAction="#openStyleOptions" onMouseEntered="#hoverBtClock" onMouseExited="#unhoverBtClock" prefHeight="25.0" prefWidth="129.0" text="Estilos do relógio...">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
                   <Label layoutX="398.0" layoutY="17.0" text="Registro e monitoramento do processo" textFill="WHITE">
                      <font>
                         <Font name="Corbel Bold" size="38.0" />
@@ -33,11 +38,6 @@
                      </cursor>
                   </ImageView>
                   <Clock fx:id="clock" layoutX="1230.0" layoutY="3.0" lcdDesign="STANDARD_GREEN" prefHeight="73.0" prefWidth="129.0" running="true" secondsVisible="true" skinType="LCD" />
-                  <Button fx:id="btStyleClock" layoutX="1214.0" layoutY="8.0" mnemonicParsing="false" onAction="#openStyleOptions" prefHeight="8.0" prefWidth="16.0">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
                </children>
             </AnchorPane>
          </top>

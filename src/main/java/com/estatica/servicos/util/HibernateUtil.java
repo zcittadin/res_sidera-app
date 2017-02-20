@@ -34,7 +34,7 @@ public class HibernateUtil {
 		configuration.addAnnotatedClass(Produto.class);
 		configuration.addAnnotatedClass(Processo.class);
 		configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
-		configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost/resicolor");
+		configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost/res_teste");
 		configuration.setProperty("hibernate.connection.username", "root");
 		configuration.setProperty("hibernate.connection.password", "root");
 		configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
