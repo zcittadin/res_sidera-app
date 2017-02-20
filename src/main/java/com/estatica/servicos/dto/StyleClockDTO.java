@@ -6,28 +6,18 @@ import javafx.beans.property.SimpleObjectProperty;
 
 public class StyleClockDTO {
 
-	private static LcdDesign style;
 	private static ObjectProperty<LcdDesign> lcdDesign = new SimpleObjectProperty<>();
-	
+
 	public static ObjectProperty<LcdDesign> lcdDesignProperty() {
-        return lcdDesign ;
-    }
-
-    public static LcdDesign getLcdDesign() {
-        return lcdDesignProperty().get();
-    }
-
-    public final void setLcdDesign(LcdDesign lcdDesign) {
-        lcdDesignProperty().set(lcdDesign);
-    }
-
-
-	public static LcdDesign getStyle() {
-		return style;
+		return lcdDesign;
 	}
 
-	public static void setStyle(LcdDesign style) {
-		StyleClockDTO.style = style;
+	public static LcdDesign getLcdDesign() {
+		return lcdDesignProperty().get();
+	}
+
+	public final void setLcdDesign(LcdDesign lcdDesign) {
+		lcdDesignProperty().set(lcdDesign);
 	}
 
 }
