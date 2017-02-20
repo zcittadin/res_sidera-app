@@ -97,7 +97,7 @@ public class MainController implements Initializable {
 		Tooltip.install(imgCliente, new Tooltip("Resicolor Tintas e Solventes"));
 
 		tmlBtClockGrow.getKeyFrames()
-				.addAll(new KeyFrame(Duration.seconds(0.3), new KeyValue(btStyleClock.translateXProperty(), -117)));
+				.addAll(new KeyFrame(Duration.seconds(0.3), new KeyValue(btStyleClock.translateXProperty(), -105)));
 		tmlBtClockShrink.getKeyFrames()
 				.addAll(new KeyFrame(Duration.seconds(0.3), new KeyValue(btStyleClock.translateXProperty(), 0)));
 

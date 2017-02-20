@@ -66,3 +66,7 @@
   -fx-graphic: url('img/delete.png');
 }
 
+.btStyleClock {
+  -fx-graphic: url('img/clock_edit.png');
+}
+

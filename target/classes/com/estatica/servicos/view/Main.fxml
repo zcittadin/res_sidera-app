@@ -19,7 +19,7 @@
          <top>
             <AnchorPane prefHeight="82.0" prefWidth="1366.0" styleClass="myGradient" stylesheets="@style.css" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="btStyleClock" layoutX="1219.0" layoutY="9.0" mnemonicParsing="false" onAction="#openStyleOptions" onMouseEntered="#hoverBtClock" onMouseExited="#unhoverBtClock" prefHeight="25.0" prefWidth="129.0" text="Estilos do relógio...">
+                  <Button fx:id="btStyleClock" layoutX="1200.0" layoutY="9.0" mnemonicParsing="false" onAction="#openStyleOptions" onMouseEntered="#hoverBtClock" onMouseExited="#unhoverBtClock" prefHeight="25.0" prefWidth="139.0" styleClass="btStyleClock" stylesheets="@style.css" text=" Estilos do relógio...">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
