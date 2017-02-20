@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="634.0" prefWidth="1208.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.estatica.servicos.controllers.ConsultaController">
+   <children>
+      <Label layoutX="590.0" layoutY="309.0" text="Consultas" />
+   </children>
+</AnchorPane>

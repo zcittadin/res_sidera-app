@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="mainPane" prefHeight="660.0" prefWidth="1208.0" styleClass="myGradient" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.estatica.servicos.controllers.Reator1Controller">
+   <children>
+      <Label layoutX="893.0" layoutY="106.0" prefHeight="61.0" prefWidth="315.0" styleClass="headerGradient" stylesheets="@style.css" />
+      <Label fx:id="lblStatus" alignment="CENTER" layoutX="893.0" layoutY="110.0" prefHeight="48.0" prefWidth="315.0" text="Aguardando" textFill="#003cff">
+         <font>
+            <Font name="Dot Matrix" size="42.0" />
+         </font>
+         <effect>
+            <Glow level="1.0" />
+         </effect>
+      </Label>
+      <Label fx:id="lblPrincipal" layoutX="36.0" prefHeight="42.0" prefWidth="129.0" text="Reator 1" textFill="WHITE">
+         <font>
+            <Font name="Corbel Bold" size="34.0" />
+         </font></Label>
+      <ImageView fx:id="imgSwitch" fitHeight="73.0" fitWidth="75.0" layoutX="64.0" layoutY="63.0" onMouseClicked="#toggleProcess" onMouseEntered="#hoverBtNovo" onMousePressed="#switchIsPressing" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@img/switch_off.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor>
+      </ImageView>
+      <Label layoutX="212.0" layoutY="55.0" text="Código do produto" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="210.0" layoutY="81.0" text="Horário de início" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="211.0" layoutY="108.0" text="Quantidade (Kg)" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="214.0" layoutY="134.0" text="Operador" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Separator layoutY="165.0" prefHeight="1.0" prefWidth="1208.0" />
+      <Separator layoutX="197.0" layoutY="1.0" orientation="VERTICAL" prefHeight="164.0" prefWidth="0.0" />
+      <Separator layoutX="541.0" layoutY="1.0" orientation="VERTICAL" prefHeight="164.0" />
+      <Label fx:id="lblTempReator" alignment="CENTER" layoutX="961.0" layoutY="26.0" prefHeight="38.0" prefWidth="115.0" styleClass="headerGradient" stylesheets="@style.css" text="000 ºC" textFill="RED">
+         <font>
+            <Font name="DSEG7 Classic-Bold" size="25.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblSpReator" alignment="CENTER" layoutX="961.0" layoutY="63.0" prefHeight="38.0" prefWidth="115.0" styleClass="headerGradient" stylesheets="@style.css" text="000 ºC" textFill="#1aff00">
+         <font>
+            <Font name="DSEG7 Classic-Bold" size="25.0" />
+         </font>
+      </Label>
+      <Label layoutX="917.0" layoutY="36.0" text="Leitura" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="903.0" layoutY="74.0" text="Set-point" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Separator layoutX="891.0" layoutY="1.0" orientation="VERTICAL" prefHeight="164.0" />
+      <Separator orientation="VERTICAL" prefHeight="660.0" />
+      <Label layoutX="1001.0" layoutY="7.0" text="Reator" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblTempCaldeira" alignment="CENTER" layoutX="1083.0" layoutY="26.0" prefHeight="38.0" prefWidth="115.0" styleClass="headerGradient" stylesheets="@style.css" text="000 ºC" textFill="RED">
+         <font>
+            <Font name="DSEG7 Classic-Bold" size="25.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblSpCaldeira" alignment="CENTER" layoutX="1083.0" layoutY="64.0" prefHeight="38.0" prefWidth="115.0" styleClass="headerGradient" stylesheets="@style.css" text="000 ºC" textFill="#1aff00">
+         <font>
+            <Font name="DSEG7 Classic-Bold" size="25.0" />
+         </font>
+      </Label>
+      <Label layoutX="1118.0" layoutY="7.0" text="Caldeira" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <ProgressIndicator fx:id="progLote" focusTraversable="false" layoutX="380.0" layoutY="31.0" prefHeight="61.0" prefWidth="75.0" style="-fx-progress-color: #E0FFFF;" visible="false" />
+      <Separator layoutX="891.0" layoutY="107.0" prefHeight="3.0" prefWidth="317.0" />
+      <Label layoutX="664.0" layoutY="8.0" text="Dados parciais" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="556.0" layoutY="57.0" text="Tempo decorrido" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="555.0" layoutY="83.0" text="Quantidade produzida (Kg/h)" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="556.0" layoutY="108.0" text="Temperatura mínima (ºC)" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="556.0" layoutY="135.0" text="Temperatura máxima (ºC)" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Separator layoutX="541.0" layoutY="42.0" prefWidth="351.0" />
+      <Label alignment="CENTER" layoutX="806.0" layoutY="57.0" prefHeight="17.0" prefWidth="70.0" style="-fx-background-color: WHITE;" text="00:00:00" textFill="#0017ff">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="806.0" layoutY="82.0" prefHeight="17.0" prefWidth="70.0" style="-fx-background-color: WHITE;" text="000,00" textFill="#6400f0">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="806.0" layoutY="108.0" prefHeight="17.0" prefWidth="70.0" style="-fx-background-color: WHITE;" text="000" textFill="#ff8700">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="806.0" layoutY="134.0" prefHeight="17.0" prefWidth="70.0" style="-fx-background-color: WHITE;" text="000" textFill="RED">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Line endX="137.0" layoutX="661.0" layoutY="68.0">
+         <stroke>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop color="#6bda76" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </stroke>
+      </Line>
+      <Line endX="70.0" layoutX="728.0" layoutY="92.0">
+         <stroke>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop color="#6bda76" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </stroke>
+      </Line>
+      <Line endX="90.0" layoutX="708.0" layoutY="118.0" startX="-2.0">
+         <stroke>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop color="#6bda76" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </stroke>
+      </Line>
+      <Line endX="90.0" layoutX="708.0" layoutY="144.0">
+         <stroke>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop color="#6bda76" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </stroke>
+      </Line>
+      <Label layoutX="39.0" layoutY="68.0" text="On" textFill="WHITE" />
+      <Label layoutX="37.0" layoutY="110.0" text="Off" textFill="WHITE" />
+      <LineChart fx:id="chartReator" createSymbols="false" layoutX="14.0" layoutY="178.0" legendVisible="false" prefHeight="429.0" prefWidth="1184.0" title="Temperatura x tempo">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" tickLabelFill="WHITE">
+               <tickLabelFont>
+                  <Font size="14.0" />
+               </tickLabelFont></CategoryAxis>
+        </xAxis>
+        <yAxis>
+          <NumberAxis fx:id="yAxisTemp" label="ºC" minorTickCount="1" minorTickLength="20.0" side="LEFT" tickLabelFill="WHITE" tickUnit="20.0">
+               <tickLabelFont>
+                  <Font size="17.0" />
+               </tickLabelFont></NumberAxis>
+        </yAxis>
+      </LineChart>
+      <Label fx:id="lblProduto" alignment="CENTER" layoutX="446.0" layoutY="56.0" prefWidth="80.0" style="-fx-background-color: white;" text="0000000" textFill="#054199">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblHorario" alignment="CENTER" layoutX="447.0" layoutY="82.0" prefWidth="80.0" style="-fx-background-color: white;" text="00:00:00" textFill="#054199">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblQuantidade" alignment="CENTER" layoutX="446.0" layoutY="108.0" prefWidth="80.0" style="-fx-background-color: white;" text="000.00" textFill="#054199">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblOperador" alignment="CENTER" layoutX="446.0" layoutY="134.0" prefWidth="80.0" style="-fx-background-color: white;" text="Zander" textFill="#054199">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Separator layoutX="198.0" layoutY="42.0" prefWidth="343.0" />
+      <Button fx:id="btNovo" layoutX="209.0" layoutY="6.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="28.0" prefWidth="32.0" styleClass="btNovo" stylesheets="@style.css">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="btEdit" disable="true" layoutX="273.0" layoutY="6.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="32.0" styleClass="btEdit" stylesheets="@style.css">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Separator layoutX="346.0" orientation="VERTICAL" prefHeight="42.0" />
+      <Label layoutX="356.0" layoutY="8.0" text="Lote:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblLote" alignment="CENTER" layoutX="398.0" layoutY="10.0" prefHeight="25.0" prefWidth="129.0" style="-fx-background-color: white;" text="0000000" textFill="#054199">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Line endX="91.0" layoutX="347.0" layoutY="66.0" startX="-20.0">
+         <stroke>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop color="#6bda76" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </stroke>
+      </Line>
+      <Line endX="101.0" layoutX="338.0" layoutY="93.0" startX="-28.0">
+      	<stroke>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop color="#6bda76" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </LinearGradient>
+        </stroke>
+      </Line>
+      <Line endX="100.0" layoutX="339.0" layoutY="119.0" startX="-29.0">
+      <stroke>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop color="#6bda76" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </LinearGradient>
+        </stroke>
+      </Line>
+      <Line endX="100.0" layoutX="338.0" layoutY="145.0" startX="-64.0">
+      <stroke>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop color="#6bda76" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </LinearGradient>
+        </stroke>
+      </Line>
+      <ImageView fx:id="imgEstatica" fitHeight="42.0" fitWidth="138.0" layoutX="1083.0" layoutY="607.0" onMouseClicked="#handleImgEstaticaAction" onMouseEntered="#hoverImgEstatica" onMouseExited="#unhoverImgEstatica" opacity="0.2" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../resources/img/logotipo.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <Button fx:id="btCancela" disable="true" layoutX="241.0" layoutY="6.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="32.0" styleClass="btCancela" stylesheets="@style.css">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button fx:id="btReport" disable="true" layoutX="305.0" layoutY="6.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="32.0" styleClass="btReport" stylesheets="@style.css">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Separator layoutX="3.0" layoutY="42.0" prefHeight="3.0" prefWidth="194.0" />
+   </children>
+</AnchorPane>
