@@ -2,6 +2,7 @@ package com.estatica.servicos.view;
 
 import java.util.Optional;
 
+import com.estatica.servicos.dto.ProcessoStatusDTO;
 import com.estatica.servicos.util.HibernateUtil;
 
 import javafx.application.Application;
@@ -29,6 +30,8 @@ public class Main extends Application {
 			@Override
 			public void handle(WindowEvent event) {
 				event.consume();
+				if (ProcessoStatusDTO.verifyProcessoRunning())
+					return;
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 				alert.setTitle("Confirmar encerramento");
 				alert.setHeaderText("Deseja realmente sair do sistema?");

@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import com.estatica.servicos.dto.ProcessoStatusDTO;
 import com.estatice.servicos.objectproperties.StyleClockProperty;
 
 import eu.hansolo.medusa.Clock;
@@ -107,6 +108,13 @@ public class MainController implements Initializable {
 		mainContainer.loadScreen(screen6ID, screen6File);
 		mainContainer.loadScreen(screenConsultaID, screenConsultaFile);
 
+		ProcessoStatusDTO.setProcessoStatus("REATOR1", Boolean.FALSE);
+		ProcessoStatusDTO.setProcessoStatus("REATOR2", Boolean.FALSE);
+		ProcessoStatusDTO.setProcessoStatus("REATOR3", Boolean.FALSE);
+		ProcessoStatusDTO.setProcessoStatus("REATOR4", Boolean.FALSE);
+		ProcessoStatusDTO.setProcessoStatus("REATOR5", Boolean.FALSE);
+		ProcessoStatusDTO.setProcessoStatus("REATOR6", Boolean.FALSE);
+
 		mainContainer.setScreen(screen1ID);
 		centralPane.getChildren().addAll(mainContainer);
 		clock.setLcdDesign(LcdDesign.STANDARD_GREEN);
@@ -150,6 +158,10 @@ public class MainController implements Initializable {
 
 	@FXML
 	private void exit() {
+
+		if (ProcessoStatusDTO.verifyProcessoRunning())
+			return;
+
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirmar encerramento");
 		alert.setHeaderText("Deseja realmente sair do sistema?");
@@ -171,7 +183,7 @@ public class MainController implements Initializable {
 		stage.initOwner(imgExit.getScene().getWindow());
 		stage.setResizable(Boolean.FALSE);
 		stage.showAndWait();
-		//clock.setLcdDesign(StyleClockDTO.getStyle());
+		// clock.setLcdDesign(StyleClockDTO.getStyle());
 	}
 
 	@FXML
