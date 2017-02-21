@@ -1,4 +1,4 @@
-package com.estatica.servicos.dto;
+package com.estatica.servicos.service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
-public class ProcessoStatusDTO {
+public class ProcessoStatusManager {
 
 	private static Map<String, Boolean> processoStatus = new HashMap<>();
 
@@ -23,8 +23,8 @@ public class ProcessoStatusDTO {
 	}
 
 	public static Boolean verifyProcessoRunning() {
-		for (String procName : ProcessoStatusDTO.getProcessos().keySet()) {
-			if (ProcessoStatusDTO.getProcessoStatus(procName)) {
+		for (String procName : ProcessoStatusManager.getProcessos().keySet()) {
+			if (ProcessoStatusManager.getProcessoStatus(procName)) {
 				Alert alert = new Alert(AlertType.WARNING);
 				alert.setTitle("Atenção");
 				alert.setHeaderText(

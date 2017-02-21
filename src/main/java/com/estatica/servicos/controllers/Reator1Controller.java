@@ -10,11 +10,11 @@ import java.util.ResourceBundle;
 import java.util.concurrent.Callable;
 
 import com.estatica.servicos.custom.Toast;
-import com.estatica.servicos.dto.ProcessoStatusDTO;
 import com.estatica.servicos.dto.Reator1DTO;
 import com.estatica.servicos.modbus.ModbusRTUService;
 import com.estatica.servicos.model.Processo;
 import com.estatica.servicos.service.ProcessoDBService;
+import com.estatica.servicos.service.ProcessoStatusManager;
 import com.estatica.servicos.service.impl.ProcessoDBServiceImpl;
 import com.estatica.servicos.view.ControlledScreen;
 
@@ -162,9 +162,9 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 			}
 		}, color));
 
-		modService.setConnectionParams("COM10", 9600);
+		/*modService.setConnectionParams("COM10", 9600);
 		modService.openConnection();
-		scanModbusSlaves.play();
+		scanModbusSlaves.play();*/
 
 	}
 
@@ -185,11 +185,10 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 			}
 		}
 		imgSwitch.setCursor(Cursor.OPEN_HAND);
-		makeToast("Lote finalizado com sucesso.");
 	}
 
 	private void initProcess() {
-		plotTemp();
+		//plotTemp();
 		lblStatus.setTextFill(Color.web("#1654ff"));
 		lblStatus.setText("Em andamento");
 		tempChartAnimation.play();
@@ -198,7 +197,7 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 		lblHorario.setText(horasFormatter.format(LocalDateTime.now()));
 		isReady = Boolean.FALSE;
 		isRunning = Boolean.TRUE;
-		ProcessoStatusDTO.setProcessoStatus("REATOR1", isRunning);
+		ProcessoStatusManager.setProcessoStatus("REATOR1", isRunning);
 	}
 
 	private void finalizeProcess() {
@@ -216,7 +215,8 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 		Tooltip.install(imgSwitch, new Tooltip("Para iniciar o proceso é necessário configurar um lote de produção."));
 		btNovo.setDisable(Boolean.FALSE);
 		isRunning = Boolean.FALSE;
-		ProcessoStatusDTO.setProcessoStatus("REATOR1", isRunning);
+		ProcessoStatusManager.setProcessoStatus("REATOR1", isRunning);
+		makeToast("Lote finalizado com sucesso.");
 	}
 
 	@FXML
@@ -348,6 +348,7 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 			if (Reator1DTO.getConfirmation() != null) {
 				if (Reator1DTO.getConfirmation()) {
 					lblProduto.setText(Reator1DTO.getCodProduto());
+					lblHorario.setText("00:00:00");
 					lblQuantidade.setText(Reator1DTO.getQuantidade());
 					lblOperador.setText(Reator1DTO.getOperador());
 
