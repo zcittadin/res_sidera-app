@@ -5,7 +5,9 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.Callable;
@@ -14,10 +16,12 @@ import com.estatica.servicos.custom.Toast;
 import com.estatica.servicos.dto.Reator1DTO;
 import com.estatica.servicos.modbus.ModbusRTUService;
 import com.estatica.servicos.model.Processo;
+import com.estatica.servicos.objectproperties.MarkLineChartProperty;
 import com.estatica.servicos.service.ProcessoDBService;
 import com.estatica.servicos.service.ProcessoStatusManager;
 import com.estatica.servicos.service.impl.ProcessoDBServiceImpl;
 import com.estatica.servicos.util.ChronoMeter;
+import com.estatica.servicos.util.HoverDataChart;
 import com.estatica.servicos.view.ControlledScreen;
 
 import javafx.animation.Animation;
@@ -29,12 +33,17 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
@@ -110,6 +119,8 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	@FXML
 	private Button btReport;
 	@FXML
+	private Button btConfigLineChart;
+	@FXML
 	private ProgressIndicator progLote;
 
 	private static ModbusRTUService modService;
@@ -138,6 +149,9 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	final DecimalFormat df = new DecimalFormat("####0.00");
 	final ChronoMeter chronoMeter = new ChronoMeter();
 
+	final ObservableList<XYChart.Series<String, Number>> plotList = FXCollections.observableArrayList();
+	final List<Node> valueMarks = new ArrayList<>();
+
 	ScreensController myController;
 
 	@Override
@@ -158,6 +172,7 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 		Tooltip.install(btEdit, new Tooltip("Editar lote configurado"));
 		Tooltip.install(btCancela, new Tooltip("Cancelar lote configurado"));
 		Tooltip.install(btReport, new Tooltip("Emitir relatorio de processo"));
+		Tooltip.install(btConfigLineChart, new Tooltip("Opções de visualização do gráfico de linhas"));
 		Tooltip.install(imgEstatica, new Tooltip("Estática Serviços e Manutenção Industrial"));
 
 		imgEstatica.setImage(new Image("/img/logotipo.png"));
@@ -176,9 +191,19 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 			}
 		}, color));
 
-		modService.setConnectionParams("COM10", 9600);
-		modService.openConnection();
-		scanModbusSlaves.play();
+		MarkLineChartProperty.markProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				for (Node mark : valueMarks) {
+					mark.setVisible(newValue);
+				}
+			}
+		});
+
+		/*
+		 * modService.setConnectionParams("COM10", 9600);
+		 * modService.openConnection(); scanModbusSlaves.play();
+		 */
 
 	}
 
@@ -284,7 +309,10 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 		tempChartAnimation.setCycleCount(Animation.INDEFINITE);
 
 		tempSeries = new XYChart.Series<String, Number>();
-		chartReator.getData().add(tempSeries);
+		tempSeries.getData().add(new XYChart.Data<>(horasFormatter.format(LocalDateTime.now()), 20));
+		plotList.add(tempSeries);
+		chartReator.setData(plotList);
+
 	}
 
 	private void initAnimations() {
@@ -346,7 +374,15 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	}
 
 	private void plotTemp() {
-		tempSeries.getData().add(new XYChart.Data<>(horasFormatter.format(LocalDateTime.now()), tempReator));
+		tempReator = 40;
+		final XYChart.Data<String, Number> data = new XYChart.Data<>(horasFormatter.format(LocalDateTime.now()),
+				tempReator);
+		Node mark = new HoverDataChart(1, tempReator);
+		if (!MarkLineChartProperty.getMark())
+			mark.setVisible(Boolean.FALSE);
+		valueMarks.add(mark);
+		data.setNode(mark);
+		tempSeries.getData().add(data);
 		saveTemp();
 	}
 
@@ -437,6 +473,20 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 		estaticaFadeTransition.setFromValue(imgEstatica.getOpacity());
 		estaticaFadeTransition.setToValue(0.2);
 		estaticaFadeTransition.play();
+	}
+
+	@FXML
+	private void openConfigLineChart() throws IOException {
+		Stage stage;
+		Parent root;
+		stage = new Stage();
+		root = FXMLLoader.load(getClass().getResource("/com/estatica/servicos/view/ConfigLineChart.fxml"));
+		stage.setScene(new Scene(root));
+		stage.setTitle("Opções do gráfico de linhas");
+		stage.initModality(Modality.APPLICATION_MODAL);
+		stage.initOwner(imgEstatica.getScene().getWindow());
+		stage.setResizable(Boolean.FALSE);
+		stage.showAndWait();
 	}
 
 	private void makeToast(String message) {

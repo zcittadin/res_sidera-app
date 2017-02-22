@@ -5,8 +5,8 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import com.estatica.servicos.objectproperties.StyleClockProperty;
 import com.estatica.servicos.service.ProcessoStatusManager;
-import com.estatice.servicos.objectproperties.StyleClockProperty;
 
 import eu.hansolo.medusa.Clock;
 import eu.hansolo.medusa.LcdDesign;
