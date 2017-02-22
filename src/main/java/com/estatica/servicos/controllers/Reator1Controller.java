@@ -5,7 +5,9 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.Callable;
@@ -41,6 +43,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
@@ -147,6 +150,7 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	final ChronoMeter chronoMeter = new ChronoMeter();
 
 	final ObservableList<XYChart.Series<String, Number>> plotList = FXCollections.observableArrayList();
+	final List<Node> valueMarks = new ArrayList<>();
 
 	ScreensController myController;
 
@@ -190,7 +194,9 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 		MarkLineChartProperty.markProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				chartReator.setCreateSymbols(newValue);
+				for (Node mark : valueMarks) {
+					mark.setVisible(newValue);
+				}
 			}
 		});
 
@@ -368,12 +374,15 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	}
 
 	private void plotTemp() {
-		// Series<String, Number> tempSeries = new Series<String, Number>();
 		tempReator = 40;
-		final XYChart.Data<String, Number> data = new XYChart.Data<>(horasFormatter.format(LocalDateTime.now()), tempReator);
-		data.setNode(new HoverDataChart(1, 2));
+		final XYChart.Data<String, Number> data = new XYChart.Data<>(horasFormatter.format(LocalDateTime.now()),
+				tempReator);
+		Node mark = new HoverDataChart(1, tempReator);
+		if (!MarkLineChartProperty.getMark())
+			mark.setVisible(Boolean.FALSE);
+		valueMarks.add(mark);
+		data.setNode(mark);
 		tempSeries.getData().add(data);
-		// plotList.addAll(tempSeries);
 		saveTemp();
 	}
 
