@@ -1,4 +1,4 @@
-package com.estatice.servicos.objectproperties;
+package com.estatica.servicos.objectproperties;
 
 import javafx.beans.property.SimpleBooleanProperty;
 

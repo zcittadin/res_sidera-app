@@ -3,7 +3,7 @@ package com.estatica.servicos.controllers;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.estatice.servicos.objectproperties.StyleClockProperty;
+import com.estatica.servicos.objectproperties.StyleClockProperty;
 
 import eu.hansolo.medusa.LcdDesign;
 import javafx.fxml.FXML;

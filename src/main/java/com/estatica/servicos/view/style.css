@@ -70,3 +70,7 @@
   -fx-graphic: url('img/clock_edit.png');
 }
 
+.btLineChartConfig {
+  -fx-graphic: url('img/chart_line_edit.png');
+}
+

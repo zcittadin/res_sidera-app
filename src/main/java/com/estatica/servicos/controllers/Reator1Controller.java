@@ -14,14 +14,13 @@ import com.estatica.servicos.custom.Toast;
 import com.estatica.servicos.dto.Reator1DTO;
 import com.estatica.servicos.modbus.ModbusRTUService;
 import com.estatica.servicos.model.Processo;
+import com.estatica.servicos.objectproperties.MarkLineChartProperty;
 import com.estatica.servicos.service.ProcessoDBService;
 import com.estatica.servicos.service.ProcessoStatusManager;
 import com.estatica.servicos.service.impl.ProcessoDBServiceImpl;
 import com.estatica.servicos.util.ChronoMeter;
 import com.estatica.servicos.view.ControlledScreen;
-import com.estatice.servicos.objectproperties.MarkLineChartProperty;
 
-import eu.hansolo.medusa.LcdDesign;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
@@ -168,6 +167,7 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 		Tooltip.install(btEdit, new Tooltip("Editar lote configurado"));
 		Tooltip.install(btCancela, new Tooltip("Cancelar lote configurado"));
 		Tooltip.install(btReport, new Tooltip("Emitir relatorio de processo"));
+		Tooltip.install(btConfigLineChart, new Tooltip("Opções de visualização do gráfico de linhas"));
 		Tooltip.install(imgEstatica, new Tooltip("Estática Serviços e Manutenção Industrial"));
 
 		imgEstatica.setImage(new Image("/img/logotipo.png"));

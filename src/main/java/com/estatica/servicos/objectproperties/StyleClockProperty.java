@@ -1,4 +1,4 @@
-package com.estatice.servicos.objectproperties;
+package com.estatica.servicos.objectproperties;
 
 import eu.hansolo.medusa.LcdDesign;
 import javafx.beans.property.ObjectProperty;

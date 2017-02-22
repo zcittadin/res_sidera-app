@@ -3,7 +3,7 @@ package com.estatica.servicos.controllers;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.estatice.servicos.objectproperties.MarkLineChartProperty;
+import com.estatica.servicos.objectproperties.MarkLineChartProperty;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,19 +17,19 @@ public class ConfigLineChartController implements Initializable {
 	private Button btOk;
 	@FXML
 	private CheckBox chkMarcadores;
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		if(MarkLineChartProperty.getMark())
+		if (MarkLineChartProperty.getMark())
 			chkMarcadores.setSelected(Boolean.TRUE);
 
 	}
-	
+
 	@FXML
-	public void toggleMark(){
+	public void toggleMark() {
 		MarkLineChartProperty.setMark(chkMarcadores.isSelected());
 	}
-	
+
 	@FXML
 	public void exit() {
 		Stage stage = (Stage) btOk.getScene().getWindow();
