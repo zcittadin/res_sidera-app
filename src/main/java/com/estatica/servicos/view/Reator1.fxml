@@ -218,7 +218,7 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="lblOperador" alignment="CENTER" layoutX="446.0" layoutY="134.0" prefWidth="80.0" style="-fx-background-color: white;" text="Zander" textFill="#054199">
+      <Label fx:id="lblOperador" alignment="CENTER" layoutX="446.0" layoutY="134.0" prefWidth="80.0" style="-fx-background-color: white;" textFill="#054199">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
