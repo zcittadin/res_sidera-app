@@ -19,6 +19,7 @@ import com.estatica.servicos.service.ProcessoDBService;
 import com.estatica.servicos.service.ProcessoStatusManager;
 import com.estatica.servicos.service.impl.ProcessoDBServiceImpl;
 import com.estatica.servicos.util.ChronoMeter;
+import com.estatica.servicos.util.HoverDataChart;
 import com.estatica.servicos.view.ControlledScreen;
 
 import javafx.animation.Animation;
@@ -369,7 +370,9 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	private void plotTemp() {
 		// Series<String, Number> tempSeries = new Series<String, Number>();
 		tempReator = 40;
-		tempSeries.getData().add(new XYChart.Data<>(horasFormatter.format(LocalDateTime.now()), tempReator));
+		final XYChart.Data<String, Number> data = new XYChart.Data<>(horasFormatter.format(LocalDateTime.now()), tempReator);
+		data.setNode(new HoverDataChart(1, 2));
+		tempSeries.getData().add(data);
 		// plotList.addAll(tempSeries);
 		saveTemp();
 	}
