@@ -2,6 +2,7 @@ package com.estatica.servicos.controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -16,6 +17,7 @@ import com.estatica.servicos.model.Processo;
 import com.estatica.servicos.service.ProcessoDBService;
 import com.estatica.servicos.service.ProcessoStatusManager;
 import com.estatica.servicos.service.impl.ProcessoDBServiceImpl;
+import com.estatica.servicos.util.ChronoMeter;
 import com.estatica.servicos.view.ControlledScreen;
 
 import javafx.animation.Animation;
@@ -78,7 +80,11 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	@FXML
 	private Label lblStatus;
 	@FXML
-	private Label lblTeste;
+	private Label lblProducao;
+	@FXML
+	private Label lblTempMin;
+	@FXML
+	private Label lblTempMax;
 	@FXML
 	private ImageView imgEstatica;
 	@FXML
@@ -94,6 +100,8 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	@FXML
 	private Label lblLote;
 	@FXML
+	private Label lblCronometro;
+	@FXML
 	private Button btNovo;
 	@FXML
 	private Button btEdit;
@@ -108,13 +116,17 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	private static Timeline tempChartAnimation;
 	private static Timeline scanModbusSlaves;
 	private static Timeline btNovoTimeLine;
+	private static Timeline dadosParciaisTimeLine;
 	private static FadeTransition statusTransition;
 	private static FadeTransition estaticaFadeTransition;
 	private static ImageViewResizer imgResizer;
 	private static XYChart.Series<String, Number> tempSeries;
 	private static DateTimeFormatter horasFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-	private static Integer tempReator;
-	private static Integer setPointReator;
+	private static Integer tempReator = 0;
+	private static Integer setPointReator = 0;
+	private static Integer tempMax = 300;
+	private static Integer tempMin = 0;
+	private static Double producao = new Double(0);
 	private static Boolean isReady = Boolean.FALSE;
 	private static Boolean isRunning = Boolean.FALSE;
 	private static ProcessoDBService processoService = new ProcessoDBServiceImpl();
@@ -123,6 +135,8 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	final Color startColor = Color.web("#DCDCDC");
 	final Color endColor = Color.web("#4B0082");
 	final ObjectProperty<Color> color = new SimpleObjectProperty<Color>(startColor);
+	final DecimalFormat df = new DecimalFormat("####0.00");
+	final ChronoMeter chronoMeter = new ChronoMeter();
 
 	ScreensController myController;
 
@@ -162,9 +176,9 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 			}
 		}, color));
 
-		/*modService.setConnectionParams("COM10", 9600);
+		modService.setConnectionParams("COM10", 9600);
 		modService.openConnection();
-		scanModbusSlaves.play();*/
+		scanModbusSlaves.play();
 
 	}
 
@@ -188,16 +202,18 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	}
 
 	private void initProcess() {
-		//plotTemp();
+		plotTemp();
 		lblStatus.setTextFill(Color.web("#1654ff"));
 		lblStatus.setText("Em andamento");
-		tempChartAnimation.play();
 		imgSwitch.setImage(new Image("/com/estatica/servicos/view/img/switch_on.png"));
 		Tooltip.install(imgSwitch, new Tooltip("Clique para finalizar o processo em andamento."));
 		lblHorario.setText(horasFormatter.format(LocalDateTime.now()));
 		isReady = Boolean.FALSE;
 		isRunning = Boolean.TRUE;
 		ProcessoStatusManager.setProcessoStatus("REATOR1", isRunning);
+		tempChartAnimation.play();
+		dadosParciaisTimeLine.play();
+		chronoMeter.start(lblCronometro);
 	}
 
 	private void finalizeProcess() {
@@ -210,12 +226,14 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 		});
 		lblStatus.setOpacity(1);
 		tempChartAnimation.stop();
+		dadosParciaisTimeLine.stop();
 		isRunning = Boolean.FALSE;
 		imgSwitch.setImage(new Image("/com/estatica/servicos/view/img/switch_off.png"));
 		Tooltip.install(imgSwitch, new Tooltip("Para iniciar o proceso é necessário configurar um lote de produção."));
 		btNovo.setDisable(Boolean.FALSE);
 		isRunning = Boolean.FALSE;
 		ProcessoStatusManager.setProcessoStatus("REATOR1", isRunning);
+		chronoMeter.stop();
 		makeToast("Lote finalizado com sucesso.");
 	}
 
@@ -294,6 +312,37 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 			}
 		}));
 		scanModbusSlaves.setCycleCount(Timeline.INDEFINITE);
+
+		dadosParciaisTimeLine = new Timeline(new KeyFrame(Duration.millis(300), new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				calculaProducao();
+				if (tempMin > tempReator) {
+					tempMin = tempReator;
+					lblTempMin.setText(tempMin.toString());
+				}
+				if (tempMax < tempReator) {
+					tempMax = tempReator;
+					lblTempMax.setText(tempMax.toString());
+				}
+			}
+		}));
+		dadosParciaisTimeLine.setCycleCount(Timeline.INDEFINITE);
+	}
+
+	private void calculaProducao() {
+		String[] fields = lblCronometro.getText().split(":");
+		Integer hours = Integer.parseInt(fields[0]);
+		Integer minutes = Integer.parseInt(fields[1]);
+		Integer passedMinutes = 0;
+		if (hours > 0) {
+			passedMinutes = hours * 60;
+			passedMinutes = passedMinutes + minutes;
+			producao = (Double.parseDouble(lblQuantidade.getText().replace(",", ".")) / passedMinutes) * 60;
+			String str = String.format("%1.2f", producao);
+			producao = Double.valueOf(str.replace(",", "."));
+			lblProducao.setText(producao.toString().replace(".", ","));
+		}
 	}
 
 	private void plotTemp() {
@@ -349,6 +398,12 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 				if (Reator1DTO.getConfirmation()) {
 					lblProduto.setText(Reator1DTO.getCodProduto());
 					lblHorario.setText("00:00:00");
+					lblCronometro.setText("00:00:00");
+					lblProducao.setText("000,00");
+					lblTempMin.setText("000");
+					lblTempMax.setText("000");
+					tempMax = 0;
+					tempMin = 300;
 					lblQuantidade.setText(Reator1DTO.getQuantidade());
 					lblOperador.setText(Reator1DTO.getOperador());
 
