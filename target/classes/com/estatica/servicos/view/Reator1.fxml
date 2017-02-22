@@ -302,5 +302,6 @@
          </cursor>
       </Button>
       <Separator layoutX="3.0" layoutY="42.0" prefHeight="3.0" prefWidth="194.0" />
+      <Button layoutX="13.0" layoutY="178.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="32.0" />
    </children>
 </AnchorPane>

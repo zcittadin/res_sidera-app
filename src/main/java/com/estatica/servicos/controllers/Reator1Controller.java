@@ -29,6 +29,8 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -137,6 +139,8 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	final ObjectProperty<Color> color = new SimpleObjectProperty<Color>(startColor);
 	final DecimalFormat df = new DecimalFormat("####0.00");
 	final ChronoMeter chronoMeter = new ChronoMeter();
+	
+	final ObservableList<XYChart.Series<String, Number>> plotList = FXCollections.observableArrayList();
 
 	ScreensController myController;
 
@@ -176,9 +180,9 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 			}
 		}, color));
 
-		modService.setConnectionParams("COM10", 9600);
+		/*modService.setConnectionParams("COM10", 9600);
 		modService.openConnection();
-		scanModbusSlaves.play();
+		scanModbusSlaves.play();*/
 
 	}
 
@@ -284,7 +288,9 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 		tempChartAnimation.setCycleCount(Animation.INDEFINITE);
 
 		tempSeries = new XYChart.Series<String, Number>();
-		chartReator.getData().add(tempSeries);
+		tempSeries.getData().add(new XYChart.Data<>(horasFormatter.format(LocalDateTime.now()), 20));
+		plotList.add(tempSeries);
+		chartReator.setData(plotList);
 	}
 
 	private void initAnimations() {
@@ -346,7 +352,10 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	}
 
 	private void plotTemp() {
+//		Series<String, Number> tempSeries = new Series<String, Number>();
+		tempReator=40;
 		tempSeries.getData().add(new XYChart.Data<>(horasFormatter.format(LocalDateTime.now()), tempReator));
+//		plotList.addAll(tempSeries);
 		saveTemp();
 	}
 
