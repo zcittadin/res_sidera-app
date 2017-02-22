@@ -19,7 +19,9 @@ import com.estatica.servicos.service.ProcessoStatusManager;
 import com.estatica.servicos.service.impl.ProcessoDBServiceImpl;
 import com.estatica.servicos.util.ChronoMeter;
 import com.estatica.servicos.view.ControlledScreen;
+import com.estatice.servicos.objectproperties.MarkLineChartProperty;
 
+import eu.hansolo.medusa.LcdDesign;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
@@ -29,6 +31,8 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -112,6 +116,8 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	@FXML
 	private Button btReport;
 	@FXML
+	private Button btConfigLineChart;
+	@FXML
 	private ProgressIndicator progLote;
 
 	private static ModbusRTUService modService;
@@ -139,7 +145,7 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	final ObjectProperty<Color> color = new SimpleObjectProperty<Color>(startColor);
 	final DecimalFormat df = new DecimalFormat("####0.00");
 	final ChronoMeter chronoMeter = new ChronoMeter();
-	
+
 	final ObservableList<XYChart.Series<String, Number>> plotList = FXCollections.observableArrayList();
 
 	ScreensController myController;
@@ -180,9 +186,17 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 			}
 		}, color));
 
-		/*modService.setConnectionParams("COM10", 9600);
-		modService.openConnection();
-		scanModbusSlaves.play();*/
+		MarkLineChartProperty.markProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				chartReator.setCreateSymbols(newValue);
+			}
+		});
+
+		/*
+		 * modService.setConnectionParams("COM10", 9600);
+		 * modService.openConnection(); scanModbusSlaves.play();
+		 */
 
 	}
 
@@ -291,6 +305,7 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 		tempSeries.getData().add(new XYChart.Data<>(horasFormatter.format(LocalDateTime.now()), 20));
 		plotList.add(tempSeries);
 		chartReator.setData(plotList);
+
 	}
 
 	private void initAnimations() {
@@ -352,10 +367,10 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	}
 
 	private void plotTemp() {
-//		Series<String, Number> tempSeries = new Series<String, Number>();
-		tempReator=40;
+		// Series<String, Number> tempSeries = new Series<String, Number>();
+		tempReator = 40;
 		tempSeries.getData().add(new XYChart.Data<>(horasFormatter.format(LocalDateTime.now()), tempReator));
-//		plotList.addAll(tempSeries);
+		// plotList.addAll(tempSeries);
 		saveTemp();
 	}
 
@@ -446,6 +461,20 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 		estaticaFadeTransition.setFromValue(imgEstatica.getOpacity());
 		estaticaFadeTransition.setToValue(0.2);
 		estaticaFadeTransition.play();
+	}
+
+	@FXML
+	private void openConfigLineChart() throws IOException {
+		Stage stage;
+		Parent root;
+		stage = new Stage();
+		root = FXMLLoader.load(getClass().getResource("/com/estatica/servicos/view/ConfigLineChart.fxml"));
+		stage.setScene(new Scene(root));
+		stage.setTitle("Opções do gráfico de linhas");
+		stage.initModality(Modality.APPLICATION_MODAL);
+		stage.initOwner(imgEstatica.getScene().getWindow());
+		stage.setResizable(Boolean.FALSE);
+		stage.showAndWait();
 	}
 
 	private void makeToast(String message) {
