@@ -11,7 +11,7 @@ public class HoverDataChart extends StackPane {
 
 	public HoverDataChart(int priorValue, int value) {
 		setPrefSize(8, 8);
-		setStyle("-fx-background-color: #FF0000; -fx-text-fill: white; -fx-border-color: white; -fx-border-radius: 10px;");
+		setStyle("-fx-background-color: #8B008B; -fx-text-fill: white; -fx-border-color: white; -fx-border-radius: 10px;");
 
 		final Label label = createDataThresholdLabel(priorValue, value);
 
@@ -36,7 +36,7 @@ public class HoverDataChart extends StackPane {
 		final Label label = new Label(value + "ºC");
 		label.getStyleClass().addAll("default-color0", "chart-line-symbol", "chart-series-line");
 		label.setStyle("-fx-font-size: 14; -fx-font-weight: bold; "
-				+ "-fx-background-color: #FF0000; -fx-text-fill: white; -fx-border-color: white; -fx-border-radius: 8px;");
+				+ "-fx-background-color: #8B008B; -fx-text-fill: white; -fx-border-color: white; -fx-border-radius: 8px;");
 		// if (priorValue == 0) {
 		// label.setTextFill(Color.DARKGRAY);
 		// } else if (value > priorValue) {
