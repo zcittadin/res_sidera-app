@@ -70,4 +70,28 @@ public class ProdutoDAOImpl implements ProdutoDAO {
 		session.close();
 	}
 
+	@Override
+	public void updateTemperaturaMax(Produto produto) {
+		Session session = HibernateUtil.openSession();
+		Transaction tx = session.beginTransaction();
+		Query query = session.createQuery("UPDATE Produto set tempMax = :tempMax WHERE lote = :lote");
+		query.setParameter("tempMax", produto.getTempMax());
+		query.setParameter("lote", produto.getLote());
+		query.executeUpdate();
+		tx.commit();
+		session.close();
+	}
+
+	@Override
+	public void updateTemperaturaMin(Produto produto) {
+		Session session = HibernateUtil.openSession();
+		Transaction tx = session.beginTransaction();
+		Query query = session.createQuery("UPDATE Produto set tempMin = :tempMin WHERE lote = :lote");
+		query.setParameter("tempMin", produto.getTempMin());
+		query.setParameter("lote", produto.getLote());
+		query.executeUpdate();
+		tx.commit();
+		session.close();
+	}
+
 }

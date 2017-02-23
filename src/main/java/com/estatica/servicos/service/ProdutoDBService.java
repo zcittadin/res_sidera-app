@@ -13,6 +13,10 @@ public interface ProdutoDBService {
 	public Produto findByLote(int lote);
 
 	public void updateDataInicial(int lote);
-	
+
 	public void updateDataFinal(int lote);
+
+	public void updateTemperaturaMax(int lote, int temp);
+
+	public void updateTemperaturaMin(int lote, int temp);
 }

@@ -117,7 +117,8 @@ public class ConfigProcessoController implements Initializable {
 
 				Produto produto = new Produto(null, Integer.parseInt(txtProduto.getText()),
 						Integer.parseInt(txtLote.getText()), "Reator 1", txtOperador.getText(),
-						Double.parseDouble(txtQuantidade.getText().replace(".", "").replace(",", ".")), null, null);
+						Double.parseDouble(txtQuantidade.getText().replace(".", "").replace(",", ".")), null, null, 0,
+						0);
 				produtoService.saveProduto(produto);
 				Reator1DTO.setProduto(produto);
 				Reator1DTO.setCodProduto(txtProduto.getText());

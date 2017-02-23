@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Table(name = "produto")
 public class Produto implements Serializable {
 
-	private static final long serialVersionUID = -4997319177745348450L;
+	private static final long serialVersionUID = 6912449479405564925L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,16 +34,21 @@ public class Produto implements Serializable {
 	private Date dtInicial;
 	@Column(name = "dt_final")
 	private Date dtFinal;
+	@Column(name = "temp_max")
+	private double tempMax;
+	@Column(name = "temp_min")
+	private double tempMin;
 
-	//@OneToMany(mappedBy = "i_produto", targetEntity = Processo.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//	private List<Processo> processo;
+	// @OneToMany(mappedBy = "i_produto", targetEntity = Processo.class, fetch =
+	// FetchType.LAZY, cascade = CascadeType.ALL)
+	// private List<Processo> processo;
 
 	public Produto() {
 
 	}
 
 	public Produto(Long id, int codigo, int lote, String nomeReator, String operador, double quantidade, Date dtInicial,
-			Date dtFinal) {
+			Date dtFinal, double tempMax, double tempMin) {
 		this.id = id;
 		this.codigo = codigo;
 		this.lote = lote;
@@ -52,20 +57,18 @@ public class Produto implements Serializable {
 		this.quantidade = quantidade;
 		this.dtInicial = dtInicial;
 		this.dtFinal = dtFinal;
+		this.tempMax = tempMax;
+		this.tempMin = tempMin;
 	}
 
-	/*public Produto(Long id, int codigo, int lote, String nomeReator, String operador, double quantidade, Date dtInicial,
-			Date dtFinal, List<Processo> processo) {
-		this.id = id;
-		this.codigo = codigo;
-		this.lote = lote;
-		this.nomeReator = nomeReator;
-		this.operador = operador;
-		this.quantidade = quantidade;
-		this.dtInicial = dtInicial;
-		this.dtFinal = dtFinal;
-		this.processo = processo;
-	}*/
+	/*
+	 * public Produto(Long id, int codigo, int lote, String nomeReator, String
+	 * operador, double quantidade, Date dtInicial, Date dtFinal, List<Processo>
+	 * processo) { this.id = id; this.codigo = codigo; this.lote = lote;
+	 * this.nomeReator = nomeReator; this.operador = operador; this.quantidade =
+	 * quantidade; this.dtInicial = dtInicial; this.dtFinal = dtFinal;
+	 * this.processo = processo; }
+	 */
 
 	public Long getId() {
 		return id;
@@ -131,13 +134,28 @@ public class Produto implements Serializable {
 		this.dtFinal = dtFinal;
 	}
 
-/*	public List<Processo> getProcesso() {
-		return processo;
+	public double getTempMax() {
+		return tempMax;
 	}
 
-	public void setProcesso(List<Processo> processo) {
-		this.processo = processo;
-	}*/
+	public void setTempMax(double tempMax) {
+		this.tempMax = tempMax;
+	}
+
+	public double getTempMin() {
+		return tempMin;
+	}
+
+	public void setTempMin(double tempMin) {
+		this.tempMin = tempMin;
+	}
+
+	/*
+	 * public List<Processo> getProcesso() { return processo; }
+	 * 
+	 * public void setProcesso(List<Processo> processo) { this.processo =
+	 * processo; }
+	 */
 
 	@Override
 	public int hashCode() {

@@ -17,4 +17,8 @@ public interface ProdutoDAO {
 	public void updateDataInicial(Produto produto);
 	
 	public void updateDataFinal(Produto produto);
+	
+	public void updateTemperaturaMax(Produto produto);
+	
+	public void updateTemperaturaMin(Produto produto);
 }

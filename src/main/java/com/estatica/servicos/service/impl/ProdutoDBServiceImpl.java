@@ -46,4 +46,18 @@ public class ProdutoDBServiceImpl implements ProdutoDBService {
 		dao.updateDataFinal(produto);
 	}
 
+	@Override
+	public void updateTemperaturaMax(int lote, int tempMax) {
+		Produto produto = findByLote(lote);
+		produto.setTempMax(tempMax);
+		dao.updateTemperaturaMax(produto);
+	}
+
+	@Override
+	public void updateTemperaturaMin(int lote, int tempMin) {
+		Produto produto = findByLote(lote);
+		produto.setTempMin(tempMin);
+		dao.updateTemperaturaMin(produto);
+	}
+
 }

@@ -203,9 +203,9 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 			}
 		});
 
-		/*modService.setConnectionParams("COM10", 9600);
+		modService.setConnectionParams("COM10", 9600);
 		modService.openConnection();
-		scanModbusSlaves.play();*/
+		scanModbusSlaves.play();
 	}
 
 	@FXML
@@ -345,17 +345,19 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 		}));
 		scanModbusSlaves.setCycleCount(Timeline.INDEFINITE);
 
-		dadosParciaisTimeLine = new Timeline(new KeyFrame(Duration.millis(300), new EventHandler<ActionEvent>() {
+		dadosParciaisTimeLine = new Timeline(new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 				calculaProducao();
 				if (tempMin > tempReator) {
 					tempMin = tempReator;
 					lblTempMin.setText(tempMin.toString());
+					produtoService.updateTemperaturaMin(Integer.parseInt(lblLote.getText()), tempMin);
 				}
 				if (tempMax < tempReator) {
 					tempMax = tempReator;
 					lblTempMax.setText(tempMax.toString());
+					produtoService.updateTemperaturaMax(Integer.parseInt(lblLote.getText()), tempMax);
 				}
 			}
 		}));
@@ -390,7 +392,6 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	}
 
 	private void saveTemp() {
-		tempReator=35;
 		processo = new Processo(null, Reator1DTO.getProduto(), Calendar.getInstance().getTime(), tempReator,
 				setPointReator);
 		processoService.saveProcesso(processo);
