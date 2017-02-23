@@ -10,7 +10,8 @@ import javafx.scene.paint.Color;
 public class HoverDataChart extends StackPane {
 
 	public HoverDataChart(int priorValue, int value) {
-		setPrefSize(15, 15);
+		setPrefSize(8, 8);
+		setStyle("-fx-background-color: #FF0000; -fx-text-fill: white; -fx-border-color: white; -fx-border-radius: 10px;");
 
 		final Label label = createDataThresholdLabel(priorValue, value);
 
@@ -32,17 +33,17 @@ public class HoverDataChart extends StackPane {
 	}
 
 	private Label createDataThresholdLabel(int priorValue, int value) {
-		final Label label = new Label(value + "");
+		final Label label = new Label(value + "ºC");
 		label.getStyleClass().addAll("default-color0", "chart-line-symbol", "chart-series-line");
-		label.setStyle("-fx-font-size: 20; -fx-font-weight: bold;");
-
-		if (priorValue == 0) {
-			label.setTextFill(Color.DARKGRAY);
-		} else if (value > priorValue) {
-			label.setTextFill(Color.FORESTGREEN);
-		} else {
-			label.setTextFill(Color.FIREBRICK);
-		}
+		label.setStyle("-fx-font-size: 14; -fx-font-weight: bold; "
+				+ "-fx-background-color: #FF0000; -fx-text-fill: white; -fx-border-color: white; -fx-border-radius: 8px;");
+		// if (priorValue == 0) {
+		// label.setTextFill(Color.DARKGRAY);
+		// } else if (value > priorValue) {
+		label.setTextFill(Color.FORESTGREEN);
+		// } else {
+		// label.setTextFill(Color.FIREBRICK);
+		// }
 
 		label.setMinSize(Label.USE_PREF_SIZE, Label.USE_PREF_SIZE);
 		return label;

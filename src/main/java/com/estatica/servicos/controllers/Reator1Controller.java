@@ -19,7 +19,9 @@ import com.estatica.servicos.model.Processo;
 import com.estatica.servicos.objectproperties.MarkLineChartProperty;
 import com.estatica.servicos.service.ProcessoDBService;
 import com.estatica.servicos.service.ProcessoStatusManager;
+import com.estatica.servicos.service.ProdutoDBService;
 import com.estatica.servicos.service.impl.ProcessoDBServiceImpl;
+import com.estatica.servicos.service.impl.ProdutoDBServiceImpl;
 import com.estatica.servicos.util.ChronoMeter;
 import com.estatica.servicos.util.HoverDataChart;
 import com.estatica.servicos.view.ControlledScreen;
@@ -141,6 +143,7 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	private static Boolean isReady = Boolean.FALSE;
 	private static Boolean isRunning = Boolean.FALSE;
 	private static ProcessoDBService processoService = new ProcessoDBServiceImpl();
+	private static ProdutoDBService produtoService = new ProdutoDBServiceImpl();
 	private static Processo processo;
 
 	final Color startColor = Color.web("#DCDCDC");
@@ -200,11 +203,9 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 			}
 		});
 
-		/*
-		 * modService.setConnectionParams("COM10", 9600);
-		 * modService.openConnection(); scanModbusSlaves.play();
-		 */
-
+		modService.setConnectionParams("COM10", 9600);
+		modService.openConnection();
+		scanModbusSlaves.play();
 	}
 
 	@FXML
@@ -239,9 +240,12 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 		tempChartAnimation.play();
 		dadosParciaisTimeLine.play();
 		chronoMeter.start(lblCronometro);
+
+		produtoService.updateDataInicial(Integer.parseInt(lblLote.getText()));
 	}
 
 	private void finalizeProcess() {
+//		produtoService.updateDataFinal(Integer.parseInt(lblLote.getText()));
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
@@ -374,7 +378,6 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	}
 
 	private void plotTemp() {
-		tempReator = 40;
 		final XYChart.Data<String, Number> data = new XYChart.Data<>(horasFormatter.format(LocalDateTime.now()),
 				tempReator);
 		Node mark = new HoverDataChart(1, tempReator);

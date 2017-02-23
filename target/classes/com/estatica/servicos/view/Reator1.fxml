@@ -189,7 +189,7 @@
       </Line>
       <Label layoutX="39.0" layoutY="68.0" text="On" textFill="WHITE" />
       <Label layoutX="37.0" layoutY="110.0" text="Off" textFill="WHITE" />
-      <LineChart fx:id="chartReator" layoutX="14.0" layoutY="178.0" legendVisible="false" prefHeight="429.0" prefWidth="1184.0" title="Temperatura x tempo">
+      <LineChart fx:id="chartReator" createSymbols="false" layoutX="14.0" layoutY="178.0" legendVisible="false" prefHeight="429.0" prefWidth="1184.0" title="Temperatura x tempo">
         <xAxis>
           <CategoryAxis gapStartAndEnd="false" side="BOTTOM" startMargin="0.0" tickLabelFill="WHITE" fx:id="xAxis">
                <tickLabelFont>

@@ -23,7 +23,7 @@ public class Processo implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@OneToOne(cascade = CascadeType.ALL, optional = true, fetch = FetchType.EAGER, orphanRemoval = true)
+	@OneToOne(cascade = CascadeType.REFRESH, optional = true, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JoinColumn(name = "i_produto")
 	private Produto produto;
 	@Column(name = "dt_processo")
