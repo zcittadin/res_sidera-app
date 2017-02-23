@@ -42,7 +42,7 @@ public class ProdutoDBServiceImpl implements ProdutoDBService {
 	@Override
 	public void updateDataFinal(int lote) {
 		Produto produto = findByLote(lote);
-		produto.setDtInicial(Calendar.getInstance().getTime());
+		produto.setDtFinal(Calendar.getInstance().getTime());
 		dao.updateDataFinal(produto);
 	}
 

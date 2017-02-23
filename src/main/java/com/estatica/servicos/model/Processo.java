@@ -3,15 +3,13 @@ package com.estatica.servicos.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -22,8 +20,9 @@ public class Processo implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private Long id;
-	@OneToOne(cascade = CascadeType.REFRESH, optional = true, orphanRemoval = true, fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name = "i_produto")
 	private Produto produto;
 	@Column(name = "dt_processo")

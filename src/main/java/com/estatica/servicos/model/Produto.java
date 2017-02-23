@@ -3,14 +3,11 @@ package com.estatica.servicos.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -21,6 +18,7 @@ public class Produto implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private Long id;
 	@Column(name = "codigo")
 	private int codigo;
@@ -37,8 +35,8 @@ public class Produto implements Serializable {
 	@Column(name = "dt_final")
 	private Date dtFinal;
 
-	@OneToOne(mappedBy = "produto", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-	private Processo processo;
+	//@OneToMany(mappedBy = "i_produto", targetEntity = Processo.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//	private List<Processo> processo;
 
 	public Produto() {
 
@@ -56,8 +54,8 @@ public class Produto implements Serializable {
 		this.dtFinal = dtFinal;
 	}
 
-	public Produto(Long id, int codigo, int lote, String nomeReator, String operador, double quantidade, Date dtInicial,
-			Date dtFinal, Processo processo) {
+	/*public Produto(Long id, int codigo, int lote, String nomeReator, String operador, double quantidade, Date dtInicial,
+			Date dtFinal, List<Processo> processo) {
 		this.id = id;
 		this.codigo = codigo;
 		this.lote = lote;
@@ -67,7 +65,7 @@ public class Produto implements Serializable {
 		this.dtInicial = dtInicial;
 		this.dtFinal = dtFinal;
 		this.processo = processo;
-	}
+	}*/
 
 	public Long getId() {
 		return id;
@@ -133,13 +131,13 @@ public class Produto implements Serializable {
 		this.dtFinal = dtFinal;
 	}
 
-	public Processo getProcesso() {
+/*	public List<Processo> getProcesso() {
 		return processo;
 	}
 
-	public void setProcesso(Processo processo) {
+	public void setProcesso(List<Processo> processo) {
 		this.processo = processo;
-	}
+	}*/
 
 	@Override
 	public int hashCode() {

@@ -203,9 +203,9 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 			}
 		});
 
-		modService.setConnectionParams("COM10", 9600);
+		/*modService.setConnectionParams("COM10", 9600);
 		modService.openConnection();
-		scanModbusSlaves.play();
+		scanModbusSlaves.play();*/
 	}
 
 	@FXML
@@ -245,7 +245,7 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	}
 
 	private void finalizeProcess() {
-//		produtoService.updateDataFinal(Integer.parseInt(lblLote.getText()));
+		produtoService.updateDataFinal(Integer.parseInt(lblLote.getText()));
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
@@ -390,6 +390,7 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	}
 
 	private void saveTemp() {
+		tempReator=35;
 		processo = new Processo(null, Reator1DTO.getProduto(), Calendar.getInstance().getTime(), tempReator,
 				setPointReator);
 		processoService.saveProcesso(processo);
