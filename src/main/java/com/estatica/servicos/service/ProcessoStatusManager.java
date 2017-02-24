@@ -28,7 +28,7 @@ public class ProcessoStatusManager {
 				Alert alert = new Alert(AlertType.WARNING);
 				alert.setTitle("Atenção");
 				alert.setHeaderText(
-						"Existem processo que ainda não foram finalizados. Finalize-os antes de encerrar o sistema.");
+						"Existem processos que ainda não foram finalizados. Finalize-os antes de encerrar o sistema.");
 				alert.showAndWait();
 				return Boolean.TRUE;
 			}

@@ -83,8 +83,8 @@ public class MainController implements Initializable {
 		});
 
 		imgCliente.setImage(new Image("/img/resicolor.png"));
-		imgClienteResizer = new ImageViewResizer(imgCliente, 124, 70);
-		imgClienteResizer.setLayoutX(12);
+		imgClienteResizer = new ImageViewResizer(imgCliente, 126, 70);
+		imgClienteResizer.setLayoutX(16);
 		imgClienteResizer.setLayoutY(6);
 		imgExitResizer = new ImageViewResizer(imgExit, 70, 71);
 		imgExitResizer.setLayoutX(50);

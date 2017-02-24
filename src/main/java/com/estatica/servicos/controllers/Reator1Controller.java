@@ -22,7 +22,7 @@ import com.estatica.servicos.service.ProcessoStatusManager;
 import com.estatica.servicos.service.ProdutoDBService;
 import com.estatica.servicos.service.impl.ProcessoDBServiceImpl;
 import com.estatica.servicos.service.impl.ProdutoDBServiceImpl;
-import com.estatica.servicos.util.ChronoMeter;
+import com.estatica.servicos.util.Chronometer;
 import com.estatica.servicos.util.HoverDataChart;
 import com.estatica.servicos.view.ControlledScreen;
 
@@ -69,6 +69,78 @@ import javafx.util.Duration;
 import zan.inc.custom.components.ImageViewResizer;
 
 public class Reator1Controller implements Initializable, ControlledScreen {
+
+	private static Tooltip TOOLTIP_SWITCH_ANDAMENTO = new Tooltip("Clique para finalizar o processo em andamento.");
+	private static Tooltip TOOLTIP_SWITCH_ESPERA = new Tooltip("Clique para iniciar o registro do lote configurado.");
+	private static Tooltip TOOLTIP_SWITCH_FINALIZADO = new Tooltip(
+			"Para iniciar o proceso é necessário configurar um lote de produção");
+	private static Tooltip TOOLTIP_BT_NOVO = new Tooltip("Configurar novo lote de produção");
+	private static Tooltip TOOLTIP_BT_EDIT = new Tooltip("Editar lote configurado");
+	private static Tooltip TOOLTIP_BT_CANCELAR = new Tooltip("Cancelar lote configurado");
+	private static Tooltip TOOLTIP_BT_REPORT = new Tooltip("Emitir relatorio de processo");
+	private static Tooltip TOOLTIP_BT_CONF_CHART = new Tooltip("Opções de visualização do gráfico de linhas");
+	private static Tooltip TOOLTIP_IMG_ESTATICA = new Tooltip("Estática Serviços e Manutenção Industrial");
+	private static Tooltip TOOLTIP_LBL_TEMP_REATOR = new Tooltip("Temperatura atual no reator");
+	private static Tooltip TOOLTIP_LBL_TEMP_CALDEIRA = new Tooltip("Temperatura atual na caldeira");
+	private static Tooltip TOOLTIP_LBL_SP_REATOR = new Tooltip("Set-point programado no reator");
+	private static Tooltip TOOLTIP_LBL_SP_CALDEIRA = new Tooltip("Set-point programado na caldeira");
+	private static Tooltip TOOLTIP_LBL_STATUS = new Tooltip("Estado do processo");
+	private static String TOOLTIP_CSS = "-fx-font-size: 8pt; -fx-font-weight: bold; -fx-font-style: normal; "
+			+ "-fx-background-color: #2F4F4F; -fx-border-color: white; -fx-border-radius: 10px;";
+	private static String LOGO_ESTATICA_PATH = "/img/logotipo.png";
+	private static String WINDOW_ESTATICA_PATH = "/com/estatica/servicos/view/EstaticaInfo.fxml";
+	private static String WINDOW_ESTATICA_TITLE = "Informações sobre o fabricante";
+	private static String WINDOW_CONFIG_CHART_PATH = "/com/estatica/servicos/view/ConfigLineChart.fxml";
+	private static String WINDOW_CONFIG_CHART_TITLE = "Opções do gráfico de linhas";
+	private static String WINDOW_CONFIG_PROCESSO_PATH = "/com/estatica/servicos/view/ConfigProcesso.fxml";
+	private static String WINDOW_CONFIG_PROCESSO_TITLE = "Novo lote de produção";
+	private static String IMG_SWITCH_ON_PATH = "/com/estatica/servicos/view/img/switch_on.png";
+	private static String IMG_SWITCH_OFF_PATH = "/com/estatica/servicos/view/img/switch_off.png";
+	private static String ALERT_FINALIZAR_PROCESSO = "Deseja realmente finalizar o processo em andamento?";
+	private static String ALERT_FINALIZAR_PROCESSO_TITLE = "Encerramento";
+	private static String LBL_STATUS_ANDAMENTO = "Em andamento";
+	private static String LBL_STATUS_ANDAMENTO_COLOR = "#1654ff";
+	private static String LBL_STATUS_FINALIZADO = "Finalizado";
+	private static String LBL_STATUS_FINALIZADO_COLOR = "#00ff4a";
+	private static String LBL_STATUS_SEM_LOTE = "Sem lote";
+	private static String LBL_STATUS_SEM_LOTE_COLOR = "#ffe700";
+	private static String LBL_STATUS_ESPERA = "Em espera";
+	private static String LBL_STATUS_ESPERA_COLOR = "#00ff4a";
+	private static String FORMAT_HOUR = "00:00:00";
+	private static String FORMAT_DECIMAL = "000,00";
+	private static String FORMAT_INTEGER = "000";
+	private static String TOASTER_CONF_SUCESSO = "Lote configurado com sucesso.";
+	private static String TOASTER_FINALIZADO_SUCESSO = "Lote finalizado com sucesso.";
+	private static String NOME_REATOR = "REATOR1";
+
+	private static ModbusRTUService modService;
+	private static ProcessoDBService processoService = new ProcessoDBServiceImpl();
+	private static ProdutoDBService produtoService = new ProdutoDBServiceImpl();
+	private static FadeTransition statusTransition;
+	private static FadeTransition estaticaFadeTransition;
+	private static Timeline tempChartAnimation;
+	private static Timeline scanModbusSlaves;
+	private static Timeline btNovoTimeLine;
+	private static Timeline dadosParciaisTimeLine;
+	private static ImageViewResizer imgResizer;
+	private static XYChart.Series<String, Number> tempSeries;
+	private static DateTimeFormatter horasFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+	private static Processo processo;
+	private static Integer tempReator = 0;
+	private static Integer setPointReator = 0;
+	private static Integer tempMax = 300;
+	private static Integer tempMin = 0;
+	private static Double producao = new Double(0);
+	private static Boolean isReady = Boolean.FALSE;
+	private static Boolean isRunning = Boolean.FALSE;
+
+	final Color btNovoStartColor = Color.web("#DCDCDC");
+	final Color btNovoEndColor = Color.web("#4B0082");
+	final ObjectProperty<Color> btNovoColor = new SimpleObjectProperty<Color>(btNovoStartColor);
+	final DecimalFormat decimalFormat = new DecimalFormat("####0.00");
+	final Chronometer chronoMeter = new Chronometer();
+	final ObservableList<XYChart.Series<String, Number>> plotValuesList = FXCollections.observableArrayList();
+	final List<Node> valueMarks = new ArrayList<>();
 
 	@FXML
 	private AnchorPane mainPane;
@@ -125,36 +197,6 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	@FXML
 	private ProgressIndicator progLote;
 
-	private static ModbusRTUService modService;
-	private static Timeline tempChartAnimation;
-	private static Timeline scanModbusSlaves;
-	private static Timeline btNovoTimeLine;
-	private static Timeline dadosParciaisTimeLine;
-	private static FadeTransition statusTransition;
-	private static FadeTransition estaticaFadeTransition;
-	private static ImageViewResizer imgResizer;
-	private static XYChart.Series<String, Number> tempSeries;
-	private static DateTimeFormatter horasFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-	private static Integer tempReator = 0;
-	private static Integer setPointReator = 0;
-	private static Integer tempMax = 300;
-	private static Integer tempMin = 0;
-	private static Double producao = new Double(0);
-	private static Boolean isReady = Boolean.FALSE;
-	private static Boolean isRunning = Boolean.FALSE;
-	private static ProcessoDBService processoService = new ProcessoDBServiceImpl();
-	private static ProdutoDBService produtoService = new ProdutoDBServiceImpl();
-	private static Processo processo;
-
-	final Color startColor = Color.web("#DCDCDC");
-	final Color endColor = Color.web("#4B0082");
-	final ObjectProperty<Color> color = new SimpleObjectProperty<Color>(startColor);
-	final DecimalFormat df = new DecimalFormat("####0.00");
-	final ChronoMeter chronoMeter = new ChronoMeter();
-
-	final ObservableList<XYChart.Series<String, Number>> plotList = FXCollections.observableArrayList();
-	final List<Node> valueMarks = new ArrayList<>();
-
 	ScreensController myController;
 
 	@Override
@@ -165,48 +207,17 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		modService = new ModbusRTUService();
-		initAnimations();
-		initLineChart();
-		lblStatus.setTextFill(Color.web("#ffe700"));
-		lblStatus.setText("Sem lote");
+		initComponents();
+		configAnimations();
+		configLineChart();
+		initModbusSlave();
 		statusTransition.play();
-		Tooltip.install(imgSwitch, new Tooltip("Para iniciar o proceso é necessário configurar um lote de produção."));
-		Tooltip.install(btNovo, new Tooltip("Configurar novo lote de produção"));
-		Tooltip.install(btEdit, new Tooltip("Editar lote configurado"));
-		Tooltip.install(btCancela, new Tooltip("Cancelar lote configurado"));
-		Tooltip.install(btReport, new Tooltip("Emitir relatorio de processo"));
-		Tooltip.install(btConfigLineChart, new Tooltip("Opções de visualização do gráfico de linhas"));
-		Tooltip.install(imgEstatica, new Tooltip("Estática Serviços e Manutenção Industrial"));
-
-		imgEstatica.setImage(new Image("/img/logotipo.png"));
-		imgResizer = new ImageViewResizer(imgEstatica, 138, 42);
-		imgResizer.setLayoutX(150.0);
-		imgResizer.setLayoutY(150.0);
-		imgResizer.setLayoutX(1083);
-		imgResizer.setLayoutY(607);
-		mainPane.getChildren().addAll(imgResizer);
-
-		btNovo.styleProperty().bind(Bindings.createStringBinding(new Callable<String>() {
-			@Override
-			public String call() throws Exception {
-				return String.format("-fx-body-color: rgb(%d, %d, %d);", (int) (256 * color.get().getRed()),
-						(int) (256 * color.get().getGreen()), (int) (256 * color.get().getBlue()));
-			}
-		}, color));
-
-		MarkLineChartProperty.markProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				for (Node mark : valueMarks) {
-					mark.setVisible(newValue);
-				}
-			}
-		});
-
-		modService.setConnectionParams("COM10", 9600);
-		modService.openConnection();
 		scanModbusSlaves.play();
 	}
+
+	// ===============================================
+	// CHAMADAS DA INTERFACE GRÁFICA (@FXML)
+	// ===============================================
 
 	@FXML
 	public void toggleProcess() {
@@ -217,8 +228,8 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 			return;
 		} else if (!isReady && isRunning) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
-			alert.setTitle("Encerramento");
-			alert.setHeaderText("Deseja realmente finalizar o processo em andamento?");
+			alert.setTitle(ALERT_FINALIZAR_PROCESSO_TITLE);
+			alert.setHeaderText(ALERT_FINALIZAR_PROCESSO);
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() == ButtonType.OK) {
 				finalizeProcess();
@@ -227,51 +238,10 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 		imgSwitch.setCursor(Cursor.OPEN_HAND);
 	}
 
-	private void initProcess() {
-		plotTemp();
-		lblStatus.setTextFill(Color.web("#1654ff"));
-		lblStatus.setText("Em andamento");
-		imgSwitch.setImage(new Image("/com/estatica/servicos/view/img/switch_on.png"));
-		Tooltip.install(imgSwitch, new Tooltip("Clique para finalizar o processo em andamento."));
-		lblHorario.setText(horasFormatter.format(LocalDateTime.now()));
-		isReady = Boolean.FALSE;
-		isRunning = Boolean.TRUE;
-		ProcessoStatusManager.setProcessoStatus("REATOR1", isRunning);
-		tempChartAnimation.play();
-		dadosParciaisTimeLine.play();
-		chronoMeter.start(lblCronometro);
-
-		produtoService.updateDataInicial(Integer.parseInt(lblLote.getText()));
-	}
-
-	private void finalizeProcess() {
-		produtoService.updateDataFinal(Integer.parseInt(lblLote.getText()));
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				lblStatus.setTextFill(Color.web("#00ff4a"));
-				lblStatus.setText("Finalizado");
-			}
-		});
-		lblStatus.setOpacity(1);
-		tempChartAnimation.stop();
-		dadosParciaisTimeLine.stop();
-		isRunning = Boolean.FALSE;
-		imgSwitch.setImage(new Image("/com/estatica/servicos/view/img/switch_off.png"));
-		Tooltip.install(imgSwitch, new Tooltip("Para iniciar o proceso é necessário configurar um lote de produção."));
-		btNovo.setDisable(Boolean.FALSE);
-		isRunning = Boolean.FALSE;
-		ProcessoStatusManager.setProcessoStatus("REATOR1", isRunning);
-		chronoMeter.stop();
-		makeToast("Lote finalizado com sucesso.");
-	}
-
 	@FXML
 	public void configureProcesso() {
-		lblStatus.setTextFill(Color.web("#ffe700"));
-		lblStatus.setText("Sem lote");
-		clearFields();
-		enableFields();
+		lblStatus.setTextFill(Color.web(LBL_STATUS_SEM_LOTE_COLOR));
+		lblStatus.setText(LBL_STATUS_SEM_LOTE);
 		lblProduto.requestFocus();
 		clearLineChart();
 	}
@@ -301,67 +271,121 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 		estaticaFadeTransition.play();
 	}
 
-	private void initLineChart() {
-		yAxisTemp.setAutoRanging(false);
-		yAxisTemp.setLowerBound(0);
-		yAxisTemp.setUpperBound(70);
-		yAxisTemp.setTickUnit(10);
+	@FXML
+	private void handleButtonAction(ActionEvent event) throws IOException {
+		Stage stage;
+		Parent root;
+		if (event.getSource() == btNovo) {
+			stage = new Stage();
+			root = FXMLLoader.load(getClass().getResource(WINDOW_CONFIG_PROCESSO_PATH));
+			stage.setScene(new Scene(root));
+			stage.setTitle(WINDOW_CONFIG_PROCESSO_TITLE);
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.initOwner(btNovo.getScene().getWindow());
+			stage.setHeight(255);
+			stage.setWidth(320);
+			stage.setResizable(Boolean.FALSE);
+			stage.showAndWait();
 
-		tempChartAnimation = new Timeline();
-		tempChartAnimation.getKeyFrames()
-				.add(new KeyFrame(Duration.millis(3000), (ActionEvent actionEvent) -> plotTemp()));
-		tempChartAnimation.setCycleCount(Animation.INDEFINITE);
+			if (Reator1DTO.getConfirmation() != null) {
+				if (Reator1DTO.getConfirmation()) {
+					lblProduto.setText(Reator1DTO.getCodProduto());
+					lblHorario.setText(FORMAT_HOUR);
+					lblCronometro.setText(FORMAT_HOUR);
+					lblProducao.setText(FORMAT_DECIMAL);
+					lblTempMin.setText(FORMAT_INTEGER);
+					lblTempMax.setText(FORMAT_INTEGER);
+					tempMax = 0;
+					tempMin = 300;
+					lblQuantidade.setText(Reator1DTO.getQuantidade());
+					lblOperador.setText(Reator1DTO.getOperador());
 
-		tempSeries = new XYChart.Series<String, Number>();
-		tempSeries.getData().add(new XYChart.Data<>(horasFormatter.format(LocalDateTime.now()), 20));
-		plotList.add(tempSeries);
-		chartReator.setData(plotList);
+					lblStatus.setTextFill(Color.web(LBL_STATUS_ESPERA_COLOR));
+					lblStatus.setText(LBL_STATUS_ESPERA);
+					lblLote.setText(Reator1DTO.getLote());
+					btNovo.setDisable(Boolean.TRUE);
+					Tooltip.install(imgSwitch, TOOLTIP_SWITCH_ESPERA);
+					clearLineChart();
+					isReady = Boolean.TRUE;
+					Reator1DTO.setConfirmation(Boolean.FALSE);
+					makeToast(TOASTER_CONF_SUCESSO);
+				}
+			}
 
+		}
 	}
 
-	private void initAnimations() {
+	@FXML
+	private void handleImgEstaticaAction() throws IOException {
+		Stage stage;
+		Parent root;
+		stage = new Stage();
+		root = FXMLLoader.load(getClass().getResource(WINDOW_ESTATICA_PATH));
+		stage.setScene(new Scene(root));
+		stage.setTitle(WINDOW_ESTATICA_TITLE);
+		stage.initModality(Modality.APPLICATION_MODAL);
+		stage.initOwner(imgEstatica.getScene().getWindow());
+		stage.setResizable(Boolean.FALSE);
+		stage.showAndWait();
+		estaticaFadeTransition.setFromValue(imgEstatica.getOpacity());
+		estaticaFadeTransition.setToValue(0.2);
+		estaticaFadeTransition.play();
+	}
 
-		statusTransition = new FadeTransition(Duration.millis(1000), lblStatus);
-		statusTransition.setFromValue(0.0);
-		statusTransition.setToValue(1.0);
-		statusTransition.setCycleCount(Timeline.INDEFINITE);
-		statusTransition.setAutoReverse(Boolean.TRUE);
+	@FXML
+	private void openConfigLineChart() throws IOException {
+		Stage stage;
+		Parent root;
+		stage = new Stage();
+		root = FXMLLoader.load(getClass().getResource(WINDOW_CONFIG_CHART_PATH));
+		stage.setScene(new Scene(root));
+		stage.setTitle(WINDOW_CONFIG_CHART_TITLE);
+		stage.initModality(Modality.APPLICATION_MODAL);
+		stage.initOwner(imgEstatica.getScene().getWindow());
+		stage.setResizable(Boolean.FALSE);
+		stage.showAndWait();
+	}
 
-		estaticaFadeTransition = new FadeTransition(Duration.millis(1000), imgEstatica);
-		estaticaFadeTransition.setCycleCount(1);
+	// ===============================================
+	// MÉTODOS PRIVADOS
+	// ===============================================
+	private void initProcess() {
+		plotTemp();
+		lblStatus.setTextFill(Color.web(LBL_STATUS_ANDAMENTO_COLOR));
+		lblStatus.setText(LBL_STATUS_ANDAMENTO);
+		imgSwitch.setImage(new Image(IMG_SWITCH_ON_PATH));
+		Tooltip.install(imgSwitch, TOOLTIP_SWITCH_ANDAMENTO);
+		lblHorario.setText(horasFormatter.format(LocalDateTime.now()));
+		isReady = Boolean.FALSE;
+		isRunning = Boolean.TRUE;
+		ProcessoStatusManager.setProcessoStatus(NOME_REATOR, isRunning);
+		tempChartAnimation.play();
+		dadosParciaisTimeLine.play();
+		chronoMeter.start(lblCronometro);
 
-		btNovoTimeLine = new Timeline(new KeyFrame(Duration.ZERO, new KeyValue(color, startColor)),
-				new KeyFrame(Duration.millis(500), new KeyValue(color, endColor)));
-		btNovoTimeLine.setCycleCount(6);
-		btNovoTimeLine.setAutoReverse(Boolean.TRUE);
+		produtoService.updateDataInicial(Integer.parseInt(lblLote.getText()));
+	}
 
-		scanModbusSlaves = new Timeline(new KeyFrame(Duration.millis(300), new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				tempReator = modService.readMultipleRegisters(1, 0, 1);
-				setPointReator = modService.readMultipleRegisters(1, 1, 1);
-				lblTempReator.setText(String.valueOf(tempReator) + " ºC");
-				lblSpReator.setText(String.valueOf(setPointReator) + " ºC");
-			}
-		}));
-		scanModbusSlaves.setCycleCount(Timeline.INDEFINITE);
-
-		dadosParciaisTimeLine = new Timeline(new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
+	private void finalizeProcess() {
+		produtoService.updateDataFinal(Integer.parseInt(lblLote.getText()));
+		Platform.runLater(new Runnable() {
 			@Override
-			public void handle(ActionEvent arg0) {
-				calculaProducao();
-				if (tempMin > tempReator) {
-					tempMin = tempReator;
-					lblTempMin.setText(tempMin.toString());
-					produtoService.updateTemperaturaMin(Integer.parseInt(lblLote.getText()), tempMin);
-				}
-				if (tempMax < tempReator) {
-					tempMax = tempReator;
-					lblTempMax.setText(tempMax.toString());
-					produtoService.updateTemperaturaMax(Integer.parseInt(lblLote.getText()), tempMax);
-				}
+			public void run() {
+				lblStatus.setTextFill(Color.web(LBL_STATUS_FINALIZADO_COLOR));
+				lblStatus.setText(LBL_STATUS_FINALIZADO);
 			}
-		}));
-		dadosParciaisTimeLine.setCycleCount(Timeline.INDEFINITE);
+		});
+		lblStatus.setOpacity(1);
+		tempChartAnimation.stop();
+		dadosParciaisTimeLine.stop();
+		isRunning = Boolean.FALSE;
+		imgSwitch.setImage(new Image(IMG_SWITCH_OFF_PATH));
+		Tooltip.install(imgSwitch, TOOLTIP_SWITCH_FINALIZADO);
+		btNovo.setDisable(Boolean.FALSE);
+		isRunning = Boolean.FALSE;
+		ProcessoStatusManager.setProcessoStatus(NOME_REATOR, isRunning);
+		chronoMeter.stop();
+		makeToast(TOASTER_FINALIZADO_SUCESSO);
 	}
 
 	private void calculaProducao() {
@@ -397,101 +421,11 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 		processoService.saveProcesso(processo);
 	}
 
-	private void enableFields() {
-		lblHorario.setDisable(Boolean.FALSE);
-		lblOperador.setDisable(Boolean.FALSE);
-		lblProduto.setDisable(Boolean.FALSE);
-		lblQuantidade.setDisable(Boolean.FALSE);
-	}
-
-	private void clearFields() {
-		lblHorario.setText("");
-		lblOperador.setText("");
-		lblProduto.setText("");
-		lblQuantidade.setText("");
-		lblProduto.requestFocus();
-	}
-
 	private void clearLineChart() {
 		tempSeries.getData().clear();
 		chartReator.getData().clear();
 		tempSeries = new XYChart.Series<String, Number>();
 		chartReator.getData().add(tempSeries);
-	}
-
-	@FXML
-	private void handleButtonAction(ActionEvent event) throws IOException {
-		Stage stage;
-		Parent root;
-		if (event.getSource() == btNovo) {
-			stage = new Stage();
-			root = FXMLLoader.load(getClass().getResource("/com/estatica/servicos/view/ConfigProcesso.fxml"));
-			stage.setScene(new Scene(root));
-			stage.setTitle("Novo lote de produção");
-			stage.initModality(Modality.APPLICATION_MODAL);
-			stage.initOwner(btNovo.getScene().getWindow());
-			stage.setHeight(255);
-			stage.setWidth(320);
-			stage.setResizable(Boolean.FALSE);
-			stage.showAndWait();
-
-			if (Reator1DTO.getConfirmation() != null) {
-				if (Reator1DTO.getConfirmation()) {
-					lblProduto.setText(Reator1DTO.getCodProduto());
-					lblHorario.setText("00:00:00");
-					lblCronometro.setText("00:00:00");
-					lblProducao.setText("000,00");
-					lblTempMin.setText("000");
-					lblTempMax.setText("000");
-					tempMax = 0;
-					tempMin = 300;
-					lblQuantidade.setText(Reator1DTO.getQuantidade());
-					lblOperador.setText(Reator1DTO.getOperador());
-
-					lblStatus.setTextFill(Color.web("#00ff4a"));
-					lblStatus.setText("Em espera");
-					lblLote.setText(Reator1DTO.getLote());
-					btNovo.setDisable(Boolean.TRUE);
-					Tooltip.install(imgSwitch, new Tooltip("Clique para iniciar o registro do lote configurado."));
-					clearLineChart();
-					isReady = Boolean.TRUE;
-					Reator1DTO.setConfirmation(Boolean.FALSE);
-					makeToast("Lote configurado com sucesso.");
-				}
-			}
-
-		}
-	}
-
-	@FXML
-	private void handleImgEstaticaAction() throws IOException {
-		Stage stage;
-		Parent root;
-		stage = new Stage();
-		root = FXMLLoader.load(getClass().getResource("/com/estatica/servicos/view/EstaticaInfo.fxml"));
-		stage.setScene(new Scene(root));
-		stage.setTitle("Informações sobre o fabricante");
-		stage.initModality(Modality.APPLICATION_MODAL);
-		stage.initOwner(imgEstatica.getScene().getWindow());
-		stage.setResizable(Boolean.FALSE);
-		stage.showAndWait();
-		estaticaFadeTransition.setFromValue(imgEstatica.getOpacity());
-		estaticaFadeTransition.setToValue(0.2);
-		estaticaFadeTransition.play();
-	}
-
-	@FXML
-	private void openConfigLineChart() throws IOException {
-		Stage stage;
-		Parent root;
-		stage = new Stage();
-		root = FXMLLoader.load(getClass().getResource("/com/estatica/servicos/view/ConfigLineChart.fxml"));
-		stage.setScene(new Scene(root));
-		stage.setTitle("Opções do gráfico de linhas");
-		stage.initModality(Modality.APPLICATION_MODAL);
-		stage.initOwner(imgEstatica.getScene().getWindow());
-		stage.setResizable(Boolean.FALSE);
-		stage.showAndWait();
 	}
 
 	private void makeToast(String message) {
@@ -501,6 +435,133 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 		int fadeOutTime = 600;
 		Stage stage = (Stage) btNovo.getScene().getWindow();
 		Toast.makeText(stage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
+	}
+
+	// ===============================================
+	// INICIALIZAÇÔES e CONFIGURAÇÔES
+	// ===============================================
+	private void initModbusSlave() {
+		modService.setConnectionParams("COM10", 9600);
+		modService.openConnection();
+	}
+
+	private void configAnimations() {
+		statusTransition = new FadeTransition(Duration.millis(1000), lblStatus);
+		statusTransition.setFromValue(0.0);
+		statusTransition.setToValue(1.0);
+		statusTransition.setCycleCount(Timeline.INDEFINITE);
+		statusTransition.setAutoReverse(Boolean.TRUE);
+
+		estaticaFadeTransition = new FadeTransition(Duration.millis(1000), imgEstatica);
+		estaticaFadeTransition.setCycleCount(1);
+
+		btNovoTimeLine = new Timeline(new KeyFrame(Duration.ZERO, new KeyValue(btNovoColor, btNovoStartColor)),
+				new KeyFrame(Duration.millis(500), new KeyValue(btNovoColor, btNovoEndColor)));
+		btNovoTimeLine.setCycleCount(4);
+		btNovoTimeLine.setAutoReverse(Boolean.TRUE);
+
+		scanModbusSlaves = new Timeline(new KeyFrame(Duration.millis(300), new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				tempReator = modService.readMultipleRegisters(1, 0, 1);
+				setPointReator = modService.readMultipleRegisters(1, 1, 1);
+				lblTempReator.setText(String.valueOf(tempReator) + " ºC");
+				lblSpReator.setText(String.valueOf(setPointReator) + " ºC");
+			}
+		}));
+		scanModbusSlaves.setCycleCount(Timeline.INDEFINITE);
+
+		dadosParciaisTimeLine = new Timeline(new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				calculaProducao();
+				if (tempMin > tempReator) {
+					tempMin = tempReator;
+					lblTempMin.setText(tempMin.toString());
+					produtoService.updateTemperaturaMin(Integer.parseInt(lblLote.getText()), tempMin);
+				}
+				if (tempMax < tempReator) {
+					tempMax = tempReator;
+					lblTempMax.setText(tempMax.toString());
+					produtoService.updateTemperaturaMax(Integer.parseInt(lblLote.getText()), tempMax);
+				}
+			}
+		}));
+		dadosParciaisTimeLine.setCycleCount(Timeline.INDEFINITE);
+	}
+
+	private void configLineChart() {
+		yAxisTemp.setAutoRanging(false);
+		yAxisTemp.setLowerBound(0);
+		yAxisTemp.setUpperBound(70);
+		yAxisTemp.setTickUnit(10);
+
+		tempChartAnimation = new Timeline();
+		tempChartAnimation.getKeyFrames()
+				.add(new KeyFrame(Duration.millis(3000), (ActionEvent actionEvent) -> plotTemp()));
+		tempChartAnimation.setCycleCount(Animation.INDEFINITE);
+
+		tempSeries = new XYChart.Series<String, Number>();
+		tempSeries.getData().add(new XYChart.Data<>(horasFormatter.format(LocalDateTime.now()), 20));
+		plotValuesList.add(tempSeries);
+		chartReator.setData(plotValuesList);
+
+	}
+
+	private void initComponents() {
+		lblStatus.setTextFill(Color.web("#ffe700"));
+		lblStatus.setText("Sem lote");
+		imgEstatica.setImage(new Image(LOGO_ESTATICA_PATH));
+		imgResizer = new ImageViewResizer(imgEstatica, 138, 42);
+		imgResizer.setLayoutX(150.0);
+		imgResizer.setLayoutY(150.0);
+		imgResizer.setLayoutX(1083);
+		imgResizer.setLayoutY(607);
+		mainPane.getChildren().addAll(imgResizer);
+
+		btNovo.styleProperty().bind(Bindings.createStringBinding(new Callable<String>() {
+			@Override
+			public String call() throws Exception {
+				return String.format("-fx-body-color: rgb(%d, %d, %d);", (int) (256 * btNovoColor.get().getRed()),
+						(int) (256 * btNovoColor.get().getGreen()), (int) (256 * btNovoColor.get().getBlue()));
+			}
+		}, btNovoColor));
+
+		MarkLineChartProperty.markProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				for (Node mark : valueMarks) {
+					mark.setVisible(newValue);
+				}
+			}
+		});
+
+		TOOLTIP_SWITCH_ANDAMENTO.setStyle(TOOLTIP_CSS);
+		TOOLTIP_SWITCH_ESPERA.setStyle(TOOLTIP_CSS);
+		TOOLTIP_SWITCH_FINALIZADO.setStyle(TOOLTIP_CSS);
+		TOOLTIP_BT_NOVO.setStyle(TOOLTIP_CSS);
+		TOOLTIP_BT_EDIT.setStyle(TOOLTIP_CSS);
+		TOOLTIP_BT_CANCELAR.setStyle(TOOLTIP_CSS);
+		TOOLTIP_BT_REPORT.setStyle(TOOLTIP_CSS);
+		TOOLTIP_BT_CONF_CHART.setStyle(TOOLTIP_CSS);
+		TOOLTIP_IMG_ESTATICA.setStyle(TOOLTIP_CSS);
+		TOOLTIP_LBL_TEMP_REATOR.setStyle(TOOLTIP_CSS);
+		TOOLTIP_LBL_TEMP_CALDEIRA.setStyle(TOOLTIP_CSS);
+		TOOLTIP_LBL_SP_REATOR.setStyle(TOOLTIP_CSS);
+		TOOLTIP_LBL_SP_CALDEIRA.setStyle(TOOLTIP_CSS);
+		TOOLTIP_LBL_STATUS.setStyle(TOOLTIP_CSS);
+
+		Tooltip.install(imgSwitch, TOOLTIP_SWITCH_FINALIZADO);
+		Tooltip.install(btNovo, TOOLTIP_BT_NOVO);
+		Tooltip.install(btEdit, TOOLTIP_BT_EDIT);
+		Tooltip.install(btCancela, TOOLTIP_BT_CANCELAR);
+		Tooltip.install(btReport, TOOLTIP_BT_REPORT);
+		Tooltip.install(btConfigLineChart, TOOLTIP_BT_CONF_CHART);
+		Tooltip.install(imgEstatica, TOOLTIP_IMG_ESTATICA);
+		Tooltip.install(lblTempReator, TOOLTIP_LBL_TEMP_REATOR);
+		Tooltip.install(lblTempCaldeira, TOOLTIP_LBL_TEMP_CALDEIRA);
+		Tooltip.install(lblSpReator, TOOLTIP_LBL_SP_REATOR);
+		Tooltip.install(lblSpCaldeira, TOOLTIP_LBL_SP_CALDEIRA);
+		Tooltip.install(lblStatus, TOOLTIP_LBL_STATUS);
 	}
 
 }

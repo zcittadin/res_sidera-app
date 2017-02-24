@@ -8,7 +8,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 
-public class ChronoMeter {
+public class Chronometer {
 
 	private Timeline timeline;
 

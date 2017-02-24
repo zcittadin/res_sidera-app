@@ -317,17 +317,6 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </RadioButton>
-                        <RadioButton fx:id="rdFlatCustom" mnemonicParsing="false" onAction="#setFlatCustom" text="Flat Custom" textFill="WHITE">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </RadioButton>
                         <RadioButton fx:id="rdLightGreen" mnemonicParsing="false" onAction="#setLightGreen" text="Light Green" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="12.0" />
@@ -351,6 +340,17 @@
                            </cursor>
                         </RadioButton>
                         <RadioButton fx:id="rdOrange" mnemonicParsing="false" onAction="#setOrange" text="Orange" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </RadioButton>
+                        <RadioButton fx:id="rdFlatCustom" mnemonicParsing="false" onAction="#setFlatCustom" text="Flat Custom" textFill="WHITE" visible="false">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
