@@ -52,6 +52,29 @@ public class MainController implements Initializable {
 	public static String screenConsultaID = "consulta";
 	public static String screenConsultaFile = "/com/estatica/servicos/view/Consultas.fxml";
 
+	public static Tooltip TOOLTIP_BT_SAIR = new Tooltip("Sair do sistema");
+	public static Tooltip TOOLTIP_BT_CONF_CLOCK = new Tooltip("Alterar estilo do relógio");
+	public static Tooltip TOOLTIP_LOGO_CLIENTE = new Tooltip("Resicolor Indústria de Produtos Químicos Ltda.");
+
+	public static String IMG_CLIENTE_PATH = "/img/resicolor.png";
+	public static String ALERT_EXIT = "Deseja realmente sair do sistema?";
+	public static String ALERT_EXIT_TITLE = "Confirmar encerramento";
+
+	public static String WINDOW_CONFIG_CLOCK_PATH = "/com/estatica/servicos/view/ConfigClockStyle.fxml";
+	public static String WINDOW_CONFIG_CLOCK_TITLE = "Estilo do relógio";
+	public static String WINDOW_CLIENTE_INFO_PATH = "/com/estatica/servicos/view/ClienteInfo.fxml";
+	public static String WINDOW_CLIENTE_INFO_TITLE = "Informações sobre o cliente";
+
+	public static String NOME_REATOR_1 = "REATOR1";
+	public static String NOME_REATOR_2 = "REATOR2";
+	public static String NOME_REATOR_3 = "REATOR3";
+	public static String NOME_REATOR_4 = "REATOR4";
+	public static String NOME_REATOR_5 = "REATOR5";
+	public static String NOME_REATOR_6 = "REATOR6";
+
+	private static String TOOLTIP_CSS = "-fx-font-size: 8pt; -fx-font-weight: bold; -fx-font-style: normal; "
+			+ "-fx-background-color: #2F4F4F; -fx-border-color: white; -fx-border-radius: 10px;";
+
 	@FXML
 	private AnchorPane mainPane;
 	@FXML
@@ -82,7 +105,7 @@ public class MainController implements Initializable {
 			}
 		});
 
-		imgCliente.setImage(new Image("/img/resicolor.png"));
+		imgCliente.setImage(new Image(IMG_CLIENTE_PATH));
 		imgClienteResizer = new ImageViewResizer(imgCliente, 126, 70);
 		imgClienteResizer.setLayoutX(16);
 		imgClienteResizer.setLayoutY(6);
@@ -91,9 +114,13 @@ public class MainController implements Initializable {
 		imgExitResizer.setLayoutY(633);
 		mainPane.getChildren().addAll(imgClienteResizer, imgExitResizer);
 
-		Tooltip.install(imgExit, new Tooltip("Sair do sistema"));
-		Tooltip.install(btStyleClock, new Tooltip("Alterar estilo do relógio"));
-		Tooltip.install(imgCliente, new Tooltip("Resicolor Tintas e Solventes"));
+		TOOLTIP_BT_SAIR.setStyle(TOOLTIP_CSS);
+		TOOLTIP_BT_CONF_CLOCK.setStyle(TOOLTIP_CSS);
+		TOOLTIP_LOGO_CLIENTE.setStyle(TOOLTIP_CSS);
+
+		Tooltip.install(imgExit, TOOLTIP_BT_SAIR);
+		Tooltip.install(btStyleClock, TOOLTIP_BT_CONF_CLOCK);
+		Tooltip.install(imgCliente, TOOLTIP_LOGO_CLIENTE);
 
 		tmlBtClockGrow.getKeyFrames()
 				.addAll(new KeyFrame(Duration.seconds(0.3), new KeyValue(btStyleClock.translateXProperty(), -105)));
@@ -108,12 +135,12 @@ public class MainController implements Initializable {
 		mainContainer.loadScreen(screen6ID, screen6File);
 		mainContainer.loadScreen(screenConsultaID, screenConsultaFile);
 
-		ProcessoStatusManager.setProcessoStatus("REATOR1", Boolean.FALSE);
-		ProcessoStatusManager.setProcessoStatus("REATOR2", Boolean.FALSE);
-		ProcessoStatusManager.setProcessoStatus("REATOR3", Boolean.FALSE);
-		ProcessoStatusManager.setProcessoStatus("REATOR4", Boolean.FALSE);
-		ProcessoStatusManager.setProcessoStatus("REATOR5", Boolean.FALSE);
-		ProcessoStatusManager.setProcessoStatus("REATOR6", Boolean.FALSE);
+		ProcessoStatusManager.setProcessoStatus(NOME_REATOR_1, Boolean.FALSE);
+		ProcessoStatusManager.setProcessoStatus(NOME_REATOR_2, Boolean.FALSE);
+		ProcessoStatusManager.setProcessoStatus(NOME_REATOR_3, Boolean.FALSE);
+		ProcessoStatusManager.setProcessoStatus(NOME_REATOR_4, Boolean.FALSE);
+		ProcessoStatusManager.setProcessoStatus(NOME_REATOR_5, Boolean.FALSE);
+		ProcessoStatusManager.setProcessoStatus(NOME_REATOR_6, Boolean.FALSE);
 
 		mainContainer.setScreen(screen1ID);
 		centralPane.getChildren().addAll(mainContainer);
@@ -161,8 +188,8 @@ public class MainController implements Initializable {
 		if (ProcessoStatusManager.verifyProcessoRunning())
 			return;
 		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Confirmar encerramento");
-		alert.setHeaderText("Deseja realmente sair do sistema?");
+		alert.setTitle(ALERT_EXIT_TITLE);
+		alert.setHeaderText(ALERT_EXIT);
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
 			Platform.exit();
@@ -174,9 +201,9 @@ public class MainController implements Initializable {
 		Stage stage;
 		Parent root;
 		stage = new Stage();
-		root = FXMLLoader.load(getClass().getResource("/com/estatica/servicos/view/ConfigClockStyle.fxml"));
+		root = FXMLLoader.load(getClass().getResource(WINDOW_CONFIG_CLOCK_PATH));
 		stage.setScene(new Scene(root));
-		stage.setTitle("Estilo do relógio");
+		stage.setTitle(WINDOW_CONFIG_CLOCK_TITLE);
 		stage.initModality(Modality.APPLICATION_MODAL);
 		stage.initOwner(imgExit.getScene().getWindow());
 		stage.setResizable(Boolean.FALSE);
@@ -188,9 +215,9 @@ public class MainController implements Initializable {
 		Stage stage;
 		Parent root;
 		stage = new Stage();
-		root = FXMLLoader.load(getClass().getResource("/com/estatica/servicos/view/ClienteInfo.fxml"));
+		root = FXMLLoader.load(getClass().getResource(WINDOW_CLIENTE_INFO_PATH));
 		stage.setScene(new Scene(root));
-		stage.setTitle("Informações sobre o cliente");
+		stage.setTitle(WINDOW_CLIENTE_INFO_TITLE);
 		stage.initModality(Modality.APPLICATION_MODAL);
 		stage.initOwner(imgCliente.getScene().getWindow());
 		stage.setResizable(Boolean.FALSE);

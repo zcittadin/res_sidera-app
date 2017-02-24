@@ -105,8 +105,8 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	private static String LBL_STATUS_ANDAMENTO_COLOR = "#1654ff";
 	private static String LBL_STATUS_FINALIZADO = "Finalizado";
 	private static String LBL_STATUS_FINALIZADO_COLOR = "#00ff4a";
-	private static String LBL_STATUS_SEM_LOTE = "Sem lote";
-	private static String LBL_STATUS_SEM_LOTE_COLOR = "#ffe700";
+	// private static String LBL_STATUS_SEM_LOTE = "Sem lote";
+	// private static String LBL_STATUS_SEM_LOTE_COLOR = "#ffe700";
 	private static String LBL_STATUS_ESPERA = "Em espera";
 	private static String LBL_STATUS_ESPERA_COLOR = "#00ff4a";
 	private static String FORMAT_HOUR = "00:00:00";
@@ -218,7 +218,6 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	// ===============================================
 	// CHAMADAS DA INTERFACE GRÁFICA (@FXML)
 	// ===============================================
-
 	@FXML
 	public void toggleProcess() {
 		if (isReady && !isRunning) {
