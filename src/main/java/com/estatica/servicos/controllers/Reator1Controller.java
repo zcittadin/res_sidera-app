@@ -105,13 +105,14 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	private static String LBL_STATUS_ANDAMENTO_COLOR = "#1654ff";
 	private static String LBL_STATUS_FINALIZADO = "Finalizado";
 	private static String LBL_STATUS_FINALIZADO_COLOR = "#00ff4a";
-	// private static String LBL_STATUS_SEM_LOTE = "Sem lote";
-	// private static String LBL_STATUS_SEM_LOTE_COLOR = "#ffe700";
+	private static String LBL_STATUS_SEM_LOTE = "Sem lote";
+	private static String LBL_STATUS_SEM_LOTE_COLOR = "#ffe700";
 	private static String LBL_STATUS_ESPERA = "Em espera";
 	private static String LBL_STATUS_ESPERA_COLOR = "#00ff4a";
 	private static String FORMAT_HOUR = "00:00:00";
 	private static String FORMAT_DECIMAL = "000,00";
 	private static String FORMAT_INTEGER = "000";
+	private static String COM_PORT = "COM10";
 
 	private static ModbusRTUService modService;
 	private static ProcessoDBService processoService = new ProcessoDBServiceImpl();
@@ -130,6 +131,7 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	private static Integer setPointReator = 0;
 	private static Integer tempMax = 300;
 	private static Integer tempMin = 0;
+	private static Integer baud = 9600;
 	private static Double producao = new Double(0);
 	private static Boolean isReady = Boolean.FALSE;
 	private static Boolean isRunning = Boolean.FALSE;
@@ -169,10 +171,6 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	@FXML
 	private Label lblTempMax;
 	@FXML
-	private ImageView imgEstatica;
-	@FXML
-	private ImageView imgSwitch;
-	@FXML
 	private Label lblProduto;
 	@FXML
 	private Label lblHorario;
@@ -184,6 +182,10 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	private Label lblLote;
 	@FXML
 	private Label lblCronometro;
+	@FXML
+	private ImageView imgEstatica;
+	@FXML
+	private ImageView imgSwitch;
 	@FXML
 	private Button btNovo;
 	@FXML
@@ -353,7 +355,6 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 		tempChartAnimation.play();
 		dadosParciaisTimeLine.play();
 		chronoMeter.start(lblCronometro);
-
 		produtoService.updateDataInicial(Integer.parseInt(lblLote.getText()));
 	}
 
@@ -432,7 +433,7 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	// INICIALIZAÇÔES e CONFIGURAÇÔES
 	// ===============================================
 	private void initModbusSlave() {
-		modService.setConnectionParams("COM10", 9600);
+		modService.setConnectionParams(COM_PORT, baud);
 		modService.openConnection();
 	}
 
@@ -499,8 +500,8 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	}
 
 	private void initComponents() {
-		lblStatus.setTextFill(Color.web("#ffe700"));
-		lblStatus.setText("Sem lote");
+		lblStatus.setTextFill(Color.web(LBL_STATUS_SEM_LOTE_COLOR));
+		lblStatus.setText(LBL_STATUS_SEM_LOTE);
 		imgEstatica.setImage(new Image(LOGO_ESTATICA_PATH));
 		imgResizer = new ImageViewResizer(imgEstatica, 138, 42);
 		imgResizer.setLayoutX(150.0);
