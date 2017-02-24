@@ -96,8 +96,11 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	private static String WINDOW_CONFIG_PROCESSO_TITLE = "Novo lote de produção";
 	private static String IMG_SWITCH_ON_PATH = "/com/estatica/servicos/view/img/switch_on.png";
 	private static String IMG_SWITCH_OFF_PATH = "/com/estatica/servicos/view/img/switch_off.png";
+	private static String TOASTER_CONF_SUCESSO = "Lote configurado com sucesso.";
+	private static String TOASTER_FINALIZADO_SUCESSO = "Lote finalizado com sucesso.";
 	private static String ALERT_FINALIZAR_PROCESSO = "Deseja realmente finalizar o processo em andamento?";
 	private static String ALERT_FINALIZAR_PROCESSO_TITLE = "Encerramento";
+	private static String NOME_REATOR = "REATOR1";
 	private static String LBL_STATUS_ANDAMENTO = "Em andamento";
 	private static String LBL_STATUS_ANDAMENTO_COLOR = "#1654ff";
 	private static String LBL_STATUS_FINALIZADO = "Finalizado";
@@ -109,9 +112,6 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	private static String FORMAT_HOUR = "00:00:00";
 	private static String FORMAT_DECIMAL = "000,00";
 	private static String FORMAT_INTEGER = "000";
-	private static String TOASTER_CONF_SUCESSO = "Lote configurado com sucesso.";
-	private static String TOASTER_FINALIZADO_SUCESSO = "Lote finalizado com sucesso.";
-	private static String NOME_REATOR = "REATOR1";
 
 	private static ModbusRTUService modService;
 	private static ProcessoDBService processoService = new ProcessoDBServiceImpl();
@@ -239,14 +239,6 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	}
 
 	@FXML
-	public void configureProcesso() {
-		lblStatus.setTextFill(Color.web(LBL_STATUS_SEM_LOTE_COLOR));
-		lblStatus.setText(LBL_STATUS_SEM_LOTE);
-		lblProduto.requestFocus();
-		clearLineChart();
-	}
-
-	@FXML
 	public void switchIsPressing() {
 		imgSwitch.setCursor(Cursor.CLOSED_HAND);
 	}
@@ -272,7 +264,7 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	}
 
 	@FXML
-	private void handleButtonAction(ActionEvent event) throws IOException {
+	private void openConfigProcesso(ActionEvent event) throws IOException {
 		Stage stage;
 		Parent root;
 		if (event.getSource() == btNovo) {
@@ -434,7 +426,7 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 		int fadeInTime = 600;
 		int fadeOutTime = 600;
 		Stage stage = (Stage) btNovo.getScene().getWindow();
-		Toast.makeText(stage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
+		Toast.makeToast(stage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
 	}
 
 	// ===============================================
@@ -446,7 +438,7 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	}
 
 	private void configAnimations() {
-		statusTransition = new FadeTransition(Duration.millis(1000), lblStatus);
+		statusTransition = new FadeTransition(Duration.millis(900), lblStatus);
 		statusTransition.setFromValue(0.0);
 		statusTransition.setToValue(1.0);
 		statusTransition.setCycleCount(Timeline.INDEFINITE);
