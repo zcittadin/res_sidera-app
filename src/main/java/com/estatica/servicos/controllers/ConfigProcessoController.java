@@ -5,7 +5,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import com.estatica.servicos.dto.Reator1DTO;
+import com.estatica.servicos.dto.ReatorDTO;
 import com.estatica.servicos.model.Produto;
 import com.estatica.servicos.service.ProdutoDBService;
 import com.estatica.servicos.service.impl.ProdutoDBServiceImpl;
@@ -100,9 +100,9 @@ public class ConfigProcessoController implements Initializable {
 			}
 		}
 
-		Task<Void> persistTask = new Task<Void>() {
+		Task<Boolean> persistTask = new Task<Boolean>() {
 			@Override
-			protected Void call() throws Exception {
+			protected Boolean call() throws Exception {
 				progLote.setVisible(Boolean.TRUE);
 				txtLote.setDisable(Boolean.TRUE);
 				txtOperador.setDisable(Boolean.TRUE);
@@ -115,25 +115,53 @@ public class ConfigProcessoController implements Initializable {
 				btOk.setDisable(Boolean.TRUE);
 				btCancelar.setDisable(Boolean.TRUE);
 
+				if (produtoService.isLoteExists(Integer.parseInt(txtLote.getText()))) {
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							Alert alert = new Alert(AlertType.WARNING);
+							alert.setTitle("Atenção");
+							alert.setHeaderText("Já existe um lote registrado com o número " + txtLote.getText());
+							alert.showAndWait();
+						}
+					});
+					return Boolean.FALSE;
+				}
+
 				Produto produto = new Produto(null, Integer.parseInt(txtProduto.getText()),
 						Integer.parseInt(txtLote.getText()), "Reator 1", txtOperador.getText(),
 						Double.parseDouble(txtQuantidade.getText().replace(".", "").replace(",", ".")), null, null, 0,
 						0);
 				produtoService.saveProduto(produto);
-				Reator1DTO.setProduto(produto);
-				Reator1DTO.setCodProduto(txtProduto.getText());
-				Reator1DTO.setLote(txtLote.getText());
-				Reator1DTO.setQuantidade(txtQuantidade.getText());
-				Reator1DTO.setOperador(txtOperador.getText());
-				Reator1DTO.setConfirmation(Boolean.TRUE);
-				return null;
+				ReatorDTO.setProduto(produto);
+				ReatorDTO.setCodProduto(txtProduto.getText());
+				ReatorDTO.setLote(txtLote.getText());
+				ReatorDTO.setQuantidade(txtQuantidade.getText());
+				ReatorDTO.setOperador(txtOperador.getText());
+				ReatorDTO.setConfirmation(Boolean.TRUE);
+				return Boolean.TRUE;
 			}
 		};
 
 		persistTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 			public void handle(final WorkerStateEvent event) {
-				Stage stage = (Stage) btCancelar.getScene().getWindow();
-				stage.close();
+				if (persistTask.getValue()) {
+					Stage stage = (Stage) btCancelar.getScene().getWindow();
+					stage.close();
+				} else {
+					progLote.setVisible(Boolean.FALSE);
+					txtLote.setDisable(Boolean.FALSE);
+					txtOperador.setDisable(Boolean.FALSE);
+					txtProduto.setDisable(Boolean.FALSE);
+					txtQuantidade.setDisable(Boolean.FALSE);
+					lblLote.setDisable(Boolean.FALSE);
+					lblOperador.setDisable(Boolean.FALSE);
+					lblProduto.setDisable(Boolean.FALSE);
+					lblQuantidade.setDisable(Boolean.FALSE);
+					btOk.setDisable(Boolean.FALSE);
+					btCancelar.setDisable(Boolean.FALSE);
+					txtLote.requestFocus();
+				}
 			}
 		});
 		Thread t = new Thread(persistTask);
@@ -142,7 +170,7 @@ public class ConfigProcessoController implements Initializable {
 
 	@FXML
 	private void cancela() {
-		Reator1DTO.setConfirmation(Boolean.FALSE);
+		ReatorDTO.setConfirmation(Boolean.FALSE);
 		Stage stage = (Stage) btCancelar.getScene().getWindow();
 		stage.close();
 	}

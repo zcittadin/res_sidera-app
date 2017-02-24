@@ -1,5 +1,8 @@
 package com.estatica.servicos.dao.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Query;
 
 import org.hibernate.Session;
@@ -21,18 +24,29 @@ public class ProdutoDAOImpl implements ProdutoDAO {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean isLoteExists(int lote) {
-		return false;
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		String hql = "SELECT p FROM Produto p WHERE p.lote = " + lote;
+		Query query = session.createQuery(hql);
+		List<Produto> list = new ArrayList<>();
+		list = query.getResultList();
+		session.close();
+		if (list.isEmpty())
+			return false;
+		return true;
 	}
 
 	@Override
 	public Produto findByLote(int lote) {
 		Session session = HibernateUtil.openSession();
-		session.beginTransaction();
+		Transaction tx = session.beginTransaction();
 		String hql = "SELECT p FROM Produto p WHERE p.lote = " + lote;
 		Query query = session.createQuery(hql);
 		Produto p = (Produto) query.getSingleResult();
+		tx.commit();
 		session.close();
 		return p;
 	}

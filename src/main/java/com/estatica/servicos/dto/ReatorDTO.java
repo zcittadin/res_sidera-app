@@ -2,7 +2,7 @@ package com.estatica.servicos.dto;
 
 import com.estatica.servicos.model.Produto;
 
-public class Reator1DTO {
+public class ReatorDTO {
 
 	public static String codProduto;
 	public static String lote;
@@ -17,7 +17,7 @@ public class Reator1DTO {
 	}
 
 	public static void setProduto(Produto produto) {
-		Reator1DTO.produto = produto;
+		ReatorDTO.produto = produto;
 	}
 
 	public static String getCodProduto() {
@@ -25,7 +25,7 @@ public class Reator1DTO {
 	}
 
 	public static void setCodProduto(String codProduto) {
-		Reator1DTO.codProduto = codProduto;
+		ReatorDTO.codProduto = codProduto;
 	}
 
 	public static String getLote() {
@@ -33,7 +33,7 @@ public class Reator1DTO {
 	}
 
 	public static void setLote(String lote) {
-		Reator1DTO.lote = lote;
+		ReatorDTO.lote = lote;
 	}
 
 	public static String getQuantidade() {
@@ -41,7 +41,7 @@ public class Reator1DTO {
 	}
 
 	public static void setQuantidade(String quantidade) {
-		Reator1DTO.quantidade = quantidade;
+		ReatorDTO.quantidade = quantidade;
 	}
 
 	public static String getOperador() {
@@ -49,7 +49,7 @@ public class Reator1DTO {
 	}
 
 	public static void setOperador(String operador) {
-		Reator1DTO.operador = operador;
+		ReatorDTO.operador = operador;
 	}
 
 	public static Boolean getConfirmation() {
@@ -57,7 +57,7 @@ public class Reator1DTO {
 	}
 
 	public static void setConfirmation(Boolean confirmation) {
-		Reator1DTO.confirmation = confirmation;
+		ReatorDTO.confirmation = confirmation;
 	}
 
 }

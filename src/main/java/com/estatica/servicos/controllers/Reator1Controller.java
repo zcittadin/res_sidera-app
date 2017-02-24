@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.Callable;
 
 import com.estatica.servicos.custom.Toast;
-import com.estatica.servicos.dto.Reator1DTO;
+import com.estatica.servicos.dto.ReatorDTO;
 import com.estatica.servicos.modbus.ModbusRTUService;
 import com.estatica.servicos.model.Processo;
 import com.estatica.servicos.objectproperties.MarkLineChartProperty;
@@ -280,9 +280,10 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 			stage.setResizable(Boolean.FALSE);
 			stage.showAndWait();
 
-			if (Reator1DTO.getConfirmation() != null) {
-				if (Reator1DTO.getConfirmation()) {
-					lblProduto.setText(Reator1DTO.getCodProduto());
+			if (ReatorDTO.getConfirmation() != null) {
+				if (ReatorDTO.getConfirmation()) {
+
+					lblProduto.setText(ReatorDTO.getCodProduto());
 					lblHorario.setText(FORMAT_HOUR);
 					lblCronometro.setText(FORMAT_HOUR);
 					lblProducao.setText(FORMAT_DECIMAL);
@@ -290,17 +291,17 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 					lblTempMax.setText(FORMAT_INTEGER);
 					tempMax = 0;
 					tempMin = 300;
-					lblQuantidade.setText(Reator1DTO.getQuantidade());
-					lblOperador.setText(Reator1DTO.getOperador());
+					lblQuantidade.setText(ReatorDTO.getQuantidade());
+					lblOperador.setText(ReatorDTO.getOperador());
 
 					lblStatus.setTextFill(Color.web(LBL_STATUS_ESPERA_COLOR));
 					lblStatus.setText(LBL_STATUS_ESPERA);
-					lblLote.setText(Reator1DTO.getLote());
+					lblLote.setText(ReatorDTO.getLote());
 					btNovo.setDisable(Boolean.TRUE);
 					Tooltip.install(imgSwitch, TOOLTIP_SWITCH_ESPERA);
 					clearLineChart();
 					isReady = Boolean.TRUE;
-					Reator1DTO.setConfirmation(Boolean.FALSE);
+					ReatorDTO.setConfirmation(Boolean.FALSE);
 					makeToast(TOASTER_CONF_SUCESSO);
 				}
 			}
@@ -408,7 +409,7 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	}
 
 	private void saveTemp() {
-		processo = new Processo(null, Reator1DTO.getProduto(), Calendar.getInstance().getTime(), tempReator,
+		processo = new Processo(null, ReatorDTO.getProduto(), Calendar.getInstance().getTime(), tempReator,
 				setPointReator);
 		processoService.saveProcesso(processo);
 	}
