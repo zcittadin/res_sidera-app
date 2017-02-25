@@ -14,9 +14,11 @@ import java.util.concurrent.Callable;
 
 import com.estatica.servicos.custom.Toast;
 import com.estatica.servicos.dto.ReatorDTO;
-import com.estatica.servicos.modbus.ModbusRTUService;
 import com.estatica.servicos.model.Processo;
+import com.estatica.servicos.objectproperties.CurrentScreenProperty;
 import com.estatica.servicos.objectproperties.MarkLineChartProperty;
+import com.estatica.servicos.objectproperties.ProcessoConfigParams;
+import com.estatica.servicos.objectproperties.ProcessoMapProperty;
 import com.estatica.servicos.objectproperties.ProcessoValueProperty;
 import com.estatica.servicos.service.ProcessoDBService;
 import com.estatica.servicos.service.ProcessoStatusManager;
@@ -54,11 +56,11 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -112,9 +114,7 @@ public class Reator2Controller implements Initializable, ControlledScreen {
 	private static String FORMAT_HOUR = "00:00:00";
 	private static String FORMAT_DECIMAL = "000,00";
 	private static String FORMAT_INTEGER = "000";
-	private static String COM_PORT = "COM10";
 
-	private static ModbusRTUService modService;
 	private static ProcessoDBService processoService = new ProcessoDBServiceImpl();
 	private static ProdutoDBService produtoService = new ProdutoDBServiceImpl();
 	private static FadeTransition statusTransition;
@@ -131,7 +131,6 @@ public class Reator2Controller implements Initializable, ControlledScreen {
 	private static Integer setPointReator = 0;
 	private static Integer tempMax = 300;
 	private static Integer tempMin = 0;
-	private static Integer baud = 9600;
 	private static Double producao = new Double(0);
 	private static Boolean isReady = Boolean.FALSE;
 	private static Boolean isRunning = Boolean.FALSE;
@@ -143,8 +142,6 @@ public class Reator2Controller implements Initializable, ControlledScreen {
 	final Chronometer chronoMeter = new Chronometer();
 	final ObservableList<XYChart.Series<String, Number>> plotValuesList = FXCollections.observableArrayList();
 	final List<Node> valueMarks = new ArrayList<>();
-
-	ScreensController myController;
 
 	@FXML
 	private AnchorPane mainPane;
@@ -199,6 +196,10 @@ public class Reator2Controller implements Initializable, ControlledScreen {
 	@FXML
 	private Button btConfigLineChart;
 
+	private ProcessoConfigParams configParams;
+
+	ScreensController myController;
+
 	@Override
 	public void setScreenParent(ScreensController screenPage) {
 		myController = screenPage;
@@ -206,13 +207,13 @@ public class Reator2Controller implements Initializable, ControlledScreen {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		modService = new ModbusRTUService();
+		configParams = ProcessoMapProperty.getConfigParam(CurrentScreenProperty.getScreen());
 		initComponents();
 		configAnimations();
 		configLineChart();
-		 initModbusSlave();
+		initModbusSlave();
 		statusTransition.play();
-		 scanModbusSlaves.play();
+		scanModbusSlaves.play();
 	}
 
 	// ===============================================
@@ -281,7 +282,9 @@ public class Reator2Controller implements Initializable, ControlledScreen {
 			if (ReatorDTO.getConfirmation() != null) {
 				if (ReatorDTO.getConfirmation()) {
 
-					lblProduto.setText(ReatorDTO.getCodProduto());
+					configParams = ProcessoMapProperty.getConfigParam(CurrentScreenProperty.getScreen());
+
+					lblProduto.setText(configParams.getCodigo().toString());
 					lblHorario.setText(FORMAT_HOUR);
 					lblCronometro.setText(FORMAT_HOUR);
 					lblProducao.setText(FORMAT_DECIMAL);
@@ -289,12 +292,12 @@ public class Reator2Controller implements Initializable, ControlledScreen {
 					lblTempMax.setText(FORMAT_INTEGER);
 					tempMax = 0;
 					tempMin = 300;
-					lblQuantidade.setText(ReatorDTO.getQuantidade());
-					lblOperador.setText(ReatorDTO.getOperador());
+					lblQuantidade.setText(configParams.getQuantidade().toString());
+					lblOperador.setText(configParams.getOperador());
 
 					lblStatus.setTextFill(Color.web(LBL_STATUS_ESPERA_COLOR));
 					lblStatus.setText(LBL_STATUS_ESPERA);
-					lblLote.setText(ReatorDTO.getLote());
+					lblLote.setText(configParams.getLote().toString());
 					btNovo.setDisable(Boolean.TRUE);
 					Tooltip.install(imgSwitch, TOOLTIP_SWITCH_ESPERA);
 					clearLineChart();
@@ -407,7 +410,7 @@ public class Reator2Controller implements Initializable, ControlledScreen {
 	}
 
 	private void saveTemp() {
-		processo = new Processo(null, ReatorDTO.getProduto(), Calendar.getInstance().getTime(), tempReator,
+		processo = new Processo(null, configParams.getProduto(), Calendar.getInstance().getTime(), tempReator,
 				setPointReator);
 		processoService.saveProcesso(processo);
 	}

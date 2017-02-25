@@ -6,7 +6,9 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.estatica.servicos.modbus.ModbusRTUService;
-import com.estatica.servicos.objectproperties.ProcessoNameProperty;
+import com.estatica.servicos.objectproperties.CurrentScreenProperty;
+import com.estatica.servicos.objectproperties.ProcessoConfigParams;
+import com.estatica.servicos.objectproperties.ProcessoMapProperty;
 import com.estatica.servicos.objectproperties.ProcessoValueProperty;
 import com.estatica.servicos.objectproperties.StyleClockProperty;
 import com.estatica.servicos.service.ProcessoStatusManager;
@@ -19,8 +21,6 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -71,6 +71,7 @@ public class MainController implements Initializable {
 	public static String WINDOW_CONFIG_CLOCK_TITLE = "Estilo do relógio";
 	public static String WINDOW_CLIENTE_INFO_PATH = "/com/estatica/servicos/view/ClienteInfo.fxml";
 	public static String WINDOW_CLIENTE_INFO_TITLE = "Informações sobre o cliente";
+	private static String COM_PORT = "COM4";
 
 	public static String NOME_REATOR_1 = "REATOR1";
 	public static String NOME_REATOR_2 = "REATOR2";
@@ -78,6 +79,8 @@ public class MainController implements Initializable {
 	public static String NOME_REATOR_4 = "REATOR4";
 	public static String NOME_REATOR_5 = "REATOR5";
 	public static String NOME_REATOR_6 = "REATOR6";
+
+	private static Integer baud = 9600;
 
 	private static String TOOLTIP_CSS = "-fx-font-size: 8pt; -fx-font-weight: bold; -fx-font-style: normal; "
 			+ "-fx-background-color: #2F4F4F; -fx-border-color: white; -fx-border-radius: 10px;";
@@ -101,6 +104,8 @@ public class MainController implements Initializable {
 	private static Timeline tmlBtClockGrow = new Timeline();
 	private static Timeline tmlBtClockShrink = new Timeline();
 	private static ModbusRTUService modService = new ModbusRTUService();
+	// private static ProcessoConfigParams configParams = new
+	// ProcessoConfigParams();
 
 	private static int slaveID = 1;
 	int tempReator;
@@ -111,7 +116,7 @@ public class MainController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
-		modService.setConnectionParams("COM4", 9600);
+		modService.setConnectionParams(COM_PORT, baud);
 		modService.openConnection();
 		initModbusReadSlaves();
 
@@ -160,6 +165,13 @@ public class MainController implements Initializable {
 		ProcessoStatusManager.setProcessoStatus(NOME_REATOR_5, Boolean.FALSE);
 		ProcessoStatusManager.setProcessoStatus(NOME_REATOR_6, Boolean.FALSE);
 
+		ProcessoMapProperty.setConfigParam(NOME_REATOR_1, new ProcessoConfigParams("Reator 1"));
+		ProcessoMapProperty.setConfigParam(NOME_REATOR_2, new ProcessoConfigParams("Reator 2"));
+		ProcessoMapProperty.setConfigParam(NOME_REATOR_3, new ProcessoConfigParams("Reator 3"));
+		ProcessoMapProperty.setConfigParam(NOME_REATOR_4, new ProcessoConfigParams("Reator 4"));
+		ProcessoMapProperty.setConfigParam(NOME_REATOR_5, new ProcessoConfigParams("Reator 5"));
+		ProcessoMapProperty.setConfigParam(NOME_REATOR_6, new ProcessoConfigParams("Reator 6"));
+
 		mainContainer.setScreen(screen1ID);
 		centralPane.getChildren().addAll(mainContainer);
 		clock.setLcdDesign(LcdDesign.STANDARD_GREEN);
@@ -169,7 +181,7 @@ public class MainController implements Initializable {
 	}
 
 	private void initModbusReadSlaves() {
-		scanModbusSlaves = new Timeline(new KeyFrame(Duration.millis(500), new EventHandler<ActionEvent>() {
+		scanModbusSlaves = new Timeline(new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				if (slaveID == 1) {
 					tempReator = modService.readMultipleRegisters(slaveID, 0, 1);
@@ -194,37 +206,43 @@ public class MainController implements Initializable {
 
 	@FXML
 	private void openReator1() {
-		ProcessoNameProperty.setName("Reator 1");
+		CurrentScreenProperty.setScreen(NOME_REATOR_1);
+		// configParams.setName("Reator 1");
 		mainContainer.setScreen(screen1ID);
 	}
 
 	@FXML
 	private void openReator2() {
-		ProcessoNameProperty.setName("Reator 2");
+		CurrentScreenProperty.setScreen(NOME_REATOR_2);
+		// configParams.setName("Reator 2");
 		mainContainer.setScreen(screen2ID);
 	}
 
 	@FXML
 	private void openReator3() {
-		ProcessoNameProperty.setName("Reator 3");
+		CurrentScreenProperty.setScreen(NOME_REATOR_3);
+		// configParams.setName("Reator 3");
 		mainContainer.setScreen(screen3ID);
 	}
 
 	@FXML
 	private void openReator4() {
-		ProcessoNameProperty.setName("Reator 4");
+		CurrentScreenProperty.setScreen(NOME_REATOR_4);
+		// configParams.setName("Reator 4");
 		mainContainer.setScreen(screen4ID);
 	}
 
 	@FXML
 	private void openReator5() {
-		ProcessoNameProperty.setName("Reator 5");
+		CurrentScreenProperty.setScreen(NOME_REATOR_5);
+		// configParams.setName("Reator 5");
 		mainContainer.setScreen(screen5ID);
 	}
 
 	@FXML
 	private void openReator6() {
-		ProcessoNameProperty.setName("Reator 6");
+		CurrentScreenProperty.setScreen(NOME_REATOR_6);
+		// configParams.setName("Reator 6");
 		mainContainer.setScreen(screen6ID);
 	}
 

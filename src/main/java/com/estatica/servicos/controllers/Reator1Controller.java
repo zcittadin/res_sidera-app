@@ -14,9 +14,11 @@ import java.util.concurrent.Callable;
 
 import com.estatica.servicos.custom.Toast;
 import com.estatica.servicos.dto.ReatorDTO;
-import com.estatica.servicos.modbus.ModbusRTUService;
 import com.estatica.servicos.model.Processo;
+import com.estatica.servicos.objectproperties.CurrentScreenProperty;
 import com.estatica.servicos.objectproperties.MarkLineChartProperty;
+import com.estatica.servicos.objectproperties.ProcessoConfigParams;
+import com.estatica.servicos.objectproperties.ProcessoMapProperty;
 import com.estatica.servicos.objectproperties.ProcessoValueProperty;
 import com.estatica.servicos.service.ProcessoDBService;
 import com.estatica.servicos.service.ProcessoStatusManager;
@@ -112,9 +114,7 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	private static String FORMAT_HOUR = "00:00:00";
 	private static String FORMAT_DECIMAL = "000,00";
 	private static String FORMAT_INTEGER = "000";
-	private static String COM_PORT = "COM10";
 
-	private static ModbusRTUService modService;
 	private static ProcessoDBService processoService = new ProcessoDBServiceImpl();
 	private static ProdutoDBService produtoService = new ProdutoDBServiceImpl();
 	private static FadeTransition statusTransition;
@@ -131,7 +131,6 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	private static Integer setPointReator = 0;
 	private static Integer tempMax = 300;
 	private static Integer tempMin = 0;
-	private static Integer baud = 9600;
 	private static Double producao = new Double(0);
 	private static Boolean isReady = Boolean.FALSE;
 	private static Boolean isRunning = Boolean.FALSE;
@@ -197,6 +196,8 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	@FXML
 	private Button btConfigLineChart;
 
+	private ProcessoConfigParams configParams;
+
 	ScreensController myController;
 
 	@Override
@@ -206,7 +207,7 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		modService = new ModbusRTUService();
+		configParams = ProcessoMapProperty.getConfigParam(CurrentScreenProperty.getScreen());
 		initComponents();
 		configAnimations();
 		configLineChart();
@@ -281,7 +282,9 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 			if (ReatorDTO.getConfirmation() != null) {
 				if (ReatorDTO.getConfirmation()) {
 
-					lblProduto.setText(ReatorDTO.getCodProduto());
+					configParams = ProcessoMapProperty.getConfigParam(CurrentScreenProperty.getScreen());
+
+					lblProduto.setText(configParams.getCodigo().toString());
 					lblHorario.setText(FORMAT_HOUR);
 					lblCronometro.setText(FORMAT_HOUR);
 					lblProducao.setText(FORMAT_DECIMAL);
@@ -289,12 +292,12 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 					lblTempMax.setText(FORMAT_INTEGER);
 					tempMax = 0;
 					tempMin = 300;
-					lblQuantidade.setText(ReatorDTO.getQuantidade());
-					lblOperador.setText(ReatorDTO.getOperador());
+					lblQuantidade.setText(configParams.getQuantidade().toString());
+					lblOperador.setText(configParams.getOperador());
 
 					lblStatus.setTextFill(Color.web(LBL_STATUS_ESPERA_COLOR));
 					lblStatus.setText(LBL_STATUS_ESPERA);
-					lblLote.setText(ReatorDTO.getLote());
+					lblLote.setText(configParams.getLote().toString());
 					btNovo.setDisable(Boolean.TRUE);
 					Tooltip.install(imgSwitch, TOOLTIP_SWITCH_ESPERA);
 					clearLineChart();
@@ -407,7 +410,7 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	}
 
 	private void saveTemp() {
-		processo = new Processo(null, ReatorDTO.getProduto(), Calendar.getInstance().getTime(), tempReator,
+		processo = new Processo(null, configParams.getProduto(), Calendar.getInstance().getTime(), tempReator,
 				setPointReator);
 		processoService.saveProcesso(processo);
 	}
@@ -432,8 +435,8 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	// INICIALIZAÇÔES e CONFIGURAÇÔES
 	// ===============================================
 	private void initModbusSlave() {
-//		modService.setConnectionParams(COM_PORT, baud);
-//		modService.openConnection();
+		// modService.setConnectionParams(COM_PORT, baud);
+		// modService.openConnection();
 	}
 
 	private void configAnimations() {
@@ -455,8 +458,8 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 			public void handle(ActionEvent event) {
 				tempReator = ProcessoValueProperty.getTempReator1();
 				setPointReator = ProcessoValueProperty.getSpReator1();
-//				tempReator = modService.readMultipleRegisters(1, 0, 1);
-//				setPointReator = modService.readMultipleRegisters(1, 1, 1);
+				// tempReator = modService.readMultipleRegisters(1, 0, 1);
+				// setPointReator = modService.readMultipleRegisters(1, 1, 1);
 				lblTempReator.setText(String.valueOf(tempReator) + " ºC");
 				lblSpReator.setText(String.valueOf(setPointReator) + " ºC");
 			}

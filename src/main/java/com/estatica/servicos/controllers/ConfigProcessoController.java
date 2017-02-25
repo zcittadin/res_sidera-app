@@ -7,7 +7,9 @@ import java.util.ResourceBundle;
 
 import com.estatica.servicos.dto.ReatorDTO;
 import com.estatica.servicos.model.Produto;
-import com.estatica.servicos.objectproperties.ProcessoNameProperty;
+import com.estatica.servicos.objectproperties.CurrentScreenProperty;
+import com.estatica.servicos.objectproperties.ProcessoConfigParams;
+import com.estatica.servicos.objectproperties.ProcessoMapProperty;
 import com.estatica.servicos.service.ProdutoDBService;
 import com.estatica.servicos.service.impl.ProdutoDBServiceImpl;
 
@@ -60,9 +62,12 @@ public class ConfigProcessoController implements Initializable {
 	private Button btCancelar;
 
 	private static ProdutoDBService produtoService = new ProdutoDBServiceImpl();
+	private ProcessoConfigParams configParams;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+
+		configParams = ProcessoMapProperty.getConfigParam(CurrentScreenProperty.getScreen());
 
 		Platform.runLater(new Runnable() {
 			@Override
@@ -130,10 +135,20 @@ public class ConfigProcessoController implements Initializable {
 				}
 
 				Produto produto = new Produto(null, Integer.parseInt(txtProduto.getText()),
-						Integer.parseInt(txtLote.getText()), ProcessoNameProperty.getName(), txtOperador.getText(),
+						Integer.parseInt(txtLote.getText()), configParams.getName(), txtOperador.getText(),
 						Double.parseDouble(txtQuantidade.getText().replace(".", "").replace(",", ".")), null, null, 0,
 						0);
 				produtoService.saveProduto(produto);
+
+				configParams.setCodigo(Integer.parseInt(txtProduto.getText()));
+				configParams.setLote(Integer.parseInt(txtLote.getText()));
+				configParams.setOperador(txtOperador.getText());
+				configParams
+						.setQuantidade(Double.parseDouble(txtQuantidade.getText().replace(".", "").replace(",", ".")));
+				configParams.setProduto(produto);
+
+				ProcessoMapProperty.setConfigParam(CurrentScreenProperty.getScreen(), configParams);
+
 				ReatorDTO.setProduto(produto);
 				ReatorDTO.setCodProduto(txtProduto.getText());
 				ReatorDTO.setLote(txtLote.getText());
