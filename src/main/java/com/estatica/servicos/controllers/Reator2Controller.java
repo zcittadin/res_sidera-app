@@ -2,12 +2,15 @@ package com.estatica.servicos.controllers;
 
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.Callable;
 
+import com.estatica.servicos.dto.ReatorDTO;
 import com.estatica.servicos.modbus.ModbusRTUService;
 import com.estatica.servicos.model.Processo;
 import com.estatica.servicos.objectproperties.MarkLineChartProperty;
@@ -16,9 +19,13 @@ import com.estatica.servicos.service.ProdutoDBService;
 import com.estatica.servicos.service.impl.ProcessoDBServiceImpl;
 import com.estatica.servicos.service.impl.ProdutoDBServiceImpl;
 import com.estatica.servicos.util.Chronometer;
+import com.estatica.servicos.util.HoverDataChart;
 import com.estatica.servicos.view.ControlledScreen;
 
+import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
@@ -27,6 +34,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -41,6 +50,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import zan.inc.custom.components.ImageViewResizer;
 
 public class Reator2Controller implements Initializable, ControlledScreen {
@@ -183,9 +193,108 @@ public class Reator2Controller implements Initializable, ControlledScreen {
 	public void initialize(URL location, ResourceBundle resources) {
 		modService = new ModbusRTUService();
 		initComponents();
+		configAnimations();
+		configLineChart();
+		statusTransition.play();
 
 	}
 	
+	private void configLineChart() {
+		yAxisTemp.setAutoRanging(false);
+		yAxisTemp.setLowerBound(0);
+		yAxisTemp.setUpperBound(70);
+		yAxisTemp.setTickUnit(10);
+
+		tempChartAnimation = new Timeline();
+		tempChartAnimation.getKeyFrames()
+				.add(new KeyFrame(Duration.millis(3000), (ActionEvent actionEvent) -> plotTemp()));
+		tempChartAnimation.setCycleCount(Animation.INDEFINITE);
+
+		tempSeries = new XYChart.Series<String, Number>();
+		tempSeries.getData().add(new XYChart.Data<>(horasFormatter.format(LocalDateTime.now()), 20));
+		plotValuesList.add(tempSeries);
+		chartReator.setData(plotValuesList);
+
+	}
+	
+	private void plotTemp() {
+		final XYChart.Data<String, Number> data = new XYChart.Data<>(horasFormatter.format(LocalDateTime.now()),
+				tempReator);
+		Node mark = new HoverDataChart(1, tempReator);
+		if (!MarkLineChartProperty.getMark())
+			mark.setVisible(Boolean.FALSE);
+		valueMarks.add(mark);
+		data.setNode(mark);
+		tempSeries.getData().add(data);
+		saveTemp();
+	}
+
+	private void saveTemp() {
+		processo = new Processo(null, ReatorDTO.getProduto(), Calendar.getInstance().getTime(), tempReator,
+				setPointReator);
+		processoService.saveProcesso(processo);
+	}
+
+	private void configAnimations() {
+		statusTransition = new FadeTransition(Duration.millis(900), lblStatus);
+		statusTransition.setFromValue(0.0);
+		statusTransition.setToValue(1.0);
+		statusTransition.setCycleCount(Timeline.INDEFINITE);
+		statusTransition.setAutoReverse(Boolean.TRUE);
+
+		estaticaFadeTransition = new FadeTransition(Duration.millis(1000), imgEstatica);
+		estaticaFadeTransition.setCycleCount(1);
+
+		btNovoTimeLine = new Timeline(new KeyFrame(Duration.ZERO, new KeyValue(btNovoColor, btNovoStartColor)),
+				new KeyFrame(Duration.millis(500), new KeyValue(btNovoColor, btNovoEndColor)));
+		btNovoTimeLine.setCycleCount(4);
+		btNovoTimeLine.setAutoReverse(Boolean.TRUE);
+
+		scanModbusSlaves = new Timeline(new KeyFrame(Duration.millis(300), new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				tempReator = modService.readMultipleRegisters(1, 0, 1);
+				setPointReator = modService.readMultipleRegisters(1, 1, 1);
+				lblTempReator.setText(String.valueOf(tempReator) + " ºC");
+				lblSpReator.setText(String.valueOf(setPointReator) + " ºC");
+			}
+		}));
+		scanModbusSlaves.setCycleCount(Timeline.INDEFINITE);
+
+		dadosParciaisTimeLine = new Timeline(new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				calculaProducao();
+				if (tempMin > tempReator) {
+					tempMin = tempReator;
+					lblTempMin.setText(tempMin.toString());
+					produtoService.updateTemperaturaMin(Integer.parseInt(lblLote.getText()), tempMin);
+				}
+				if (tempMax < tempReator) {
+					tempMax = tempReator;
+					lblTempMax.setText(tempMax.toString());
+					produtoService.updateTemperaturaMax(Integer.parseInt(lblLote.getText()), tempMax);
+				}
+			}
+
+		}));
+		dadosParciaisTimeLine.setCycleCount(Timeline.INDEFINITE);
+	}
+
+	private void calculaProducao() {
+		String[] fields = lblCronometro.getText().split(":");
+		Integer hours = Integer.parseInt(fields[0]);
+		Integer minutes = Integer.parseInt(fields[1]);
+		Integer passedMinutes = 0;
+		if (hours > 0) {
+			passedMinutes = hours * 60;
+			passedMinutes = passedMinutes + minutes;
+			producao = (Double.parseDouble(lblQuantidade.getText().replace(",", ".")) / passedMinutes) * 60;
+			String str = String.format("%1.2f", producao);
+			producao = Double.valueOf(str.replace(",", "."));
+			lblProducao.setText(producao.toString().replace(".", ","));
+		}
+	}
+
 	private void initComponents() {
 		lblStatus.setTextFill(Color.web(LBL_STATUS_SEM_LOTE_COLOR));
 		lblStatus.setText(LBL_STATUS_SEM_LOTE);
