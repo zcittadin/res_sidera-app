@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import com.estatica.servicos.modbus.ModbusRTUService;
 import com.estatica.servicos.objectproperties.StyleClockProperty;
 import com.estatica.servicos.service.ProcessoStatusManager;
 
@@ -92,11 +93,15 @@ public class MainController implements Initializable {
 	private static ImageViewResizer imgExitResizer;
 	private static Timeline tmlBtClockGrow = new Timeline();
 	private static Timeline tmlBtClockShrink = new Timeline();
+	private static ModbusRTUService modService = new ModbusRTUService();
 	ScreensController mainContainer = new ScreensController();
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
+		modService.setConnectionParams("COM10", 9600);
+		modService.openConnection();
+		
 		StyleClockProperty.lcdDesignProperty().addListener(new ChangeListener<LcdDesign>() {
 			@Override
 			public void changed(ObservableValue<? extends LcdDesign> observable, LcdDesign oldValue,

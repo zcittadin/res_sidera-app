@@ -428,8 +428,8 @@ public class Reator2Controller implements Initializable, ControlledScreen {
 	}
 
 	private void initModbusSlave() {
-		modService.setConnectionParams(COM_PORT, baud);
-		modService.openConnection();
+//		modService.setConnectionParams(COM_PORT, baud);
+//		modService.openConnection();
 	}
 
 	private void configLineChart() {

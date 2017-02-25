@@ -209,9 +209,9 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 		initComponents();
 		configAnimations();
 		configLineChart();
-//		initModbusSlave();
+		initModbusSlave();
 		statusTransition.play();
-//		scanModbusSlaves.play();
+		scanModbusSlaves.play();
 	}
 
 	// ===============================================
@@ -431,8 +431,8 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	// INICIALIZAÇÔES e CONFIGURAÇÔES
 	// ===============================================
 	private void initModbusSlave() {
-		modService.setConnectionParams(COM_PORT, baud);
-		modService.openConnection();
+//		modService.setConnectionParams(COM_PORT, baud);
+//		modService.openConnection();
 	}
 
 	private void configAnimations() {
@@ -452,8 +452,8 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 
 		scanModbusSlaves = new Timeline(new KeyFrame(Duration.millis(300), new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-//				tempReator = modService.readMultipleRegisters(1, 0, 1);
-//				setPointReator = modService.readMultipleRegisters(1, 1, 1);
+				tempReator = modService.readMultipleRegisters(1, 0, 1);
+				setPointReator = modService.readMultipleRegisters(1, 1, 1);
 				lblTempReator.setText(String.valueOf(tempReator) + " ºC");
 				lblSpReator.setText(String.valueOf(setPointReator) + " ºC");
 			}
