@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import com.estatica.servicos.dto.ReatorDTO;
 import com.estatica.servicos.model.Produto;
+import com.estatica.servicos.objectproperties.ProcessoNameProperty;
 import com.estatica.servicos.service.ProdutoDBService;
 import com.estatica.servicos.service.impl.ProdutoDBServiceImpl;
 
@@ -129,7 +130,7 @@ public class ConfigProcessoController implements Initializable {
 				}
 
 				Produto produto = new Produto(null, Integer.parseInt(txtProduto.getText()),
-						Integer.parseInt(txtLote.getText()), "Reator 1", txtOperador.getText(),
+						Integer.parseInt(txtLote.getText()), ProcessoNameProperty.getName(), txtOperador.getText(),
 						Double.parseDouble(txtQuantidade.getText().replace(".", "").replace(",", ".")), null, null, 0,
 						0);
 				produtoService.saveProduto(produto);

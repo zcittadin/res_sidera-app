@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.estatica.servicos.modbus.ModbusRTUService;
+import com.estatica.servicos.objectproperties.ProcessoNameProperty;
 import com.estatica.servicos.objectproperties.ProcessoValueProperty;
 import com.estatica.servicos.objectproperties.StyleClockProperty;
 import com.estatica.servicos.service.ProcessoStatusManager;
@@ -193,31 +194,37 @@ public class MainController implements Initializable {
 
 	@FXML
 	private void openReator1() {
+		ProcessoNameProperty.setName("Reator 1");
 		mainContainer.setScreen(screen1ID);
 	}
 
 	@FXML
 	private void openReator2() {
+		ProcessoNameProperty.setName("Reator 2");
 		mainContainer.setScreen(screen2ID);
 	}
 
 	@FXML
 	private void openReator3() {
+		ProcessoNameProperty.setName("Reator 3");
 		mainContainer.setScreen(screen3ID);
 	}
 
 	@FXML
 	private void openReator4() {
+		ProcessoNameProperty.setName("Reator 4");
 		mainContainer.setScreen(screen4ID);
 	}
 
 	@FXML
 	private void openReator5() {
+		ProcessoNameProperty.setName("Reator 5");
 		mainContainer.setScreen(screen5ID);
 	}
 
 	@FXML
 	private void openReator6() {
+		ProcessoNameProperty.setName("Reator 6");
 		mainContainer.setScreen(screen6ID);
 	}
 
