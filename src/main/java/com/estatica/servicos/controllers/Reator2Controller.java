@@ -22,15 +22,22 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import zan.inc.custom.components.ImageViewResizer;
 
 public class Reator2Controller implements Initializable, ControlledScreen {
-	
+
 	private static Tooltip TOOLTIP_SWITCH_ANDAMENTO = new Tooltip("Clique para finalizar o processo em andamento.");
 	private static Tooltip TOOLTIP_SWITCH_ESPERA = new Tooltip("Clique para iniciar o registro do lote configurado.");
 	private static Tooltip TOOLTIP_SWITCH_FINALIZADO = new Tooltip(
@@ -107,6 +114,49 @@ public class Reator2Controller implements Initializable, ControlledScreen {
 
 	ScreensController myController;
 
+	@FXML
+	private AnchorPane mainPane;
+	@FXML
+	private LineChart<String, Number> chartReator;
+	@FXML
+	private CategoryAxis xAxis;
+	@FXML
+	private NumberAxis yAxisTemp;
+	@FXML
+	private Label lblPrincipal;
+	@FXML
+	private Label lblTempReator;
+	@FXML
+	private Label lblSpReator;
+	@FXML
+	private Label lblTempCaldeira;
+	@FXML
+	private Label lblSpCaldeira;
+	@FXML
+	private Label lblStatus;
+	@FXML
+	private Label lblProducao;
+	@FXML
+	private Label lblTempMin;
+	@FXML
+	private Label lblTempMax;
+	@FXML
+	private Label lblCronometro;
+	@FXML
+	private Label lblProduto;
+	@FXML
+	private Label lblHorario;
+	@FXML
+	private Label lblQuantidade;
+	@FXML
+	private Label lblOperador;
+	@FXML
+	private Label lblLote;
+	@FXML
+	private ImageView imgEstatica;
+	@FXML
+	private ImageView imgSwitch;
+
 	@Override
 	public void setScreenParent(ScreensController screenPage) {
 		myController = screenPage;
@@ -119,3 +169,25 @@ public class Reator2Controller implements Initializable, ControlledScreen {
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

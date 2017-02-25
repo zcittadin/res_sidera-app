@@ -11,8 +11,8 @@
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
@@ -34,7 +34,7 @@
          </font></Label>
       <LineChart fx:id="chartReator" createSymbols="false" layoutX="14.0" layoutY="178.0" legendVisible="false" prefHeight="429.0" prefWidth="1184.0" title="Temperatura x tempo">
         <xAxis>
-          <CategoryAxis side="BOTTOM" startMargin="0.0" tickLabelFill="WHITE">
+          <CategoryAxis side="BOTTOM" startMargin="0.0" tickLabelFill="WHITE" fx:id="xAxis">
                <tickLabelFont>
                   <Font size="14.0" />
                </tickLabelFont></CategoryAxis>
@@ -73,12 +73,12 @@
       <Separator layoutY="165.0" prefHeight="1.0" prefWidth="1208.0" />
       <Separator layoutX="197.0" layoutY="1.0" orientation="VERTICAL" prefHeight="164.0" prefWidth="0.0" />
       <Separator layoutX="541.0" layoutY="1.0" orientation="VERTICAL" prefHeight="164.0" />
-      <Label fx:id="lblTemp" alignment="CENTER" layoutX="961.0" layoutY="26.0" prefHeight="38.0" prefWidth="115.0" styleClass="headerGradient" stylesheets="@style.css" text="000 ºC" textFill="RED">
+      <Label fx:id="lblTempReator" alignment="CENTER" layoutX="961.0" layoutY="26.0" prefHeight="38.0" prefWidth="115.0" styleClass="headerGradient" stylesheets="@style.css" text="000 ºC" textFill="RED">
          <font>
             <Font name="DSEG7 Classic-Bold" size="25.0" />
          </font>
       </Label>
-      <Label fx:id="lblSetPoint" alignment="CENTER" layoutX="961.0" layoutY="63.0" prefHeight="38.0" prefWidth="115.0" styleClass="headerGradient" stylesheets="@style.css" text="000 ºC" textFill="#1aff00">
+      <Label fx:id="lblSpReator" alignment="CENTER" layoutX="961.0" layoutY="63.0" prefHeight="38.0" prefWidth="115.0" styleClass="headerGradient" stylesheets="@style.css" text="000 ºC" textFill="#1aff00">
          <font>
             <Font name="DSEG7 Classic-Bold" size="25.0" />
          </font>
@@ -98,12 +98,12 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="1083.0" layoutY="26.0" prefHeight="38.0" prefWidth="115.0" styleClass="headerGradient" stylesheets="@style.css" text="000 ºC" textFill="RED">
+      <Label fx:id="lblTempCaldeira" alignment="CENTER" layoutX="1083.0" layoutY="26.0" prefHeight="38.0" prefWidth="115.0" styleClass="headerGradient" stylesheets="@style.css" text="000 ºC" textFill="RED">
          <font>
             <Font name="DSEG7 Classic-Bold" size="25.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="1083.0" layoutY="64.0" prefHeight="38.0" prefWidth="115.0" styleClass="headerGradient" stylesheets="@style.css" text="000 ºC" textFill="#1aff00">
+      <Label fx:id="lblSpCaldeira" alignment="CENTER" layoutX="1083.0" layoutY="64.0" prefHeight="38.0" prefWidth="115.0" styleClass="headerGradient" stylesheets="@style.css" text="000 ºC" textFill="#1aff00">
          <font>
             <Font name="DSEG7 Classic-Bold" size="25.0" />
          </font>
@@ -125,31 +125,43 @@
          </font>
       </Label>
       <Separator layoutX="346.0" orientation="VERTICAL" prefHeight="42.0" />
-      <Button layoutX="209.0" layoutY="6.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="32.0" styleClass="btNovo" stylesheets="@style.css" />
-      <Button layoutX="241.0" layoutY="6.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="32.0" styleClass="btCancela" stylesheets="@style.css" />
-      <Button layoutX="273.0" layoutY="6.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="32.0" styleClass="btEdit" stylesheets="@style.css" />
-      <Button layoutX="305.0" layoutY="6.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="32.0" styleClass="btReport" stylesheets="@style.css" />
-      <Label alignment="CENTER" layoutX="398.0" layoutY="10.0" prefHeight="25.0" prefWidth="129.0" style="-fx-background-color: white;" text="0000000" textFill="#054199">
+      <Button fx:id="btNovo" layoutX="209.0" layoutY="6.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="32.0" styleClass="btNovo" stylesheets="@style.css">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="btCancela" layoutX="241.0" layoutY="6.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="32.0" styleClass="btCancela" stylesheets="@style.css">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="btEdit" layoutX="273.0" layoutY="6.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="32.0" styleClass="btEdit" stylesheets="@style.css">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="btReport" layoutX="305.0" layoutY="6.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="32.0" styleClass="btReport" stylesheets="@style.css">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Label fx:id="lblLote" alignment="CENTER" layoutX="398.0" layoutY="10.0" prefHeight="25.0" prefWidth="129.0" style="-fx-background-color: white;" text="0000000" textFill="#054199">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="446.0" layoutY="56.0" prefWidth="80.0" style="-fx-background-color: white;" text="0000000" textFill="#054199">
+      <Label fx:id="lblProduto" alignment="CENTER" layoutX="446.0" layoutY="56.0" prefWidth="80.0" style="-fx-background-color: white;" text="0000000" textFill="#054199">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="446.0" layoutY="82.0" prefWidth="80.0" style="-fx-background-color: white;" text="00:00:00" textFill="#054199">
+      <Label fx:id="lblHorario" alignment="CENTER" layoutX="446.0" layoutY="82.0" prefWidth="80.0" style="-fx-background-color: white;" text="00:00:00" textFill="#054199">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="446.0" layoutY="108.0" prefWidth="80.0" style="-fx-background-color: white;" text="000.00" textFill="#054199">
+      <Label fx:id="lblQuantidade" alignment="CENTER" layoutX="446.0" layoutY="108.0" prefWidth="80.0" style="-fx-background-color: white;" text="000.00" textFill="#054199">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="446.0" layoutY="134.0" prefWidth="80.0" style="-fx-background-color: white;" textFill="#054199">
+      <Label fx:id="lblOperador" alignment="CENTER" layoutX="446.0" layoutY="134.0" prefWidth="80.0" style="-fx-background-color: white;" textFill="#054199">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
@@ -180,22 +192,22 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="806.0" layoutY="57.0" prefHeight="17.0" prefWidth="70.0" style="-fx-background-color: white;" text="00:00:00" textFill="#0017ff">
+      <Label fx:id="lblCronometro" alignment="CENTER" layoutX="806.0" layoutY="57.0" prefHeight="17.0" prefWidth="70.0" style="-fx-background-color: white;" text="00:00:00" textFill="#0017ff">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="806.0" layoutY="82.0" prefHeight="17.0" prefWidth="70.0" style="-fx-background-color: white;" text="000,00" textFill="#6400f0">
+      <Label fx:id="lblProducao" alignment="CENTER" layoutX="806.0" layoutY="82.0" prefHeight="17.0" prefWidth="70.0" style="-fx-background-color: white;" text="000,00" textFill="#6400f0">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="806.0" layoutY="108.0" prefHeight="17.0" prefWidth="70.0" style="-fx-background-color: white;" text="000" textFill="#ff8700">
+      <Label fx:id="lblTempMin" alignment="CENTER" layoutX="806.0" layoutY="108.0" prefHeight="17.0" prefWidth="70.0" style="-fx-background-color: white;" text="000" textFill="#ff8700">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="806.0" layoutY="134.0" prefHeight="17.0" prefWidth="70.0" style="-fx-background-color: white;" text="000" textFill="RED">
+      <Label fx:id="lblTempMax" alignment="CENTER" layoutX="806.0" layoutY="134.0" prefHeight="17.0" prefWidth="70.0" style="-fx-background-color: white;" text="000" textFill="RED">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
@@ -280,8 +292,11 @@
             </LinearGradient>
          </stroke>
       </Line>
-      <Button layoutX="1171.0" layoutY="172.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="32.0" styleClass="btLineChartConfig" stylesheets="@style.css" />
-      <ImageView fitHeight="42.0" fitWidth="138.0" layoutX="1083.0" layoutY="607.0" opacity="0.2" pickOnBounds="true" preserveRatio="true">
+      <Button fx:id="btConfigLineChart" layoutX="1171.0" layoutY="172.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="32.0" styleClass="btLineChartConfig" stylesheets="@style.css">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <ImageView fx:id="imgEstatica" fitHeight="42.0" fitWidth="138.0" layoutX="1083.0" layoutY="607.0" opacity="0.2" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../../resources/img/logotipo.png" />
          </image>
