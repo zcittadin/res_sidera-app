@@ -104,12 +104,10 @@ public class MainController implements Initializable {
 	private static Timeline tmlBtClockGrow = new Timeline();
 	private static Timeline tmlBtClockShrink = new Timeline();
 	private static ModbusRTUService modService = new ModbusRTUService();
-	// private static ProcessoConfigParams configParams = new
-	// ProcessoConfigParams();
 
 	private static int slaveID = 1;
-	int tempReator;
-	int setPointReator;
+	private Double tempReator = new Double(0);
+	private Double setPointReator = new Double(0);
 
 	ScreensController mainContainer = new ScreensController();
 

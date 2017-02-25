@@ -59,7 +59,7 @@ public class ModbusRTUService {
 		}
 	}
 
-	public int readMultipleRegisters(int unitId, int register, int quantity) {
+	public Double readMultipleRegisters(int unitId, int register, int quantity) {
 		readMultipleRegistersRequest = new ReadMultipleRegistersRequest(register, quantity);
 		readMultipleRegistersRequest.setUnitID(unitId);
 		readMultipleRegistersRequest.setHeadless();
@@ -71,7 +71,7 @@ public class ModbusRTUService {
 			ex.printStackTrace();
 		}
 		res = (ReadMultipleRegistersResponse) trans.getResponse();
-		return res.getRegisterValue(0);
+		return new Double(res.getRegisterValue(0) / (double) 10);
 	}
 
 	public Boolean readCoil(int unitId, int register, int quantity) {

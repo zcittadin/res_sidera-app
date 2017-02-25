@@ -1,69 +1,69 @@
 package com.estatica.servicos.objectproperties;
 
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 
 public class ProcessoValueProperty {
 
-	private static SimpleIntegerProperty tempReator1 = new SimpleIntegerProperty();
-	private static SimpleIntegerProperty spReator1 = new SimpleIntegerProperty();
-	private static SimpleIntegerProperty tempReator2 = new SimpleIntegerProperty();
-	private static SimpleIntegerProperty spReator2 = new SimpleIntegerProperty();
-	private static SimpleIntegerProperty tempReator3 = new SimpleIntegerProperty();
-	private static SimpleIntegerProperty spReator3 = new SimpleIntegerProperty();
-	private static SimpleIntegerProperty tempReator4 = new SimpleIntegerProperty();
-	private static SimpleIntegerProperty spReator4 = new SimpleIntegerProperty();
-	private static SimpleIntegerProperty tempReator5 = new SimpleIntegerProperty();
-	private static SimpleIntegerProperty spReator5 = new SimpleIntegerProperty();
-	private static SimpleIntegerProperty tempReator6 = new SimpleIntegerProperty();
-	private static SimpleIntegerProperty spReator6 = new SimpleIntegerProperty();
+	private static SimpleDoubleProperty tempReator1 = new SimpleDoubleProperty();
+	private static SimpleDoubleProperty spReator1 = new SimpleDoubleProperty();
+	private static SimpleDoubleProperty tempReator2 = new SimpleDoubleProperty();
+	private static SimpleDoubleProperty spReator2 = new SimpleDoubleProperty();
+	private static SimpleDoubleProperty tempReator3 = new SimpleDoubleProperty();
+	private static SimpleDoubleProperty spReator3 = new SimpleDoubleProperty();
+	private static SimpleDoubleProperty tempReator4 = new SimpleDoubleProperty();
+	private static SimpleDoubleProperty spReator4 = new SimpleDoubleProperty();
+	private static SimpleDoubleProperty tempReator5 = new SimpleDoubleProperty();
+	private static SimpleDoubleProperty spReator5 = new SimpleDoubleProperty();
+	private static SimpleDoubleProperty tempReator6 = new SimpleDoubleProperty();
+	private static SimpleDoubleProperty spReator6 = new SimpleDoubleProperty();
 
-	public static SimpleIntegerProperty tempReator1Property() {
+	public static SimpleDoubleProperty tempReator1Property() {
 		return tempReator1;
 	}
 
-	public static Integer getTempReator1() {
+	public static Double getTempReator1() {
 		return tempReator1Property().get();
 	}
 
-	public static void setTempReator1(Integer temp) {
+	public static void setTempReator1(Double temp) {
 		tempReator1Property().set(temp);
 	}
 
-	public static SimpleIntegerProperty spReator1Property() {
+	public static SimpleDoubleProperty spReator1Property() {
 		return spReator1;
 	}
 
-	public static Integer getSpReator1() {
+	public static Double getSpReator1() {
 		return spReator1Property().get();
 	}
 
-	public static void setSpReator1(Integer temp) {
+	public static void setSpReator1(Double temp) {
 		spReator1Property().set(temp);
 	}
-	
-	//----------------------------------------------------------
-	
-	public static SimpleIntegerProperty tempReator2Property() {
+
+	// ----------------------------------------------------------
+
+	public static SimpleDoubleProperty tempReator2Property() {
 		return tempReator2;
 	}
 
-	public static Integer getTempReator2() {
+	public static Double getTempReator2() {
 		return tempReator2Property().get();
 	}
 
-	public static void setTempReator2(Integer temp) {
+	public static void setTempReator2(Double temp) {
 		tempReator2Property().set(temp);
 	}
 
-	public static SimpleIntegerProperty spReator2Property() {
+	public static SimpleDoubleProperty spReator2Property() {
 		return spReator2;
 	}
 
-	public static Integer getSpReator2() {
+	public static Double getSpReator2() {
 		return spReator2Property().get();
 	}
 
-	public static void setSpReator2(Integer temp) {
+	public static void setSpReator2(Double temp) {
 		spReator2Property().set(temp);
 	}
 }

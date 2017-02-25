@@ -47,14 +47,14 @@ public class ProdutoDBServiceImpl implements ProdutoDBService {
 	}
 
 	@Override
-	public void updateTemperaturaMax(int lote, int tempMax) {
+	public void updateTemperaturaMax(int lote, Double tempMax) {
 		Produto produto = findByLote(lote);
 		produto.setTempMax(tempMax);
 		dao.updateTemperaturaMax(produto);
 	}
 
 	@Override
-	public void updateTemperaturaMin(int lote, int tempMin) {
+	public void updateTemperaturaMin(int lote, Double tempMin) {
 		Produto produto = findByLote(lote);
 		produto.setTempMin(tempMin);
 		dao.updateTemperaturaMin(produto);

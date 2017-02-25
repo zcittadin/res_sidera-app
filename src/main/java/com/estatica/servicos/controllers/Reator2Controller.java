@@ -127,10 +127,10 @@ public class Reator2Controller implements Initializable, ControlledScreen {
 	private static XYChart.Series<String, Number> tempSeries;
 	private static DateTimeFormatter horasFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 	private static Processo processo;
-	private static Integer tempReator = 0;
-	private static Integer setPointReator = 0;
-	private static Integer tempMax = 300;
-	private static Integer tempMin = 0;
+	private static Double tempReator = new Double(0);
+	private static Double setPointReator = new Double(0);
+	private static Double tempMax = new Double(300);
+	private static Double tempMin = new Double(0);
 	private static Double producao = new Double(0);
 	private static Boolean isReady = Boolean.FALSE;
 	private static Boolean isRunning = Boolean.FALSE;
@@ -289,8 +289,8 @@ public class Reator2Controller implements Initializable, ControlledScreen {
 					lblProducao.setText(FORMAT_DECIMAL);
 					lblTempMin.setText(FORMAT_INTEGER);
 					lblTempMax.setText(FORMAT_INTEGER);
-					tempMax = 0;
-					tempMin = 300;
+					tempMax = Double.valueOf(0);
+					tempMin = Double.valueOf(300);
 					lblQuantidade.setText(configParams.getQuantidade().toString());
 					lblOperador.setText(configParams.getOperador());
 
@@ -467,8 +467,8 @@ public class Reator2Controller implements Initializable, ControlledScreen {
 			public void handle(ActionEvent event) {
 				tempReator = ProcessoValueProperty.getTempReator2();
 				setPointReator = ProcessoValueProperty.getSpReator2();
-				lblTempReator.setText(String.valueOf(tempReator) + " ºC");
-				lblSpReator.setText(String.valueOf(setPointReator) + " ºC");
+				lblTempReator.setText(String.valueOf(tempReator));// + " ºC");
+				lblSpReator.setText(String.valueOf(setPointReator));// + " ºC");
 			}
 		}));
 		scanModbusSlaves.setCycleCount(Timeline.INDEFINITE);

@@ -16,7 +16,7 @@ public interface ProdutoDBService {
 
 	public void updateDataFinal(int lote);
 
-	public void updateTemperaturaMax(int lote, int temp);
+	public void updateTemperaturaMax(int lote, Double temp);
 
-	public void updateTemperaturaMin(int lote, int temp);
+	public void updateTemperaturaMin(int lote, Double temp);
 }
