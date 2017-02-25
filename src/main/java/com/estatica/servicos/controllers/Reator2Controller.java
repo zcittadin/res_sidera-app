@@ -438,7 +438,7 @@ public class Reator2Controller implements Initializable, ControlledScreen {
 
 		tempChartAnimation = new Timeline();
 		tempChartAnimation.getKeyFrames()
-				.add(new KeyFrame(Duration.millis(10000), (ActionEvent actionEvent) -> plotTemp()));
+				.add(new KeyFrame(Duration.millis(60000), (ActionEvent actionEvent) -> plotTemp()));
 		tempChartAnimation.setCycleCount(Animation.INDEFINITE);
 
 		tempSeries = new XYChart.Series<String, Number>();
@@ -473,7 +473,7 @@ public class Reator2Controller implements Initializable, ControlledScreen {
 		}));
 		scanModbusSlaves.setCycleCount(Timeline.INDEFINITE);
 
-		dadosParciaisTimeLine = new Timeline(new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
+		dadosParciaisTimeLine = new Timeline(new KeyFrame(Duration.millis(60000), new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 				calculaProducao();

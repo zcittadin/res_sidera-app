@@ -169,6 +169,8 @@ public class MainController implements Initializable {
 		ProcessoMapProperty.setConfigParam(NOME_REATOR_4, new ProcessoConfigParams("Reator 4"));
 		ProcessoMapProperty.setConfigParam(NOME_REATOR_5, new ProcessoConfigParams("Reator 5"));
 		ProcessoMapProperty.setConfigParam(NOME_REATOR_6, new ProcessoConfigParams("Reator 6"));
+		
+		CurrentScreenProperty.setScreen(NOME_REATOR_1);
 
 		mainContainer.setScreen(screen1ID);
 		centralPane.getChildren().addAll(mainContainer);

@@ -133,7 +133,6 @@ public class ConfigProcessoController implements Initializable {
 					});
 					return Boolean.FALSE;
 				}
-
 				Produto produto = new Produto(null, Integer.parseInt(txtProduto.getText()),
 						Integer.parseInt(txtLote.getText()), configParams.getName(), txtOperador.getText(),
 						Double.parseDouble(txtQuantidade.getText().replace(".", "").replace(",", ".")), null, null, 0,
