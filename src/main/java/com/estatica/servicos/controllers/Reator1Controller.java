@@ -211,7 +211,6 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 		initComponents();
 		configAnimations();
 		configLineChart();
-		initModbusSlave();
 		statusTransition.play();
 		scanModbusSlaves.play();
 	}
@@ -432,12 +431,8 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	}
 
 	// ===============================================
-	// INICIALIZAÇÔES e CONFIGURAÇÔES
+	// INICIALIZAÇÕES e CONFIGURAÇÕES
 	// ===============================================
-	private void initModbusSlave() {
-		// modService.setConnectionParams(COM_PORT, baud);
-		// modService.openConnection();
-	}
 
 	private void configAnimations() {
 		statusTransition = new FadeTransition(Duration.millis(900), lblStatus);
@@ -458,8 +453,6 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 			public void handle(ActionEvent event) {
 				tempReator = ProcessoValueProperty.getTempReator1();
 				setPointReator = ProcessoValueProperty.getSpReator1();
-				// tempReator = modService.readMultipleRegisters(1, 0, 1);
-				// setPointReator = modService.readMultipleRegisters(1, 1, 1);
 				lblTempReator.setText(String.valueOf(tempReator) + " ºC");
 				lblSpReator.setText(String.valueOf(setPointReator) + " ºC");
 			}
@@ -493,7 +486,7 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 
 		tempChartAnimation = new Timeline();
 		tempChartAnimation.getKeyFrames()
-				.add(new KeyFrame(Duration.millis(3000), (ActionEvent actionEvent) -> plotTemp()));
+				.add(new KeyFrame(Duration.millis(10000), (ActionEvent actionEvent) -> plotTemp()));
 		tempChartAnimation.setCycleCount(Animation.INDEFINITE);
 
 		tempSeries = new XYChart.Series<String, Number>();

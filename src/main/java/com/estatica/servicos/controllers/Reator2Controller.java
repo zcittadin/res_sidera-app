@@ -211,7 +211,6 @@ public class Reator2Controller implements Initializable, ControlledScreen {
 		initComponents();
 		configAnimations();
 		configLineChart();
-		initModbusSlave();
 		statusTransition.play();
 		scanModbusSlaves.play();
 	}
@@ -431,11 +430,6 @@ public class Reator2Controller implements Initializable, ControlledScreen {
 		Toast.makeToast(stage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
 	}
 
-	private void initModbusSlave() {
-		// modService.setConnectionParams(COM_PORT, baud);
-		// modService.openConnection();
-	}
-
 	private void configLineChart() {
 		yAxisTemp.setAutoRanging(false);
 		yAxisTemp.setLowerBound(0);
@@ -444,7 +438,7 @@ public class Reator2Controller implements Initializable, ControlledScreen {
 
 		tempChartAnimation = new Timeline();
 		tempChartAnimation.getKeyFrames()
-				.add(new KeyFrame(Duration.millis(3000), (ActionEvent actionEvent) -> plotTemp()));
+				.add(new KeyFrame(Duration.millis(10000), (ActionEvent actionEvent) -> plotTemp()));
 		tempChartAnimation.setCycleCount(Animation.INDEFINITE);
 
 		tempSeries = new XYChart.Series<String, Number>();
@@ -473,8 +467,6 @@ public class Reator2Controller implements Initializable, ControlledScreen {
 			public void handle(ActionEvent event) {
 				tempReator = ProcessoValueProperty.getTempReator2();
 				setPointReator = ProcessoValueProperty.getSpReator2();
-				// tempReator = modService.readMultipleRegisters(2, 0, 1);
-				// setPointReator = modService.readMultipleRegisters(2, 1, 1);
 				lblTempReator.setText(String.valueOf(tempReator) + " ºC");
 				lblSpReator.setText(String.valueOf(setPointReator) + " ºC");
 			}
