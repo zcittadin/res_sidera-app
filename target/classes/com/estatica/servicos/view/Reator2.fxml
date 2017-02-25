@@ -46,7 +46,7 @@
                </tickLabelFont></NumberAxis>
         </yAxis>
       </LineChart>
-      <ImageView fx:id="imgSwitch" fitHeight="73.0" fitWidth="75.0" layoutX="64.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgSwitch" fitHeight="73.0" fitWidth="75.0" layoutX="64.0" layoutY="63.0" onMouseClicked="#toggleProcess" onMouseEntered="#hoverBtNovo" onMousePressed="#switchIsPressing" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@img/switch_off.png" />
          </image>
@@ -125,7 +125,7 @@
          </font>
       </Label>
       <Separator layoutX="346.0" orientation="VERTICAL" prefHeight="42.0" />
-      <Button fx:id="btNovo" layoutX="209.0" layoutY="6.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="32.0" styleClass="btNovo" stylesheets="@style.css">
+      <Button fx:id="btNovo" layoutX="209.0" layoutY="6.0" mnemonicParsing="false" onAction="#openConfigProcesso" prefHeight="28.0" prefWidth="32.0" styleClass="btNovo" stylesheets="@style.css">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
@@ -292,11 +292,11 @@
             </LinearGradient>
          </stroke>
       </Line>
-      <Button fx:id="btConfigLineChart" layoutX="1171.0" layoutY="172.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="32.0" styleClass="btLineChartConfig" stylesheets="@style.css">
+      <Button fx:id="btConfigLineChart" layoutX="1171.0" layoutY="172.0" mnemonicParsing="false" onAction="#openConfigLineChart" prefHeight="28.0" prefWidth="32.0" styleClass="btLineChartConfig" stylesheets="@style.css">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <ImageView fx:id="imgEstatica" fitHeight="42.0" fitWidth="138.0" layoutX="1083.0" layoutY="607.0" opacity="0.2" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgEstatica" fitHeight="42.0" fitWidth="138.0" layoutX="1083.0" layoutY="607.0" onMouseClicked="#handleImgEstaticaAction" onMouseEntered="#hoverImgEstatica" onMouseExited="#unhoverImgEstatica" opacity="0.2" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../../resources/img/logotipo.png" />
          </image>
