@@ -17,6 +17,7 @@ import com.estatica.servicos.dto.ReatorDTO;
 import com.estatica.servicos.modbus.ModbusRTUService;
 import com.estatica.servicos.model.Processo;
 import com.estatica.servicos.objectproperties.MarkLineChartProperty;
+import com.estatica.servicos.objectproperties.ProcessoValueProperty;
 import com.estatica.servicos.service.ProcessoDBService;
 import com.estatica.servicos.service.ProcessoStatusManager;
 import com.estatica.servicos.service.ProdutoDBService;
@@ -452,8 +453,10 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 
 		scanModbusSlaves = new Timeline(new KeyFrame(Duration.millis(300), new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				tempReator = modService.readMultipleRegisters(1, 0, 1);
-				setPointReator = modService.readMultipleRegisters(1, 1, 1);
+				tempReator = ProcessoValueProperty.getTempReator1();
+				setPointReator = ProcessoValueProperty.getSpReator1();
+//				tempReator = modService.readMultipleRegisters(1, 0, 1);
+//				setPointReator = modService.readMultipleRegisters(1, 1, 1);
 				lblTempReator.setText(String.valueOf(tempReator) + " ºC");
 				lblSpReator.setText(String.valueOf(setPointReator) + " ºC");
 			}

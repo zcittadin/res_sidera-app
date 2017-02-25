@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.estatica.servicos.modbus.ModbusRTUService;
+import com.estatica.servicos.objectproperties.ProcessoValueProperty;
 import com.estatica.servicos.objectproperties.StyleClockProperty;
 import com.estatica.servicos.service.ProcessoStatusManager;
 
@@ -17,6 +18,10 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -91,17 +96,24 @@ public class MainController implements Initializable {
 
 	private static ImageViewResizer imgClienteResizer;
 	private static ImageViewResizer imgExitResizer;
+	private static Timeline scanModbusSlaves = new Timeline();
 	private static Timeline tmlBtClockGrow = new Timeline();
 	private static Timeline tmlBtClockShrink = new Timeline();
 	private static ModbusRTUService modService = new ModbusRTUService();
+
+	private static int slaveID = 1;
+	int tempReator;
+	int setPointReator;
+
 	ScreensController mainContainer = new ScreensController();
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
-		modService.setConnectionParams("COM10", 9600);
+		modService.setConnectionParams("COM4", 9600);
 		modService.openConnection();
-		
+		initModbusReadSlaves();
+
 		StyleClockProperty.lcdDesignProperty().addListener(new ChangeListener<LcdDesign>() {
 			@Override
 			public void changed(ObservableValue<? extends LcdDesign> observable, LcdDesign oldValue,
@@ -151,6 +163,32 @@ public class MainController implements Initializable {
 		centralPane.getChildren().addAll(mainContainer);
 		clock.setLcdDesign(LcdDesign.STANDARD_GREEN);
 		StyleClockProperty.lcdDesignProperty().set(LcdDesign.STANDARD_GREEN);
+
+		scanModbusSlaves.play();
+	}
+
+	private void initModbusReadSlaves() {
+		scanModbusSlaves = new Timeline(new KeyFrame(Duration.millis(500), new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				if (slaveID == 1) {
+					tempReator = modService.readMultipleRegisters(slaveID, 0, 1);
+					setPointReator = modService.readMultipleRegisters(slaveID, 1, 1);
+					ProcessoValueProperty.setTempReator1(tempReator);
+					ProcessoValueProperty.setSpReator1(setPointReator);
+				}
+				if (slaveID == 2) {
+					tempReator = modService.readMultipleRegisters(slaveID, 0, 1);
+					setPointReator = modService.readMultipleRegisters(slaveID, 18, 1);
+					ProcessoValueProperty.setTempReator2(tempReator);
+					ProcessoValueProperty.setSpReator2(setPointReator);
+				}
+				slaveID++;
+				if (slaveID == 3)
+					slaveID = 1;
+			}
+		}));
+		scanModbusSlaves.setCycleCount(Timeline.INDEFINITE);
+
 	}
 
 	@FXML
@@ -197,6 +235,8 @@ public class MainController implements Initializable {
 		alert.setHeaderText(ALERT_EXIT);
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
+			scanModbusSlaves.stop();
+			modService.closeConnection();
 			Platform.exit();
 		}
 	}
