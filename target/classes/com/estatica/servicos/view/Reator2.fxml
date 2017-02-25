@@ -34,7 +34,7 @@
          </font></Label>
       <LineChart fx:id="chartReator" createSymbols="false" layoutX="14.0" layoutY="178.0" legendVisible="false" prefHeight="429.0" prefWidth="1184.0" title="Temperatura x tempo">
         <xAxis>
-          <CategoryAxis side="BOTTOM" startMargin="0.0" tickLabelFill="WHITE" fx:id="xAxis">
+          <CategoryAxis gapStartAndEnd="false" side="BOTTOM" startMargin="0.0" tickLabelFill="WHITE" fx:id="xAxis">
                <tickLabelFont>
                   <Font size="14.0" />
                </tickLabelFont></CategoryAxis>
@@ -129,15 +129,15 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button fx:id="btCancela" layoutX="241.0" layoutY="6.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="32.0" styleClass="btCancela" stylesheets="@style.css">
+      <Button fx:id="btCancela" disable="true" layoutX="241.0" layoutY="6.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="32.0" styleClass="btCancela" stylesheets="@style.css">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button fx:id="btEdit" layoutX="273.0" layoutY="6.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="32.0" styleClass="btEdit" stylesheets="@style.css">
+      <Button fx:id="btEdit" disable="true" layoutX="273.0" layoutY="6.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="32.0" styleClass="btEdit" stylesheets="@style.css">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button fx:id="btReport" layoutX="305.0" layoutY="6.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="32.0" styleClass="btReport" stylesheets="@style.css">
+      <Button fx:id="btReport" disable="true" layoutX="305.0" layoutY="6.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="32.0" styleClass="btReport" stylesheets="@style.css">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>

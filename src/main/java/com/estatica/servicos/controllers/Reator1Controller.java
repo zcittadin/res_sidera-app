@@ -113,7 +113,7 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	private static String FORMAT_INTEGER = "000";
 	private static String COM_PORT = "COM10";
 
-//	private static ModbusRTUService modService;
+	private static ModbusRTUService modService;
 	private static ProcessoDBService processoService = new ProcessoDBServiceImpl();
 	private static ProdutoDBService produtoService = new ProdutoDBServiceImpl();
 	private static FadeTransition statusTransition;
@@ -205,7 +205,7 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-//		modService = new ModbusRTUService();
+		modService = new ModbusRTUService();
 		initComponents();
 		configAnimations();
 		configLineChart();
@@ -431,8 +431,8 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 	// INICIALIZAÇÔES e CONFIGURAÇÔES
 	// ===============================================
 	private void initModbusSlave() {
-//		modService.setConnectionParams(COM_PORT, baud);
-//		modService.openConnection();
+		modService.setConnectionParams(COM_PORT, baud);
+		modService.openConnection();
 	}
 
 	private void configAnimations() {
@@ -454,8 +454,8 @@ public class Reator1Controller implements Initializable, ControlledScreen {
 			public void handle(ActionEvent event) {
 //				tempReator = modService.readMultipleRegisters(1, 0, 1);
 //				setPointReator = modService.readMultipleRegisters(1, 1, 1);
-//				lblTempReator.setText(String.valueOf(tempReator) + " ºC");
-//				lblSpReator.setText(String.valueOf(setPointReator) + " ºC");
+				lblTempReator.setText(String.valueOf(tempReator) + " ºC");
+				lblSpReator.setText(String.valueOf(setPointReator) + " ºC");
 			}
 		}));
 		scanModbusSlaves.setCycleCount(Timeline.INDEFINITE);
