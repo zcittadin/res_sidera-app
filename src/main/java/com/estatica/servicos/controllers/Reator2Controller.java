@@ -6,9 +6,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.Callable;
 
 import com.estatica.servicos.modbus.ModbusRTUService;
 import com.estatica.servicos.model.Processo;
+import com.estatica.servicos.objectproperties.MarkLineChartProperty;
 import com.estatica.servicos.service.ProcessoDBService;
 import com.estatica.servicos.service.ProdutoDBService;
 import com.estatica.servicos.service.impl.ProcessoDBServiceImpl;
@@ -18,8 +20,11 @@ import com.estatica.servicos.view.ControlledScreen;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.Timeline;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -29,8 +34,10 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -156,6 +163,16 @@ public class Reator2Controller implements Initializable, ControlledScreen {
 	private ImageView imgEstatica;
 	@FXML
 	private ImageView imgSwitch;
+	@FXML
+	private Button btNovo;
+	@FXML
+	private Button btEdit;
+	@FXML
+	private Button btCancela;
+	@FXML
+	private Button btReport;
+	@FXML
+	private Button btConfigLineChart;
 
 	@Override
 	public void setScreenParent(ScreensController screenPage) {
@@ -164,8 +181,66 @@ public class Reator2Controller implements Initializable, ControlledScreen {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
+		modService = new ModbusRTUService();
+		initComponents();
 
+	}
+	
+	private void initComponents() {
+		lblStatus.setTextFill(Color.web(LBL_STATUS_SEM_LOTE_COLOR));
+		lblStatus.setText(LBL_STATUS_SEM_LOTE);
+//		imgEstatica.setImage(new Image(LOGO_ESTATICA_PATH));
+//		imgResizer = new ImageViewResizer(imgEstatica, 138, 42);
+//		imgResizer.setLayoutX(150.0);
+//		imgResizer.setLayoutY(150.0);
+//		imgResizer.setLayoutX(1083);
+//		imgResizer.setLayoutY(607);
+//		mainPane.getChildren().addAll(imgResizer);
+
+		btNovo.styleProperty().bind(Bindings.createStringBinding(new Callable<String>() {
+			@Override
+			public String call() throws Exception {
+				return String.format("-fx-body-color: rgb(%d, %d, %d);", (int) (256 * btNovoColor.get().getRed()),
+						(int) (256 * btNovoColor.get().getGreen()), (int) (256 * btNovoColor.get().getBlue()));
+			}
+		}, btNovoColor));
+
+		MarkLineChartProperty.markProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				for (Node mark : valueMarks) {
+					mark.setVisible(newValue);
+				}
+			}
+		});
+
+		TOOLTIP_SWITCH_ANDAMENTO.setStyle(TOOLTIP_CSS);
+		TOOLTIP_SWITCH_ESPERA.setStyle(TOOLTIP_CSS);
+		TOOLTIP_SWITCH_FINALIZADO.setStyle(TOOLTIP_CSS);
+		TOOLTIP_BT_NOVO.setStyle(TOOLTIP_CSS);
+		TOOLTIP_BT_EDIT.setStyle(TOOLTIP_CSS);
+		TOOLTIP_BT_CANCELAR.setStyle(TOOLTIP_CSS);
+		TOOLTIP_BT_REPORT.setStyle(TOOLTIP_CSS);
+		TOOLTIP_BT_CONF_CHART.setStyle(TOOLTIP_CSS);
+		TOOLTIP_IMG_ESTATICA.setStyle(TOOLTIP_CSS);
+		TOOLTIP_LBL_TEMP_REATOR.setStyle(TOOLTIP_CSS);
+		TOOLTIP_LBL_TEMP_CALDEIRA.setStyle(TOOLTIP_CSS);
+		TOOLTIP_LBL_SP_REATOR.setStyle(TOOLTIP_CSS);
+		TOOLTIP_LBL_SP_CALDEIRA.setStyle(TOOLTIP_CSS);
+		TOOLTIP_LBL_STATUS.setStyle(TOOLTIP_CSS);
+
+		Tooltip.install(imgSwitch, TOOLTIP_SWITCH_FINALIZADO);
+		Tooltip.install(btNovo, TOOLTIP_BT_NOVO);
+		Tooltip.install(btEdit, TOOLTIP_BT_EDIT);
+		Tooltip.install(btCancela, TOOLTIP_BT_CANCELAR);
+		Tooltip.install(btReport, TOOLTIP_BT_REPORT);
+		Tooltip.install(btConfigLineChart, TOOLTIP_BT_CONF_CHART);
+		Tooltip.install(imgEstatica, TOOLTIP_IMG_ESTATICA);
+		Tooltip.install(lblTempReator, TOOLTIP_LBL_TEMP_REATOR);
+		Tooltip.install(lblTempCaldeira, TOOLTIP_LBL_TEMP_CALDEIRA);
+		Tooltip.install(lblSpReator, TOOLTIP_LBL_SP_REATOR);
+		Tooltip.install(lblSpCaldeira, TOOLTIP_LBL_SP_CALDEIRA);
+		Tooltip.install(lblStatus, TOOLTIP_LBL_STATUS);
 	}
 
 }
