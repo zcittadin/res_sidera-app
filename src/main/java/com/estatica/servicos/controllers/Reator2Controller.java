@@ -411,6 +411,7 @@ public class Reator2Controller implements Initializable, ControlledScreen {
 	private void saveTemp() {
 		processo = new Processo(null, configParams.getProduto(), Calendar.getInstance().getTime(), tempReator,
 				setPointReator);
+		configParams.getProduto().getProcessos().add(processo);
 		processoService.saveProcesso(processo);
 	}
 

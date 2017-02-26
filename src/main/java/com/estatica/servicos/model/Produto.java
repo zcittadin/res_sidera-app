@@ -2,12 +2,16 @@ package com.estatica.servicos.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -38,17 +42,26 @@ public class Produto implements Serializable {
 	private double tempMax;
 	@Column(name = "temp_min")
 	private double tempMin;
+	@OneToMany(mappedBy = "produto", targetEntity = Processo.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Processo> processos;
 
-	// @OneToMany(mappedBy = "i_produto", targetEntity = Processo.class, fetch =
-	// FetchType.LAZY, cascade = CascadeType.ALL)
-	// private List<Processo> processo;
-
-	public Produto() {
-
-	}
+	// public Produto(Long id, int codigo, int lote, String nomeReator, String
+	// operador, double quantidade, Date dtInicial,
+	// Date dtFinal, double tempMax, double tempMin) {
+	// this.id = id;
+	// this.codigo = codigo;
+	// this.lote = lote;
+	// this.nomeReator = nomeReator;
+	// this.operador = operador;
+	// this.quantidade = quantidade;
+	// this.dtInicial = dtInicial;
+	// this.dtFinal = dtFinal;
+	// this.tempMax = tempMax;
+	// this.tempMin = tempMin;
+	// }
 
 	public Produto(Long id, int codigo, int lote, String nomeReator, String operador, double quantidade, Date dtInicial,
-			Date dtFinal, double tempMax, double tempMin) {
+			Date dtFinal, double tempMax, double tempMin, List<Processo> processos) {
 		this.id = id;
 		this.codigo = codigo;
 		this.lote = lote;
@@ -59,6 +72,7 @@ public class Produto implements Serializable {
 		this.dtFinal = dtFinal;
 		this.tempMax = tempMax;
 		this.tempMin = tempMin;
+		this.processos = processos;
 	}
 
 	/*
@@ -150,12 +164,17 @@ public class Produto implements Serializable {
 		this.tempMin = tempMin;
 	}
 
-	/*
-	 * public List<Processo> getProcesso() { return processo; }
-	 * 
-	 * public void setProcesso(List<Processo> processo) { this.processo =
-	 * processo; }
-	 */
+	public List<Processo> getProcessos() {
+		return processos;
+	}
+
+	public void setProcessos(List<Processo> processos) {
+		this.processos = processos;
+	}
+
+	public Produto() {
+
+	}
 
 	@Override
 	public int hashCode() {

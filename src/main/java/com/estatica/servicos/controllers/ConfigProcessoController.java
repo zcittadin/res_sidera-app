@@ -2,6 +2,7 @@ package com.estatica.servicos.controllers;
 
 import java.awt.Toolkit;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -136,7 +137,7 @@ public class ConfigProcessoController implements Initializable {
 				Produto produto = new Produto(null, Integer.parseInt(txtProduto.getText()),
 						Integer.parseInt(txtLote.getText()), configParams.getName(), txtOperador.getText(),
 						Double.parseDouble(txtQuantidade.getText().replace(".", "").replace(",", ".")), null, null, 0,
-						0);
+						0, new ArrayList<>());
 				produtoService.saveProduto(produto);
 
 				configParams.setCodigo(Integer.parseInt(txtProduto.getText()));
