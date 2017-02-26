@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
 
 import com.estatica.servicos.model.Processo;
 import com.estatica.servicos.model.Produto;
+import com.estatica.servicos.report.buider.ProcessoReportCreator;
 import com.estatica.servicos.service.ProdutoDBService;
 import com.estatica.servicos.service.impl.ProdutoDBServiceImpl;
 import com.estatica.servicos.view.ControlledScreen;
@@ -82,15 +83,18 @@ public class ConsultaController implements Initializable, ControlledScreen {
 	private ProgressIndicator progD;
 	@FXML
 	private Button btConsultar;
+	@FXML
+	private Button btReport;
 
 	private static XYChart.Series<String, Number> tempSeries;
 	private static DateTimeFormatter horasFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+	private static SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
 	final ObservableList<XYChart.Series<String, Number>> plotValuesList = FXCollections.observableArrayList();
 	final List<Node> valueMarks = new ArrayList<>();
-	private static Double tempReator = new Double(0);
-	private static Double setPointReator = new Double(0);
-	private static Double tempMax = new Double(300);
-	private static Double tempMin = new Double(0);
+	// private static Double tempReator = new Double(0);
+	// private static Double setPointReator = new Double(0);
+	// private static Double tempMax = new Double(300);
+	// private static Double tempMin = new Double(0);
 	private static Double producao = new Double(0);
 	private static Produto produto;
 
@@ -107,40 +111,6 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		configLineChart();
 	}
 
-	private void configLineChart() {
-		yAxis.setAutoRanging(false);
-		yAxis.setLowerBound(0);
-		yAxis.setUpperBound(70);
-		yAxis.setTickUnit(10);
-		tempSeries = new XYChart.Series<String, Number>();
-		tempSeries.getData().add(new XYChart.Data<>(horasFormatter.format(LocalDateTime.now()), 20));
-		plotValuesList.add(tempSeries);
-		chartConsulta.setData(plotValuesList);
-	}
-
-	private void clearLineChart() {
-		tempSeries.getData().clear();
-		chartConsulta.getData().clear();
-		tempSeries = new XYChart.Series<String, Number>();
-		chartConsulta.getData().add(tempSeries);
-	}
-
-	private void populateLineChart() {
-		clearLineChart();
-		for (Processo processo : produto.getProcessos()) {
-			LocalDateTime horario = processo.getDtProcesso().toInstant().atZone(ZoneId.systemDefault())
-					.toLocalDateTime();
-			XYChart.Data<String, Number> data = new XYChart.Data<>(horasFormatter.format(horario),
-					processo.getTempReator());
-			tempSeries.getData().add(data);
-		}
-		// Node mark = new HoverDataChart(1, tempReator);
-		// if (!MarkLineChartProperty.getMark())
-		// mark.setVisible(Boolean.FALSE);
-		// valueMarks.add(mark);
-		// data.setNode(mark);
-	}
-
 	@FXML
 	private void findByLote() {
 		if ("".equals(txtLote.getText().trim())) {
@@ -152,9 +122,7 @@ public class ConsultaController implements Initializable, ControlledScreen {
 			txtLote.requestFocus();
 			return;
 		}
-
 		initFetch();
-
 		Task<Void> searchTask = new Task<Void>() {
 			@Override
 			protected Void call() throws Exception {
@@ -203,7 +171,65 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		});
 		Thread t = new Thread(searchTask);
 		t.start();
+	}
 
+	@FXML
+	private void generatePdfReport() {
+
+		Task<Integer> reportTask = new Task<Integer>() {
+			@Override
+			protected Integer call() throws Exception {
+				int r = ProcessoReportCreator.build(produto);
+				System.out.println("Report: " + r);
+				return null;
+			}
+		};
+
+		reportTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+			@Override
+			public void handle(WorkerStateEvent event) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Exportação");
+				alert.setHeaderText("Relatório emitido com sucesso.");
+				alert.showAndWait();
+			}
+		});
+		Thread t = new Thread(reportTask);
+		t.start();
+	}
+
+	private void configLineChart() {
+		yAxis.setAutoRanging(false);
+		yAxis.setLowerBound(0);
+		yAxis.setUpperBound(70);
+		yAxis.setTickUnit(10);
+		tempSeries = new XYChart.Series<String, Number>();
+		tempSeries.getData().add(new XYChart.Data<>(horasFormatter.format(LocalDateTime.now()), 20));
+		plotValuesList.add(tempSeries);
+		chartConsulta.setData(plotValuesList);
+	}
+
+	private void clearLineChart() {
+		tempSeries.getData().clear();
+		chartConsulta.getData().clear();
+		tempSeries = new XYChart.Series<String, Number>();
+		chartConsulta.getData().add(tempSeries);
+	}
+
+	private void populateLineChart() {
+		clearLineChart();
+		for (Processo processo : produto.getProcessos()) {
+			LocalDateTime horario = processo.getDtProcesso().toInstant().atZone(ZoneId.systemDefault())
+					.toLocalDateTime();
+			XYChart.Data<String, Number> data = new XYChart.Data<>(horasFormatter.format(horario),
+					processo.getTempReator());
+			tempSeries.getData().add(data);
+		}
+		// Node mark = new HoverDataChart(1, tempReator);
+		// if (!MarkLineChartProperty.getMark())
+		// mark.setVisible(Boolean.FALSE);
+		// valueMarks.add(mark);
+		// data.setNode(mark);
 	}
 
 	private void populateFields() {
@@ -214,7 +240,6 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		lblTempMin.setText(String.valueOf(produto.getTempMin()));
 		lblTempMax.setText(String.valueOf(produto.getTempMax()));
 		lblSetPoint.setText(String.valueOf(produto.getProcessos().get(0).getSpReator()));
-		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
 		lblInicio.setText(sdf.format(produto.getDtInicial()));
 		lblEncerramento.setText(sdf.format(produto.getDtFinal()));
 		lblTempoProcesso.setText(formatPeriod(produto.getDtInicial(), produto.getDtFinal()));
@@ -256,6 +281,7 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		progD.setVisible(Boolean.TRUE);
 		txtLote.setDisable(Boolean.TRUE);
 		btConsultar.setDisable(Boolean.TRUE);
+		btReport.setDisable(Boolean.TRUE);
 		lblCodigo.setDisable(Boolean.TRUE);
 		lblEncerramento.setDisable(Boolean.TRUE);
 		lblInicio.setDisable(Boolean.TRUE);
@@ -281,6 +307,7 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		progD.setVisible(Boolean.FALSE);
 		txtLote.setDisable(Boolean.FALSE);
 		btConsultar.setDisable(Boolean.FALSE);
+		btReport.setDisable(Boolean.FALSE);
 		lblCodigo.setDisable(Boolean.FALSE);
 		lblEncerramento.setDisable(Boolean.FALSE);
 		lblInicio.setDisable(Boolean.FALSE);

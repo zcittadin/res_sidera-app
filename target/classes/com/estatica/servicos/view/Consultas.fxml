@@ -178,5 +178,10 @@
       <ProgressIndicator fx:id="progA" layoutX="437.0" layoutY="68.0" prefHeight="66.0" prefWidth="95.0" style="-fx-progress-color: #E0FFFF;" visible="false" />
       <ProgressIndicator fx:id="progC" layoutX="1069.0" layoutY="68.0" prefHeight="66.0" prefWidth="95.0" style="-fx-progress-color: #E0FFFF;" visible="false" />
       <ProgressIndicator fx:id="progD" layoutX="557.0" layoutY="360.0" prefHeight="66.0" prefWidth="95.0" style="-fx-progress-color: #E0FFFF;" visible="false" />
+      <Button fx:id="btReport" layoutX="272.0" layoutY="6.0" mnemonicParsing="false" onAction="#generatePdfReport" prefHeight="28.0" prefWidth="32.0" styleClass="btReport" stylesheets="@style.css">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
    </children>
 </AnchorPane>

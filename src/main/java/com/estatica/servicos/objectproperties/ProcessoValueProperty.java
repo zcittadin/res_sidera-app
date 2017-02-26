@@ -8,14 +8,22 @@ public class ProcessoValueProperty {
 	private static SimpleDoubleProperty spReator1 = new SimpleDoubleProperty();
 	private static SimpleDoubleProperty tempReator2 = new SimpleDoubleProperty();
 	private static SimpleDoubleProperty spReator2 = new SimpleDoubleProperty();
-	private static SimpleDoubleProperty tempReator3 = new SimpleDoubleProperty();
-	private static SimpleDoubleProperty spReator3 = new SimpleDoubleProperty();
-	private static SimpleDoubleProperty tempReator4 = new SimpleDoubleProperty();
-	private static SimpleDoubleProperty spReator4 = new SimpleDoubleProperty();
-	private static SimpleDoubleProperty tempReator5 = new SimpleDoubleProperty();
-	private static SimpleDoubleProperty spReator5 = new SimpleDoubleProperty();
-	private static SimpleDoubleProperty tempReator6 = new SimpleDoubleProperty();
-	private static SimpleDoubleProperty spReator6 = new SimpleDoubleProperty();
+	// private static SimpleDoubleProperty tempReator3 = new
+	// SimpleDoubleProperty();
+	// private static SimpleDoubleProperty spReator3 = new
+	// SimpleDoubleProperty();
+	// private static SimpleDoubleProperty tempReator4 = new
+	// SimpleDoubleProperty();
+	// private static SimpleDoubleProperty spReator4 = new
+	// SimpleDoubleProperty();
+	// private static SimpleDoubleProperty tempReator5 = new
+	// SimpleDoubleProperty();
+	// private static SimpleDoubleProperty spReator5 = new
+	// SimpleDoubleProperty();
+	// private static SimpleDoubleProperty tempReator6 = new
+	// SimpleDoubleProperty();
+	// private static SimpleDoubleProperty spReator6 = new
+	// SimpleDoubleProperty();
 
 	public static SimpleDoubleProperty tempReator1Property() {
 		return tempReator1;

@@ -78,3 +78,7 @@
   -fx-graphic: url('img/page_white_magnify.png');
 }
 
+.btReport {
+  -fx-graphic: url('img/report.png');
+}
+

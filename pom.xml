@@ -48,13 +48,10 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>5.2.5.Final</version>
 		</dependency>
-		
-		<!-- dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>4.3.0.Final</version>
-		</dependency-->
-		
+
+		<!-- dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-entitymanager</artifactId> 
+			<version>4.3.0.Final</version> </dependency -->
+
 		<!-- Conector para o MySql -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -66,5 +63,12 @@
 			<artifactId>Medusa</artifactId>
 			<version>7.5</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/net.sourceforge.dynamicreports/dynamicreports-core -->
+		<dependency>
+			<groupId>net.sourceforge.dynamicreports</groupId>
+			<artifactId>dynamicreports-core</artifactId>
+			<version>4.1.0</version>
+		</dependency>
+
 	</dependencies>
 </project>
