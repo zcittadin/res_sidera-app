@@ -4,14 +4,12 @@ import java.awt.Toolkit;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.estatica.servicos.model.Processo;
@@ -34,10 +32,9 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 
 public class ConsultaController implements Initializable, ControlledScreen {
 
@@ -134,6 +131,15 @@ public class ConsultaController implements Initializable, ControlledScreen {
 
 	@FXML
 	private void findByLote() {
+		if ("".equals(txtLote.getText().trim())) {
+			Toolkit.getDefaultToolkit().beep();
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Atenção");
+			alert.setHeaderText("Informe o lote antes da consulta.");
+			alert.showAndWait();
+			txtLote.requestFocus();
+			return;
+		}
 
 		Task<Void> searchTask = new Task<Void>() {
 			@Override
@@ -146,9 +152,8 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		searchTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 			@Override
 			public void handle(WorkerStateEvent arg0) {
-				if(produto == null){
+				if (produto == null) {
 					Platform.runLater(new Runnable() {
-						
 						@Override
 						public void run() {
 							Toolkit.getDefaultToolkit().beep();
