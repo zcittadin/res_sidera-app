@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="634.0" prefWidth="1208.0" styleClass="myGradient" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.estatica.servicos.controllers.ConsultaController">
+<AnchorPane fx:id="mainPane" prefHeight="634.0" prefWidth="1208.0" styleClass="myGradient" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.estatica.servicos.controllers.ConsultaController">
    <children>
       <Separator layoutX="2.0" layoutY="165.0" prefWidth="1206.0">
          <opaqueInsets>
@@ -31,14 +31,18 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <TextField layoutX="49.0" layoutY="89.0" />
-      <Button layoutX="208.0" layoutY="89.0" mnemonicParsing="false" text="Buscar" />
-      <LineChart createSymbols="false" layoutX="14.0" layoutY="178.0" legendVisible="false" prefHeight="429.0" prefWidth="1184.0" title="Temperatura x tempo">
+      <TextField fx:id="txtLote" layoutX="49.0" layoutY="89.0" />
+      <Button fx:id="btConsultar" layoutX="208.0" layoutY="86.0" mnemonicParsing="false" onAction="#findByLote" prefHeight="28.0" prefWidth="32.0" styleClass="btConsultar" stylesheets="@style.css" />
+      <LineChart fx:id="chartConsulta" createSymbols="false" layoutX="14.0" layoutY="178.0" legendVisible="false" prefHeight="429.0" prefWidth="1184.0" title="Temperatura x tempo">
         <xAxis>
-          <CategoryAxis side="BOTTOM" />
+          <CategoryAxis side="BOTTOM" startMargin="0.0" tickLabelFill="WHITE" fx:id="xAxis">
+               <tickLabelFont>
+                  <Font size="14.0" />
+               </tickLabelFont>
+            </CategoryAxis>
         </xAxis>
         <yAxis>
-          <NumberAxis label="ºC" minorTickCount="1" side="LEFT" tickLabelFill="WHITE">
+          <NumberAxis fx:id="yAxis" label="ºC" minorTickCount="1" side="LEFT" tickLabelFill="WHITE">
                <tickLabelFont>
                   <Font size="17.0" />
                </tickLabelFont>
@@ -100,57 +104,57 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="444.0" layoutY="56.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" text="0" textFill="#054199">
+      <Label fx:id="lblCodigo" alignment="CENTER" layoutX="444.0" layoutY="56.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" text="0" textFill="#054199">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="444.0" layoutY="81.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" text="0" textFill="#054199">
+      <Label fx:id="lblLote" alignment="CENTER" layoutX="444.0" layoutY="81.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" text="0" textFill="#054199">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="444.0" layoutY="106.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" text="000,00" textFill="#054199">
+      <Label fx:id="lblQuantidade" alignment="CENTER" layoutX="444.0" layoutY="106.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" text="000,00" textFill="#054199">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="444.0" layoutY="131.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" text="000,00" textFill="#054199">
+      <Label fx:id="lblProducao" alignment="CENTER" layoutX="444.0" layoutY="131.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" text="000,00" textFill="#054199">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="765.0" layoutY="81.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" text="00.0" textFill="#054199">
+      <Label fx:id="lblTempMin" alignment="CENTER" layoutX="765.0" layoutY="81.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" text="00.0" textFill="#054199">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="765.0" layoutY="106.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" text="00.0" textFill="#054199">
+      <Label fx:id="lblTempMax" alignment="CENTER" layoutX="765.0" layoutY="106.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" text="00.0" textFill="#054199">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="765.0" layoutY="131.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" text="00.0" textFill="#054199">
+      <Label fx:id="lblSetPoint" alignment="CENTER" layoutX="765.0" layoutY="131.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" text="00.0" textFill="#054199">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="1076.0" layoutY="131.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" textFill="#054199">
+      <Label fx:id="lblOperador" alignment="CENTER" layoutX="1076.0" layoutY="131.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" textFill="#054199">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="1076.0" layoutY="56.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" text="00:00:00" textFill="#054199">
+      <Label fx:id="lblInicio" alignment="CENTER" layoutX="1076.0" layoutY="56.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" text="00:00:00" textFill="#054199">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="1076.0" layoutY="81.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" text="00:00:00" textFill="#054199">
+      <Label fx:id="lblEncerramento" alignment="CENTER" layoutX="1076.0" layoutY="81.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" text="00:00:00" textFill="#054199">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="1076.0" layoutY="106.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" text="00:00:00" textFill="#054199">
+      <Label fx:id="lblTempoProcesso" alignment="CENTER" layoutX="1076.0" layoutY="106.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" text="00:00:00" textFill="#054199">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
@@ -160,7 +164,7 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="765.0" layoutY="56.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" textFill="#054199">
+      <Label fx:id="lblReator" alignment="CENTER" layoutX="765.0" layoutY="56.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" textFill="#054199">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
