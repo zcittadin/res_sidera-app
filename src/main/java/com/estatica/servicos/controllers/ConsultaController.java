@@ -33,7 +33,9 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 
 public class ConsultaController implements Initializable, ControlledScreen {
@@ -70,6 +72,16 @@ public class ConsultaController implements Initializable, ControlledScreen {
 	private CategoryAxis xAxis;
 	@FXML
 	private NumberAxis yAxis;
+	@FXML
+	private ProgressIndicator progA;
+	@FXML
+	private ProgressIndicator progB;
+	@FXML
+	private ProgressIndicator progC;
+	@FXML
+	private ProgressIndicator progD;
+	@FXML
+	private Button btConsultar;
 
 	private static XYChart.Series<String, Number> tempSeries;
 	private static DateTimeFormatter horasFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -141,6 +153,8 @@ public class ConsultaController implements Initializable, ControlledScreen {
 			return;
 		}
 
+		initFetch();
+
 		Task<Void> searchTask = new Task<Void>() {
 			@Override
 			protected Void call() throws Exception {
@@ -156,6 +170,7 @@ public class ConsultaController implements Initializable, ControlledScreen {
 					Platform.runLater(new Runnable() {
 						@Override
 						public void run() {
+							endFetch();
 							Toolkit.getDefaultToolkit().beep();
 							Alert alert = new Alert(AlertType.WARNING);
 							alert.setTitle("Atenção");
@@ -168,15 +183,18 @@ public class ConsultaController implements Initializable, ControlledScreen {
 				}
 				if (produto.getProcessos() == null) {
 					System.out.println("Lista nula");
+					endFetch();
 					return;
 				}
 				if (produto.getProcessos().isEmpty()) {
 					System.out.println("Lista vazia");
+					endFetch();
 					return;
 				}
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
+						endFetch();
 						populateLineChart();
 						populateFields();
 					}
@@ -229,6 +247,55 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		} else {
 			lblProducao.setText("000,00");
 		}
+	}
+
+	private void initFetch() {
+		progA.setVisible(Boolean.TRUE);
+		progB.setVisible(Boolean.TRUE);
+		progC.setVisible(Boolean.TRUE);
+		progD.setVisible(Boolean.TRUE);
+		txtLote.setDisable(Boolean.TRUE);
+		btConsultar.setDisable(Boolean.TRUE);
+		lblCodigo.setDisable(Boolean.TRUE);
+		lblEncerramento.setDisable(Boolean.TRUE);
+		lblInicio.setDisable(Boolean.TRUE);
+		lblLote.setDisable(Boolean.TRUE);
+		lblOperador.setDisable(Boolean.TRUE);
+		lblProducao.setDisable(Boolean.TRUE);
+		lblReator.setDisable(Boolean.TRUE);
+		lblQuantidade.setDisable(Boolean.TRUE);
+		lblSetPoint.setDisable(Boolean.TRUE);
+		lblTempMax.setDisable(Boolean.TRUE);
+		lblTempMin.setDisable(Boolean.TRUE);
+		lblTempoProcesso.setDisable(Boolean.TRUE);
+		chartConsulta.setDisable(Boolean.TRUE);
+		xAxis.setDisable(Boolean.TRUE);
+		yAxis.setDisable(Boolean.TRUE);
+
+	}
+
+	private void endFetch() {
+		progA.setVisible(Boolean.FALSE);
+		progB.setVisible(Boolean.FALSE);
+		progC.setVisible(Boolean.FALSE);
+		progD.setVisible(Boolean.FALSE);
+		txtLote.setDisable(Boolean.FALSE);
+		btConsultar.setDisable(Boolean.FALSE);
+		lblCodigo.setDisable(Boolean.FALSE);
+		lblEncerramento.setDisable(Boolean.FALSE);
+		lblInicio.setDisable(Boolean.FALSE);
+		lblLote.setDisable(Boolean.FALSE);
+		lblOperador.setDisable(Boolean.FALSE);
+		lblProducao.setDisable(Boolean.FALSE);
+		lblReator.setDisable(Boolean.FALSE);
+		lblQuantidade.setDisable(Boolean.FALSE);
+		lblSetPoint.setDisable(Boolean.FALSE);
+		lblTempMax.setDisable(Boolean.FALSE);
+		lblTempMin.setDisable(Boolean.FALSE);
+		lblTempoProcesso.setDisable(Boolean.FALSE);
+		chartConsulta.setDisable(Boolean.FALSE);
+		xAxis.setDisable(Boolean.FALSE);
+		yAxis.setDisable(Boolean.FALSE);
 	}
 
 }

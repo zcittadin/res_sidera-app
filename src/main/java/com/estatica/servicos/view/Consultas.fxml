@@ -7,6 +7,7 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -173,5 +174,9 @@
          </font>
       </Label>
       <MaskTextField fx:id="txtLote" layoutX="56.0" layoutY="88.0" mask="NNNNNNNNN" />
+      <ProgressIndicator fx:id="progB" layoutX="757.0" layoutY="68.0" prefHeight="66.0" prefWidth="95.0" style="-fx-progress-color: #E0FFFF;" visible="false" />
+      <ProgressIndicator fx:id="progA" layoutX="437.0" layoutY="68.0" prefHeight="66.0" prefWidth="95.0" style="-fx-progress-color: #E0FFFF;" visible="false" />
+      <ProgressIndicator fx:id="progC" layoutX="1069.0" layoutY="68.0" prefHeight="66.0" prefWidth="95.0" style="-fx-progress-color: #E0FFFF;" visible="false" />
+      <ProgressIndicator fx:id="progD" layoutX="557.0" layoutY="360.0" prefHeight="66.0" prefWidth="95.0" style="-fx-progress-color: #E0FFFF;" visible="false" />
    </children>
 </AnchorPane>

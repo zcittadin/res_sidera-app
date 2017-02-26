@@ -6,14 +6,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="300.0" prefWidth="280.0" styleClass="myGradient" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.estatica.servicos.controllers.ConfigLineChartController">
+<AnchorPane prefHeight="147.0" prefWidth="280.0" styleClass="myGradient" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.estatica.servicos.controllers.ConfigLineChartController">
    <children>
-      <CheckBox fx:id="chkMarcadores" layoutX="96.0" layoutY="77.0" mnemonicParsing="false" onAction="#toggleMark" text="Marcadores" textFill="WHITE">
+      <CheckBox fx:id="chkMarcadores" layoutX="96.0" layoutY="37.0" mnemonicParsing="false" onAction="#toggleMark" text="Marcadores" textFill="WHITE">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </CheckBox>
-      <Button fx:id="btOk" layoutX="105.0" layoutY="244.0" mnemonicParsing="false" onAction="#exit" prefHeight="25.0" prefWidth="70.0" text="Ok">
+      <Button fx:id="btOk" layoutX="105.0" layoutY="101.0" mnemonicParsing="false" onAction="#exit" prefHeight="25.0" prefWidth="70.0" text="Ok">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
