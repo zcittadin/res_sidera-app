@@ -3,7 +3,9 @@ package com.estatica.servicos.controllers;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,13 +14,10 @@ import java.util.ResourceBundle;
 
 import com.estatica.servicos.model.Processo;
 import com.estatica.servicos.model.Produto;
-import com.estatica.servicos.objectproperties.MarkLineChartProperty;
 import com.estatica.servicos.service.ProdutoDBService;
 import com.estatica.servicos.service.impl.ProdutoDBServiceImpl;
-import com.estatica.servicos.util.HoverDataChart;
 import com.estatica.servicos.view.ControlledScreen;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -104,15 +103,20 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		chartConsulta.setData(plotValuesList);
 	}
 
-	private void plotTemp() {
-		final XYChart.Data<String, Number> data = new XYChart.Data<>(horasFormatter.format(LocalDateTime.now()),
-				tempReator);
-		Node mark = new HoverDataChart(1, tempReator);
-		if (!MarkLineChartProperty.getMark())
-			mark.setVisible(Boolean.FALSE);
-		valueMarks.add(mark);
-		data.setNode(mark);
-		tempSeries.getData().add(data);
+	private void populateLineChart() {
+		tempSeries.getData().clear();
+		for (Processo processo : produto.getProcessos()) {
+			LocalDateTime horario = processo.getDtProcesso().toInstant().atZone(ZoneId.systemDefault())
+					.toLocalDateTime();
+			XYChart.Data<String, Number> data = new XYChart.Data<>(horasFormatter.format(horario),
+					processo.getTempReator());
+			tempSeries.getData().add(data);
+		}
+		// Node mark = new HoverDataChart(1, tempReator);
+		// if (!MarkLineChartProperty.getMark())
+		// mark.setVisible(Boolean.FALSE);
+		// valueMarks.add(mark);
+		// data.setNode(mark);
 	}
 
 	@FXML
@@ -137,16 +141,8 @@ public class ConsultaController implements Initializable, ControlledScreen {
 					System.out.println("Lista vazia");
 					return;
 				}
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						populateFields();
-					}
-				});
-				for (Processo processo : produto.getProcessos()) {
-					// System.out.println(processo.getTempReator() + " ºC");
-				}
-
+				populateFields();
+				populateLineChart();
 			}
 		});
 		Thread t = new Thread(searchTask);
@@ -179,7 +175,7 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		return (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":"
 				+ (seconds < 10 ? "0" + seconds : seconds);
 	}
-	
+
 	private void calculaProducao() {
 		String[] fields = lblTempoProcesso.getText().split(":");
 		Integer hours = Integer.parseInt(fields[0]);
