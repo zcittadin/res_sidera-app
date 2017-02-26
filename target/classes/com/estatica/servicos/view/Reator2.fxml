@@ -92,7 +92,7 @@
             <Font name="System Bold" size="12.0" />
          </font></Label>
       <Separator layoutX="891.0" layoutY="1.0" orientation="VERTICAL" prefHeight="164.0" />
-      <Separator layoutY="-2.0" orientation="VERTICAL" prefHeight="662.0" />
+      <Separator orientation="VERTICAL" prefHeight="660.0" />
       <Label layoutX="1001.0" layoutY="7.0" text="Reator" textFill="WHITE">
          <font>
             <Font name="System Bold" size="12.0" />
@@ -141,27 +141,27 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Label fx:id="lblLote" alignment="CENTER" layoutX="398.0" layoutY="10.0" prefHeight="25.0" prefWidth="129.0" style="-fx-background-color: white;" text="0000000" textFill="#054199">
+      <Label fx:id="lblLote" alignment="CENTER" layoutX="398.0" layoutY="10.0" prefHeight="25.0" prefWidth="129.0" style="-fx-background-color: #FFE4E1;" text="0" textFill="#054199">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="lblProduto" alignment="CENTER" layoutX="446.0" layoutY="56.0" prefWidth="80.0" style="-fx-background-color: white;" text="0000000" textFill="#054199">
+      <Label fx:id="lblProduto" alignment="CENTER" layoutX="446.0" layoutY="56.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" text="0" textFill="#054199">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="lblHorario" alignment="CENTER" layoutX="446.0" layoutY="82.0" prefWidth="80.0" style="-fx-background-color: white;" text="00:00:00" textFill="#054199">
+      <Label fx:id="lblHorario" alignment="CENTER" layoutX="446.0" layoutY="82.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" text="00:00:00" textFill="#054199">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="lblQuantidade" alignment="CENTER" layoutX="446.0" layoutY="108.0" prefWidth="80.0" style="-fx-background-color: white;" text="000.00" textFill="#054199">
+      <Label fx:id="lblQuantidade" alignment="CENTER" layoutX="446.0" layoutY="108.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" text="000.00" textFill="#054199">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="lblOperador" alignment="CENTER" layoutX="446.0" layoutY="134.0" prefWidth="80.0" style="-fx-background-color: white;" textFill="#054199">
+      <Label fx:id="lblOperador" alignment="CENTER" layoutX="446.0" layoutY="134.0" prefWidth="80.0" style="-fx-background-color: #FFE4E1;" textFill="#054199">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
@@ -192,22 +192,22 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="lblCronometro" alignment="CENTER" layoutX="806.0" layoutY="57.0" prefHeight="17.0" prefWidth="70.0" style="-fx-background-color: white;" text="00:00:00" textFill="#0017ff">
+      <Label fx:id="lblCronometro" alignment="CENTER" layoutX="806.0" layoutY="57.0" prefHeight="17.0" prefWidth="70.0" style="-fx-background-color: #FFE4E1;" text="00:00:00" textFill="#0017ff">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="lblProducao" alignment="CENTER" layoutX="806.0" layoutY="82.0" prefHeight="17.0" prefWidth="70.0" style="-fx-background-color: white;" text="000,00" textFill="#6400f0">
+      <Label fx:id="lblProducao" alignment="CENTER" layoutX="806.0" layoutY="82.0" prefHeight="17.0" prefWidth="70.0" style="-fx-background-color: #FFE4E1;" text="000,00" textFill="#6400f0">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="lblTempMin" alignment="CENTER" layoutX="806.0" layoutY="108.0" prefHeight="17.0" prefWidth="70.0" style="-fx-background-color: white;" text="000" textFill="#ff8700">
+      <Label fx:id="lblTempMin" alignment="CENTER" layoutX="806.0" layoutY="108.0" prefHeight="17.0" prefWidth="70.0" style="-fx-background-color: #FFE4E1;" text="000" textFill="#ff8700">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="lblTempMax" alignment="CENTER" layoutX="806.0" layoutY="134.0" prefHeight="17.0" prefWidth="70.0" style="-fx-background-color: white;" text="000" textFill="RED">
+      <Label fx:id="lblTempMax" alignment="CENTER" layoutX="806.0" layoutY="134.0" prefHeight="17.0" prefWidth="70.0" style="-fx-background-color: #FFE4E1;" text="000" textFill="RED">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>

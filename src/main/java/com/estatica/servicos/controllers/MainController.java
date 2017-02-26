@@ -207,42 +207,36 @@ public class MainController implements Initializable {
 	@FXML
 	private void openReator1() {
 		CurrentScreenProperty.setScreen(NOME_REATOR_1);
-		// configParams.setName("Reator 1");
 		mainContainer.setScreen(screen1ID);
 	}
 
 	@FXML
 	private void openReator2() {
 		CurrentScreenProperty.setScreen(NOME_REATOR_2);
-		// configParams.setName("Reator 2");
 		mainContainer.setScreen(screen2ID);
 	}
 
 	@FXML
 	private void openReator3() {
 		CurrentScreenProperty.setScreen(NOME_REATOR_3);
-		// configParams.setName("Reator 3");
 		mainContainer.setScreen(screen3ID);
 	}
 
 	@FXML
 	private void openReator4() {
 		CurrentScreenProperty.setScreen(NOME_REATOR_4);
-		// configParams.setName("Reator 4");
 		mainContainer.setScreen(screen4ID);
 	}
 
 	@FXML
 	private void openReator5() {
 		CurrentScreenProperty.setScreen(NOME_REATOR_5);
-		// configParams.setName("Reator 5");
 		mainContainer.setScreen(screen5ID);
 	}
 
 	@FXML
 	private void openReator6() {
 		CurrentScreenProperty.setScreen(NOME_REATOR_6);
-		// configParams.setName("Reator 6");
 		mainContainer.setScreen(screen6ID);
 	}
 
