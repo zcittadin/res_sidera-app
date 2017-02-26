@@ -1,18 +1,29 @@
 package com.estatica.servicos.controllers;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.estatica.servicos.model.Processo;
+import com.estatica.servicos.model.Produto;
 import com.estatica.servicos.objectproperties.MarkLineChartProperty;
+import com.estatica.servicos.service.ProdutoDBService;
+import com.estatica.servicos.service.impl.ProdutoDBServiceImpl;
 import com.estatica.servicos.util.HoverDataChart;
 import com.estatica.servicos.view.ControlledScreen;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -67,7 +78,9 @@ public class ConsultaController implements Initializable, ControlledScreen {
 	private static Double tempMax = new Double(300);
 	private static Double tempMin = new Double(0);
 	private static Double producao = new Double(0);
+	private static Produto produto;
 
+	private static ProdutoDBService produtoService = new ProdutoDBServiceImpl();
 	ScreensController myController;
 
 	@Override
@@ -90,7 +103,7 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		plotValuesList.add(tempSeries);
 		chartConsulta.setData(plotValuesList);
 	}
-	
+
 	private void plotTemp() {
 		final XYChart.Data<String, Number> data = new XYChart.Data<>(horasFormatter.format(LocalDateTime.now()),
 				tempReator);
@@ -105,6 +118,83 @@ public class ConsultaController implements Initializable, ControlledScreen {
 	@FXML
 	private void findByLote() {
 
+		Task<Void> searchTask = new Task<Void>() {
+			@Override
+			protected Void call() throws Exception {
+				produto = produtoService.findByLote(Integer.parseInt(txtLote.getText()));
+				return null;
+			}
+		};
+
+		searchTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+			@Override
+			public void handle(WorkerStateEvent arg0) {
+				if (produto.getProcessos() == null) {
+					System.out.println("Lista nula");
+					return;
+				}
+				if (produto.getProcessos().isEmpty()) {
+					System.out.println("Lista vazia");
+					return;
+				}
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						populateFields();
+					}
+				});
+				for (Processo processo : produto.getProcessos()) {
+					// System.out.println(processo.getTempReator() + " ºC");
+				}
+
+			}
+		});
+		Thread t = new Thread(searchTask);
+		t.start();
+
+	}
+
+	private void populateFields() {
+		lblCodigo.setText(String.valueOf(produto.getCodigo()));
+		lblLote.setText(String.valueOf(produto.getLote()));
+		lblQuantidade.setText(String.valueOf(produto.getQuantidade()));
+		lblReator.setText(produto.getNomeReator());
+		lblTempMin.setText(String.valueOf(produto.getTempMin()));
+		lblTempMax.setText(String.valueOf(produto.getTempMax()));
+		lblSetPoint.setText(String.valueOf(produto.getProcessos().get(0).getSpReator()));
+		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+		lblInicio.setText(sdf.format(produto.getDtInicial()));
+		lblEncerramento.setText(sdf.format(produto.getDtFinal()));
+		lblTempoProcesso.setText(formatPeriod(produto.getDtInicial(), produto.getDtFinal()));
+		lblOperador.setText(produto.getOperador());
+		calculaProducao();
+	}
+
+	private String formatPeriod(Date ini, Date fim) {
+		long periodoMillis = produto.getDtFinal().getTime() - produto.getDtInicial().getTime();
+		Duration duration = Duration.ofMillis(periodoMillis);
+		long hours = duration.toHours();
+		int minutes = (int) ((duration.getSeconds() % (60 * 60)) / 60);
+		int seconds = (int) (duration.getSeconds() % 60);
+		return (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":"
+				+ (seconds < 10 ? "0" + seconds : seconds);
+	}
+	
+	private void calculaProducao() {
+		String[] fields = lblTempoProcesso.getText().split(":");
+		Integer hours = Integer.parseInt(fields[0]);
+		Integer minutes = Integer.parseInt(fields[1]);
+		Integer passedMinutes = 0;
+		if (hours > 0) {
+			passedMinutes = hours * 60;
+			passedMinutes = passedMinutes + minutes;
+			producao = (Double.parseDouble(lblQuantidade.getText().replace(",", ".")) / passedMinutes) * 60;
+			String str = String.format("%1.2f", producao);
+			producao = Double.valueOf(str.replace(",", "."));
+			lblProducao.setText(producao.toString().replace(".", ","));
+		} else {
+			lblProducao.setText("000,00");
+		}
 	}
 
 }

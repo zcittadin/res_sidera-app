@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.estatica.servicos.dao.ProdutoDAO;
+import com.estatica.servicos.model.Processo;
 import com.estatica.servicos.model.Produto;
 import com.estatica.servicos.util.HibernateUtil;
 
@@ -39,14 +40,18 @@ public class ProdutoDAOImpl implements ProdutoDAO {
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Produto findByLote(int lote) {
 		Session session = HibernateUtil.openSession();
-		Transaction tx = session.beginTransaction();
+		session.beginTransaction();
 		String hql = "SELECT p FROM Produto p WHERE p.lote = " + lote;
 		Query query = session.createQuery(hql);
 		Produto p = (Produto) query.getSingleResult();
-		tx.commit();
+		hql = "SELECT p FROM Processo p  WHERE p.produto = " + p.getId();
+		query = session.createQuery(hql);
+		List<Processo> lista = query.getResultList();
+		p.setProcessos(lista);
 		session.close();
 		return p;
 	}
