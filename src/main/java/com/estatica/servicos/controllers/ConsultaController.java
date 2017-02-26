@@ -1,5 +1,6 @@
 package com.estatica.servicos.controllers;
 
+import java.awt.Toolkit;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -10,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.estatica.servicos.model.Processo;
@@ -18,6 +20,7 @@ import com.estatica.servicos.service.ProdutoDBService;
 import com.estatica.servicos.service.impl.ProdutoDBServiceImpl;
 import com.estatica.servicos.view.ControlledScreen;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -30,8 +33,11 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 
 public class ConsultaController implements Initializable, ControlledScreen {
 
@@ -103,8 +109,15 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		chartConsulta.setData(plotValuesList);
 	}
 
-	private void populateLineChart() {
+	private void clearLineChart() {
 		tempSeries.getData().clear();
+		chartConsulta.getData().clear();
+		tempSeries = new XYChart.Series<String, Number>();
+		chartConsulta.getData().add(tempSeries);
+	}
+
+	private void populateLineChart() {
+		clearLineChart();
 		for (Processo processo : produto.getProcessos()) {
 			LocalDateTime horario = processo.getDtProcesso().toInstant().atZone(ZoneId.systemDefault())
 					.toLocalDateTime();
@@ -133,6 +146,21 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		searchTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 			@Override
 			public void handle(WorkerStateEvent arg0) {
+				if(produto == null){
+					Platform.runLater(new Runnable() {
+						
+						@Override
+						public void run() {
+							Toolkit.getDefaultToolkit().beep();
+							Alert alert = new Alert(AlertType.WARNING);
+							alert.setTitle("Atenção");
+							alert.setHeaderText("Lote não encontrado.");
+							alert.showAndWait();
+							txtLote.requestFocus();
+						}
+					});
+					return;
+				}
 				if (produto.getProcessos() == null) {
 					System.out.println("Lista nula");
 					return;
@@ -141,8 +169,13 @@ public class ConsultaController implements Initializable, ControlledScreen {
 					System.out.println("Lista vazia");
 					return;
 				}
-				populateFields();
-				populateLineChart();
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						populateLineChart();
+						populateFields();
+					}
+				});
 			}
 		});
 		Thread t = new Thread(searchTask);

@@ -47,7 +47,10 @@ public class ProdutoDAOImpl implements ProdutoDAO {
 		session.beginTransaction();
 		String hql = "SELECT p FROM Produto p WHERE p.lote = " + lote;
 		Query query = session.createQuery(hql);
-		Produto p = (Produto) query.getSingleResult();
+		List<Produto> list = query.getResultList();
+		if (list.isEmpty())
+			return null;
+		Produto p = list.get(0);
 		hql = "SELECT p FROM Processo p  WHERE p.produto = " + p.getId();
 		query = session.createQuery(hql);
 		List<Processo> lista = query.getResultList();

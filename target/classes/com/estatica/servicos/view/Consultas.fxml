@@ -35,9 +35,9 @@
       <Button fx:id="btConsultar" layoutX="208.0" layoutY="86.0" mnemonicParsing="false" onAction="#findByLote" prefHeight="28.0" prefWidth="32.0" styleClass="btConsultar" stylesheets="@style.css" />
       <LineChart fx:id="chartConsulta" createSymbols="false" layoutX="14.0" layoutY="178.0" legendVisible="false" prefHeight="429.0" prefWidth="1184.0" title="Temperatura x tempo">
         <xAxis>
-          <CategoryAxis gapStartAndEnd="false" side="BOTTOM" startMargin="0.0" tickLabelFill="WHITE" fx:id="xAxis">
+          <CategoryAxis animated="false" gapStartAndEnd="false" side="BOTTOM" startMargin="0.0" tickLabelFill="WHITE" tickLabelGap="0.0" fx:id="xAxis">
                <tickLabelFont>
-                  <Font size="14.0" />
+                  <Font size="12.0" />
                </tickLabelFont>
             </CategoryAxis>
         </xAxis>
