@@ -130,6 +130,7 @@ public class ConsultaController implements Initializable, ControlledScreen {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		configLineChart();
+		txtLote.requestFocus();
 	}
 
 	@FXML
@@ -166,6 +167,9 @@ public class ConsultaController implements Initializable, ControlledScreen {
 							alert.setHeaderText("Lote não encontrado.");
 							alert.showAndWait();
 							txtLote.requestFocus();
+							btReport.setDisable(Boolean.TRUE);
+							btXls.setDisable(Boolean.TRUE);
+							txtLote.requestFocus();
 						}
 					});
 					return;
@@ -186,13 +190,38 @@ public class ConsultaController implements Initializable, ControlledScreen {
 						endFetch();
 						populateLineChart();
 						populateFields();
+						txtLote.requestFocus();
 					}
 				});
 			}
 		});
 
+		progReport.progressProperty().bind(searchTask.progressProperty());
+
 		Thread t = new Thread(searchTask);
 		t.start();
+	}
+
+	@FXML
+	private void clearConsulta() {
+		lblCodigo.setText("0");
+		lblLote.setText("0");
+		lblQuantidade.setText("000,00");
+		lblProducao.setText("000,00");
+		lblReator.setText("");
+		lblTempMin.setText("00.0");
+		lblTempMax.setText("00.0");
+		lblSetPoint.setText("00.0");
+		lblInicio.setText("00:00:00");
+		lblEncerramento.setText("00:00:00");
+		lblTempoProcesso.setText("00:00:00");
+		lblOperador.setText("");
+		clearLineChart();
+		produto = null;
+		btReport.setDisable(Boolean.TRUE);
+		btXls.setDisable(Boolean.TRUE);
+		txtLote.setText("");
+		txtLote.requestFocus();
 	}
 
 	@FXML
@@ -430,6 +459,7 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		progB.setVisible(Boolean.TRUE);
 		progC.setVisible(Boolean.TRUE);
 		progD.setVisible(Boolean.TRUE);
+		progReport.setVisible(Boolean.TRUE);
 		txtLote.setDisable(Boolean.TRUE);
 		btConsultar.setDisable(Boolean.TRUE);
 		btReport.setDisable(Boolean.TRUE);
@@ -458,6 +488,7 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		progB.setVisible(Boolean.FALSE);
 		progC.setVisible(Boolean.FALSE);
 		progD.setVisible(Boolean.FALSE);
+		progReport.setVisible(Boolean.FALSE);
 		txtLote.setDisable(Boolean.FALSE);
 		btConsultar.setDisable(Boolean.FALSE);
 		btReport.setDisable(Boolean.FALSE);
