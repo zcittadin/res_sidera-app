@@ -103,6 +103,8 @@ public class ConsultaController implements Initializable, ControlledScreen {
 	private Button btReport;
 	@FXML
 	private Button btXls;
+	@FXML
+	private Button btClear;
 
 	private static XYChart.Series<String, Number> tempSeries;
 	private static DateTimeFormatter horasFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -193,41 +195,90 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		t.start();
 	}
 
-	@SuppressWarnings("resource")
 	@FXML
 	public void saveXls() {
-
-		HSSFWorkbook workbook = new HSSFWorkbook();
-		HSSFSheet firstSheet = workbook.createSheet("Aba1");
-		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream(new File("c:/Users/Zander/teste_xls.xls"));
-
-			int i = 0;
-			HSSFRow titleRow = firstSheet.createRow(i);
-			i++;
-			titleRow.createCell(0).setCellValue("Horário");
-			titleRow.createCell(1).setCellValue("Temperatura no reator");
-			titleRow.createCell(2).setCellValue("Set-point");
-			for (Processo processo : produto.getProcessos()) {
-				HSSFRow row = firstSheet.createRow(i);
-				row.createCell(0).setCellValue(dataHoraSdf.format(processo.getDtProcesso()));
-				row.createCell(1).setCellValue(processo.getTempReator());
-				row.createCell(2).setCellValue(processo.getSpReator());
-				i++;
-			}
-			workbook.write(fos);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Erro ao exportar arquivo");
-		} finally {
-			try {
-				fos.flush();
-				fos.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		Stage stage = new Stage();
+		stage.initOwner(btReport.getScene().getWindow());
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.getExtensionFilters().addAll(new ExtensionFilter("XLS Files", "*.xls"));
+		fileChooser.setTitle("Salvar planilha de processo");
+		fileChooser.setInitialFileName("lote_" + produto.getLote() + ".xls");
+		File savedFile = fileChooser.showSaveDialog(stage);
+		if (savedFile != null) {
+			generateXlsReport(savedFile);
 		}
+	}
+
+	@SuppressWarnings("resource")
+	private void generateXlsReport(File file) {
+		progReport.setVisible(Boolean.TRUE);
+		btReport.setDisable(Boolean.TRUE);
+		btXls.setDisable(Boolean.TRUE);
+		btClear.setDisable(Boolean.TRUE);
+		Task<Void> xlsTask = new Task<Void>() {
+			@Override
+			protected Void call() throws Exception {
+				int maximum = 20;
+				HSSFWorkbook workbook = new HSSFWorkbook();
+				HSSFSheet firstSheet = workbook.createSheet("Aba1");
+				FileOutputStream fos = null;
+				try {
+					fos = new FileOutputStream(file);
+					int line = 0;
+					HSSFRow titleRow = firstSheet.createRow(line);
+					line++;
+					titleRow.createCell(0).setCellValue("Horário");
+					titleRow.createCell(1).setCellValue("Temperatura no reator");
+					titleRow.createCell(2).setCellValue("Set-point");
+					for (Processo processo : produto.getProcessos()) {
+						HSSFRow row = firstSheet.createRow(line);
+						row.createCell(0).setCellValue(dataHoraSdf.format(processo.getDtProcesso()));
+						row.createCell(1).setCellValue(processo.getTempReator());
+						row.createCell(2).setCellValue(processo.getSpReator());
+						line++;
+					}
+					workbook.write(fos);
+					for (int i = 0; i < maximum; i++) {
+						updateProgress(i, maximum);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.out.println("Erro ao exportar arquivo");
+				} finally {
+					try {
+						fos.flush();
+						fos.close();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				return null;
+			}
+		};
+
+		xlsTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+			@Override
+			public void handle(WorkerStateEvent event) {
+				progReport.setVisible(Boolean.FALSE);
+				btReport.setDisable(Boolean.FALSE);
+				btXls.setDisable(Boolean.FALSE);
+				btClear.setDisable(Boolean.FALSE);
+				Alert alert = new Alert(AlertType.CONFIRMATION);
+				alert.setTitle("Concluído");
+				alert.setHeaderText("Planilha de dados emitida com sucesso. Deseja visualizar?");
+				Optional<ButtonType> result = alert.showAndWait();
+				if (result.get() == ButtonType.OK) {
+					try {
+						Desktop.getDesktop().open(file);
+					} catch (IOException ex) {
+						ex.printStackTrace();
+					}
+				}
+			}
+		});
+		progReport.progressProperty().bind(xlsTask.progressProperty());
+		Thread t = new Thread(xlsTask);
+		t.start();
 	}
 
 	@FXML
@@ -237,7 +288,7 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().addAll(new ExtensionFilter("PDF Files", "*.pdf"));
 		fileChooser.setTitle("Salvar relatório de processo");
-		fileChooser.setInitialFileName("lote_salvo.pdf");
+		fileChooser.setInitialFileName("lote_" + produto.getLote() + ".pdf");
 		File savedFile = fileChooser.showSaveDialog(stage);
 		if (savedFile != null) {
 			generatePdfReport(savedFile);
@@ -248,6 +299,8 @@ public class ConsultaController implements Initializable, ControlledScreen {
 	private void generatePdfReport(File file) {
 		progReport.setVisible(Boolean.TRUE);
 		btReport.setDisable(Boolean.TRUE);
+		btXls.setDisable(Boolean.TRUE);
+		btClear.setDisable(Boolean.TRUE);
 		Task<Integer> reportTask = new Task<Integer>() {
 			@Override
 			protected Integer call() throws Exception {
@@ -265,6 +318,8 @@ public class ConsultaController implements Initializable, ControlledScreen {
 			public void handle(WorkerStateEvent event) {
 				progReport.setVisible(Boolean.FALSE);
 				btReport.setDisable(Boolean.FALSE);
+				btXls.setDisable(Boolean.FALSE);
+				btClear.setDisable(Boolean.FALSE);
 				int r = reportTask.getValue();
 				if (r != 1) {
 					Toolkit.getDefaultToolkit().beep();
@@ -378,6 +433,8 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		txtLote.setDisable(Boolean.TRUE);
 		btConsultar.setDisable(Boolean.TRUE);
 		btReport.setDisable(Boolean.TRUE);
+		btClear.setDisable(Boolean.TRUE);
+		btXls.setDisable(Boolean.TRUE);
 		lblCodigo.setDisable(Boolean.TRUE);
 		lblEncerramento.setDisable(Boolean.TRUE);
 		lblInicio.setDisable(Boolean.TRUE);
@@ -404,6 +461,8 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		txtLote.setDisable(Boolean.FALSE);
 		btConsultar.setDisable(Boolean.FALSE);
 		btReport.setDisable(Boolean.FALSE);
+		btClear.setDisable(Boolean.FALSE);
+		btXls.setDisable(Boolean.FALSE);
 		lblCodigo.setDisable(Boolean.FALSE);
 		lblEncerramento.setDisable(Boolean.FALSE);
 		lblInicio.setDisable(Boolean.FALSE);

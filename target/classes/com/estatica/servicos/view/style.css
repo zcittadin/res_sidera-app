@@ -86,3 +86,7 @@
   -fx-graphic: url('img/page_excel.png');
 }
 
+.btClear {
+  -fx-graphic: url('img/broom.png');
+}
+
