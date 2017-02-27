@@ -1,46 +1,42 @@
 package com.estatica.servicos.report.buider;
 
-import static net.sf.dynamicreports.report.builder.DynamicReports.cht;
 import static net.sf.dynamicreports.report.builder.DynamicReports.col;
 import static net.sf.dynamicreports.report.builder.DynamicReports.export;
 import static net.sf.dynamicreports.report.builder.DynamicReports.report;
-import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 
 import java.util.Date;
 
 import com.estatica.servicos.model.Produto;
-import com.estatica.servicos.report.template.ProcessoTemplate;
+import com.estatica.servicos.report.template.ProcessoPdfTemplate;
 
 import net.sf.dynamicreports.jasper.builder.export.JasperPdfExporterBuilder;
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
-import net.sf.dynamicreports.report.builder.style.FontBuilder;
-import net.sf.dynamicreports.report.constant.TimePeriod;
 import net.sf.dynamicreports.report.exception.DRException;
 
 public class ProcessoReportCreator {
 
-	// private static TermoLoggerService service = new TermoLoggerServiceImpl();
-
-	public static int build(Produto produto, String path) {
-		FontBuilder boldFont = stl.fontArialBold().setFontSize(12);
-
-		TextColumnBuilder<Date> xColumn = col.column("Horário", "dtProcesso", type.dateYearToSecondType());
-		TextColumnBuilder<Double> y1Column = col.column("Temperatura(ºC)", "tempReator", type.doubleType());
+	public static int build(Produto produto, String path, String periodo, String producao) {
+		
+		TextColumnBuilder<Date> xColumn = col.column("Horário", "dtProcesso", type.timeHourToSecondType());
+		TextColumnBuilder<Double> y1Column = col.column("Temperatura (ºC)", "tempReator", type.doubleType());
+		TextColumnBuilder<Double> y2Column = col.column("Set-pont (ºC)", "spReator", type.doubleType());
 
 		try {
 			JasperPdfExporterBuilder pdfExporter = export.pdfExporter(path);
-//			JasperPdfExporterBuilder pdfExporter = export.pdfExporter("c:/Users/Zander/lote_" + produto.getLote() + ".pdf");
-			report().setTemplate(ProcessoTemplate.reportTemplate).columns(xColumn, y1Column)
-					.title(ProcessoTemplate.createTitleComponent("Nº do lote: " + produto.getLote()))
-					.summary(cht.timeSeriesChart().setTitle("Histórico de acompanhamento").setTitleFont(boldFont)
-							.setShowShapes(Boolean.FALSE).setShowLegend(Boolean.FALSE).setTimePeriod(xColumn)
-							.setTimePeriodType(TimePeriod.SECOND).series(cht.serie(y1Column))
-							.setTimeAxisFormat(cht.axisFormat().setLabel("Horário"))
-							.setValueAxisFormat(cht.axisFormat().setLabel("Temperatura(ºC)")))
-					.pageFooter(ProcessoTemplate.footerComponent).setDataSource(produto.getProcessos())
-					.toPdf(pdfExporter);
-			// .show();
+			report()
+			.setTemplate(ProcessoPdfTemplate.reportTemplate)
+			.title(ProcessoPdfTemplate.createHeaderComponent(produto), 
+					ProcessoPdfTemplate.createSeparatorComponent(),
+					ProcessoPdfTemplate.createDadosComponent(produto, periodo, producao),
+					ProcessoPdfTemplate.createSeparatorComponent(),
+					ProcessoPdfTemplate.createChartComponent(produto),
+					ProcessoPdfTemplate.createSeparatorComponent())
+			.setDataSource(produto.getProcessos())
+			.columns(xColumn, y1Column, y2Column)
+			.summary(ProcessoPdfTemplate.createEmissaoComponent())
+			.pageFooter(ProcessoPdfTemplate.footerComponent)
+			.toPdf(pdfExporter);
 			return 1;
 		} catch (DRException e) {
 			e.printStackTrace();

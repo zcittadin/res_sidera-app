@@ -357,7 +357,8 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		Task<Integer> reportTask = new Task<Integer>() {
 			@Override
 			protected Integer call() throws Exception {
-				int result = ProcessoReportCreator.build(produto, file.getAbsolutePath());
+				int result = ProcessoReportCreator.build(produto, file.getAbsolutePath(), lblTempoProcesso.getText(),
+						lblProducao.getText());
 				int maximum = 20;
 				for (int i = 0; i < maximum; i++) {
 					updateProgress(i, maximum);

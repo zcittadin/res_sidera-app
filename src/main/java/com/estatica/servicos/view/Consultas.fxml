@@ -24,7 +24,7 @@
       <Separator orientation="VERTICAL" prefHeight="660.0" />
       <Separator layoutX="310.0" layoutY="1.0" orientation="VERTICAL" prefHeight="164.0" />
       <Separator layoutX="2.0" layoutY="42.0" prefWidth="1206.0" />
-      <Label layoutX="10.0" layoutY="8.0" text="Lote a consultar" textFill="WHITE">
+      <Label layoutX="10.0" layoutY="8.0" text="Pesquisar lote de produção" textFill="WHITE">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
@@ -184,7 +184,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <ProgressBar fx:id="progReport" layoutX="134.0" layoutY="12.0" opacity="0.7" prefHeight="18.0" prefWidth="173.0" progress="0.0" visible="false" />
+      <ProgressBar fx:id="progReport" layoutX="116.0" layoutY="54.0" opacity="0.7" prefHeight="18.0" prefWidth="185.0" progress="0.0" visible="false" />
       <Button fx:id="btXls" disable="true" layoutX="72.0" layoutY="49.0" mnemonicParsing="false" onAction="#saveXls" prefHeight="28.0" prefWidth="32.0" styleClass="btXls" stylesheets="@style.css">
          <cursor>
             <Cursor fx:constant="HAND" />

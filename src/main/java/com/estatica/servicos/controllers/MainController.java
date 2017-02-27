@@ -114,10 +114,10 @@ public class MainController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
-		modService.setConnectionParams(COM_PORT, baud);
+	/*	modService.setConnectionParams(COM_PORT, baud);
 		modService.openConnection();
 		initModbusReadSlaves();
-
+*/
 		StyleClockProperty.lcdDesignProperty().addListener(new ChangeListener<LcdDesign>() {
 			@Override
 			public void changed(ObservableValue<? extends LcdDesign> observable, LcdDesign oldValue,
@@ -254,8 +254,8 @@ public class MainController implements Initializable {
 		alert.setHeaderText(ALERT_EXIT);
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
-			scanModbusSlaves.stop();
-			modService.closeConnection();
+		//	scanModbusSlaves.stop();
+		//	modService.closeConnection();
 			Platform.exit();
 		}
 	}
