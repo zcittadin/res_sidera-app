@@ -49,7 +49,7 @@
                         <BoxBlur height="29.29" width="32.32" />
                      </effect>
                   </Ellipse>
-                  <Button id="btR1" fx:id="btReator1" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#openReator1" prefHeight="25.0" prefWidth="130.0" styleClass="btNavigation" stylesheets="@style.css" text="Reator 1">
+                  <Button id="btR1" fx:id="btReator1" layoutX="14.0" layoutY="74.0" mnemonicParsing="false" onAction="#openReator1" prefHeight="25.0" prefWidth="130.0" styleClass="btNavigation" stylesheets="@style.css" text="Reator 1">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -57,7 +57,7 @@
                         <Font size="20.0" />
                      </font>
                   </Button>
-                  <Button id="btR2" fx:id="btReator2" layoutX="14.0" layoutY="58.0" mnemonicParsing="false" onAction="#openReator2" prefHeight="25.0" prefWidth="130.0" styleClass="btNavigation" stylesheets="@style.css" text="Reator 2">
+                  <Button id="btR2" fx:id="btReator2" layoutX="14.0" layoutY="118.0" mnemonicParsing="false" onAction="#openReator2" prefHeight="25.0" prefWidth="130.0" styleClass="btNavigation" stylesheets="@style.css" text="Reator 2">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -65,7 +65,7 @@
                         <Font size="20.0" />
                      </font>
                   </Button>
-                  <Button id="btR3" fx:id="brReator3" layoutX="14.0" layoutY="102.0" mnemonicParsing="false" onAction="#openReator3" prefHeight="25.0" prefWidth="130.0" styleClass="btNavigation" stylesheets="@style.css" text="Reator 3">
+                  <Button id="btR3" fx:id="brReator3" layoutX="14.0" layoutY="162.0" mnemonicParsing="false" onAction="#openReator3" prefHeight="25.0" prefWidth="130.0" styleClass="btNavigation" stylesheets="@style.css" text="Reator 3">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -73,7 +73,7 @@
                         <Font size="20.0" />
                      </font>
                   </Button>
-                  <Button id="btR4" fx:id="btReator4" layoutX="14.0" layoutY="146.0" mnemonicParsing="false" onAction="#openReator4" prefHeight="25.0" prefWidth="130.0" styleClass="btNavigation" stylesheets="@style.css" text="Reator 4">
+                  <Button id="btR4" fx:id="btReator4" layoutX="14.0" layoutY="206.0" mnemonicParsing="false" onAction="#openReator4" prefHeight="25.0" prefWidth="130.0" styleClass="btNavigation" stylesheets="@style.css" text="Reator 4">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -81,7 +81,7 @@
                         <Font size="20.0" />
                      </font>
                   </Button>
-                  <Button id="btR5" fx:id="btReator5" layoutX="14.0" layoutY="190.0" mnemonicParsing="false" onAction="#openReator5" prefHeight="25.0" prefWidth="130.0" styleClass="btNavigation" stylesheets="@style.css" text="Reator 5">
+                  <Button id="btR5" fx:id="btReator5" layoutX="14.0" layoutY="250.0" mnemonicParsing="false" onAction="#openReator5" prefHeight="25.0" prefWidth="130.0" styleClass="btNavigation" stylesheets="@style.css" text="Reator 5">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -89,7 +89,7 @@
                         <Font size="20.0" />
                      </font>
                   </Button>
-                  <Button id="btR6" fx:id="btReator6" layoutX="14.0" layoutY="234.0" mnemonicParsing="false" onAction="#openReator6" prefHeight="25.0" prefWidth="130.0" styleClass="btNavigation" stylesheets="@style.css" text="Reator 6">
+                  <Button id="btR6" fx:id="btReator6" layoutX="14.0" layoutY="294.0" mnemonicParsing="false" onAction="#openReator6" prefHeight="25.0" prefWidth="130.0" styleClass="btNavigation" stylesheets="@style.css" text="Reator 6">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -97,7 +97,7 @@
                         <Font size="20.0" />
                      </font>
                   </Button>
-                  <Button id="btConsultas" fx:id="btConsultas" layoutX="14.0" layoutY="278.0" mnemonicParsing="false" onAction="#openConsultas" prefHeight="25.0" prefWidth="130.0" styleClass="btNavigation" stylesheets="@style.css" text="Consultas">
+                  <Button id="btConsultas" fx:id="btConsultas" layoutX="14.0" layoutY="338.0" mnemonicParsing="false" onAction="#openConsultas" prefHeight="25.0" prefWidth="130.0" styleClass="btNavigation" stylesheets="@style.css" text="Consultas">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -113,6 +113,14 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
+                  <Button fx:id="btInicio" layoutX="14.0" layoutY="30.0" mnemonicParsing="false" onAction="#openInicio" prefHeight="25.0" prefWidth="130.0" styleClass="btNavigation" stylesheets="@style.css" text="Início">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
                </children>
                <opaqueInsets>
                   <Insets />

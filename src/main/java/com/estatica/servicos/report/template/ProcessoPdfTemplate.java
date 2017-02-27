@@ -80,7 +80,7 @@ public class ProcessoPdfTemplate {
 				.setTableOfContentsCustomizer(tableOfContentsCustomizer);
 		
 		separatorComponent = cmp.horizontalList(cmp.verticalList(cmp.verticalGap(10), cmp.line(), cmp.verticalGap(10)));
-		footerComponent = cmp.pageXofY().setStyle(stl.style(boldCenteredStyle).setTopBorder(stl.pen1Point()));
+		footerComponent = cmp.pageNumber().setStyle(stl.style(boldCenteredStyle).setTopBorder(stl.pen1Point()));
 	}
 
 	public static ComponentBuilder<?, ?> createHeaderComponent(Produto produto) {

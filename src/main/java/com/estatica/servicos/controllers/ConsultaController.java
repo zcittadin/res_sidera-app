@@ -7,7 +7,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
+import javafx.util.Duration;
+import zan.inc.custom.components.ImageViewResizer;
+
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -28,8 +30,10 @@ import com.estatica.servicos.report.buider.ProcessoReportCreator;
 import com.estatica.servicos.service.ConsultaMailService;
 import com.estatica.servicos.service.ProdutoDBService;
 import com.estatica.servicos.service.impl.ProdutoDBServiceImpl;
+import com.estatica.servicos.util.PeriodFormatter;
 import com.estatica.servicos.view.ControlledScreen;
 
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,8 +41,11 @@ import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -52,12 +59,18 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class ConsultaController implements Initializable, ControlledScreen {
 
+	@FXML
+	private AnchorPane mainPane;
 	@FXML
 	private TextField txtLote;
 	@FXML
@@ -110,6 +123,8 @@ public class ConsultaController implements Initializable, ControlledScreen {
 	private Button btClear;
 	@FXML
 	private CheckBox checkMail;
+	@FXML
+	private ImageView imgEstatica;
 
 	private static Tooltip TOOLTIP_BT_CLEAR = new Tooltip("Limpar consulta");
 	private static Tooltip TOOLTIP_BT_PDF = new Tooltip("Exportar relatório em PDF");
@@ -120,8 +135,10 @@ public class ConsultaController implements Initializable, ControlledScreen {
 
 	private static XYChart.Series<String, Number> tempSeries;
 	private static DateTimeFormatter horasFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-	private static SimpleDateFormat horasSdf = new SimpleDateFormat("hh:mm:ss");
-	private static SimpleDateFormat dataHoraSdf = new SimpleDateFormat("dd/MM/YYYY hh:mm:ss");
+	private static SimpleDateFormat horasSdf = new SimpleDateFormat("HH:mm:ss");
+	private static SimpleDateFormat dataHoraSdf = new SimpleDateFormat("dd/MM/YYYY HH:mm:ss");
+	private static FadeTransition estaticaFadeTransition;
+	private static ImageViewResizer imgResizer;
 	final ObservableList<XYChart.Series<String, Number>> plotValuesList = FXCollections.observableArrayList();
 	final List<Node> valueMarks = new ArrayList<>();
 	// private static Double tempReator = new Double(0);
@@ -151,6 +168,16 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		Tooltip.install(btConsultar, TOOLTIP_BT_SEARCH);
 		Tooltip.install(btReport, TOOLTIP_BT_PDF);
 		Tooltip.install(btXls, TOOLTIP_BT_XLS);
+
+		estaticaFadeTransition = new FadeTransition(Duration.millis(1000), imgEstatica);
+		estaticaFadeTransition.setCycleCount(1);
+		imgEstatica.setImage(new Image("/img/logotipo.png"));
+		imgResizer = new ImageViewResizer(imgEstatica, 138, 42);
+		imgResizer.setLayoutX(150.0);
+		imgResizer.setLayoutY(150.0);
+		imgResizer.setLayoutX(1083);
+		imgResizer.setLayoutY(607);
+		mainPane.getChildren().addAll(imgResizer);
 
 		Platform.runLater(new Runnable() {
 			@Override
@@ -324,7 +351,7 @@ public class ConsultaController implements Initializable, ControlledScreen {
 				btClear.setDisable(Boolean.FALSE);
 				txtLote.setDisable(Boolean.FALSE);
 				btConsultar.setDisable(Boolean.FALSE);
-				if(checkMail.isSelected())
+				if (checkMail.isSelected())
 					sendMailReport(file);
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 				alert.setTitle("Concluído");
@@ -420,6 +447,7 @@ public class ConsultaController implements Initializable, ControlledScreen {
 	}
 
 	private void sendMailReport(File file) {
+		Stage stage = (Stage) btConsultar.getScene().getWindow();
 		Task<Void> mailTask = new Task<Void>() {
 			@Override
 			protected Void call() throws Exception {
@@ -436,7 +464,6 @@ public class ConsultaController implements Initializable, ControlledScreen {
 				int toastMsgTime = 5000;
 				int fadeInTime = 600;
 				int fadeOutTime = 600;
-				Stage stage = (Stage) btConsultar.getScene().getWindow();
 				Toast.makeToast(stage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
 			}
 		});
@@ -494,13 +521,16 @@ public class ConsultaController implements Initializable, ControlledScreen {
 	}
 
 	private String formatPeriod(Date ini, Date fim) {
-		long periodoMillis = produto.getDtFinal().getTime() - produto.getDtInicial().getTime();
-		Duration duration = Duration.ofMillis(periodoMillis);
-		long hours = duration.toHours();
-		int minutes = (int) ((duration.getSeconds() % (60 * 60)) / 60);
-		int seconds = (int) (duration.getSeconds() % 60);
-		return (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":"
-				+ (seconds < 10 ? "0" + seconds : seconds);
+		return PeriodFormatter.formatPeriod(ini, fim);
+		// long periodoMillis = produto.getDtFinal().getTime() -
+		// produto.getDtInicial().getTime();
+		// Duration duration = Duration.ofMillis(periodoMillis);
+		// long hours = duration.toHours();
+		// int minutes = (int) ((duration.getSeconds() % (60 * 60)) / 60);
+		// int seconds = (int) (duration.getSeconds() % 60);
+		// return (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0"
+		// + minutes : minutes) + ":"
+		// + (seconds < 10 ? "0" + seconds : seconds);
 	}
 
 	private void calculaProducao() {
@@ -575,6 +605,37 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		chartConsulta.setDisable(Boolean.FALSE);
 		xAxis.setDisable(Boolean.FALSE);
 		yAxis.setDisable(Boolean.FALSE);
+	}
+
+	@FXML
+	public void hoverImgEstatica() {
+		estaticaFadeTransition.setFromValue(0.2);
+		estaticaFadeTransition.setToValue(1.0);
+		estaticaFadeTransition.play();
+	}
+
+	@FXML
+	public void unhoverImgEstatica() {
+		estaticaFadeTransition.setFromValue(1.0);
+		estaticaFadeTransition.setToValue(0.2);
+		estaticaFadeTransition.play();
+	}
+
+	@FXML
+	private void handleImgEstaticaAction() throws IOException {
+		Stage stage;
+		Parent root;
+		stage = new Stage();
+		root = FXMLLoader.load(getClass().getResource("/com/estatica/servicos/view/EstaticaInfo.fxml"));
+		stage.setScene(new Scene(root));
+		stage.setTitle("Informações sobre o fabricante");
+		stage.initModality(Modality.APPLICATION_MODAL);
+		stage.initOwner(imgEstatica.getScene().getWindow());
+		stage.setResizable(Boolean.FALSE);
+		stage.showAndWait();
+		estaticaFadeTransition.setFromValue(imgEstatica.getOpacity());
+		estaticaFadeTransition.setToValue(0.2);
+		estaticaFadeTransition.play();
 	}
 
 }

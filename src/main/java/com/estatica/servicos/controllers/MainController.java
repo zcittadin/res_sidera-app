@@ -58,6 +58,8 @@ public class MainController implements Initializable {
 	public static String screen6File = "/com/estatica/servicos/view/Reator6.fxml";
 	public static String screenConsultaID = "consulta";
 	public static String screenConsultaFile = "/com/estatica/servicos/view/Consultas.fxml";
+	public static String screenInicioID = "inicio";
+	public static String screenInicioFile = "/com/estatica/servicos/view/PaginaInicial.fxml";
 
 	public static Tooltip TOOLTIP_BT_SAIR = new Tooltip("Sair do sistema");
 	public static Tooltip TOOLTIP_BT_CONF_CLOCK = new Tooltip("Alterar estilo do relógio");
@@ -114,10 +116,10 @@ public class MainController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
-	/*	modService.setConnectionParams(COM_PORT, baud);
+		modService.setConnectionParams(COM_PORT, baud);
 		modService.openConnection();
 		initModbusReadSlaves();
-*/
+
 		StyleClockProperty.lcdDesignProperty().addListener(new ChangeListener<LcdDesign>() {
 			@Override
 			public void changed(ObservableValue<? extends LcdDesign> observable, LcdDesign oldValue,
@@ -155,6 +157,7 @@ public class MainController implements Initializable {
 		mainContainer.loadScreen(screen5ID, screen5File);
 		mainContainer.loadScreen(screen6ID, screen6File);
 		mainContainer.loadScreen(screenConsultaID, screenConsultaFile);
+		mainContainer.loadScreen(screenInicioID, screenInicioFile);
 
 		ProcessoStatusManager.setProcessoStatus(NOME_REATOR_1, Boolean.FALSE);
 		ProcessoStatusManager.setProcessoStatus(NOME_REATOR_2, Boolean.FALSE);
@@ -172,7 +175,7 @@ public class MainController implements Initializable {
 
 		CurrentScreenProperty.setScreen(NOME_REATOR_1);
 
-		mainContainer.setScreen(screen1ID);
+		mainContainer.setScreen(screenInicioID);
 		centralPane.getChildren().addAll(mainContainer);
 		clock.setLcdDesign(LcdDesign.STANDARD_GREEN);
 		StyleClockProperty.lcdDesignProperty().set(LcdDesign.STANDARD_GREEN);
@@ -204,6 +207,12 @@ public class MainController implements Initializable {
 
 	}
 
+	@FXML
+	private void openInicio() {
+//		CurrentScreenProperty.setScreen(NOME_REATOR_1);
+		mainContainer.setScreen(screenInicioID);
+	}
+	
 	@FXML
 	private void openReator1() {
 		CurrentScreenProperty.setScreen(NOME_REATOR_1);
@@ -254,8 +263,8 @@ public class MainController implements Initializable {
 		alert.setHeaderText(ALERT_EXIT);
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
-		//	scanModbusSlaves.stop();
-		//	modService.closeConnection();
+			scanModbusSlaves.stop();
+			modService.closeConnection();
 			Platform.exit();
 		}
 	}

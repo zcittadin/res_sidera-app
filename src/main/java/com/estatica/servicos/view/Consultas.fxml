@@ -10,6 +10,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import masktextfield.MaskTextField?>
@@ -200,5 +202,13 @@
          </font>
       </CheckBox>
       <ProgressIndicator fx:id="progReport" layoutX="83.0" layoutY="65.0" prefHeight="66.0" prefWidth="95.0" style="-fx-progress-color: #E0FFFF;" visible="false" />
+      <ImageView fx:id="imgEstatica" fitHeight="42.0" fitWidth="138.0" layoutX="1083.0" layoutY="607.0" onMouseClicked="#handleImgEstaticaAction" onMouseEntered="#hoverImgEstatica" onMouseExited="#unhoverImgEstatica" opacity="0.2" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../resources/img/logotipo.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
    </children>
 </AnchorPane>
