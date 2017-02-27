@@ -90,3 +90,7 @@
   -fx-graphic: url('img/broom.png');
 }
 
+.btMail {
+  -fx-graphic: url('img/email_go.png');
+}
+

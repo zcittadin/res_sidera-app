@@ -21,9 +21,11 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+import com.estatica.servicos.custom.Toast;
 import com.estatica.servicos.model.Processo;
 import com.estatica.servicos.model.Produto;
 import com.estatica.servicos.report.buider.ProcessoReportCreator;
+import com.estatica.servicos.service.ConsultaMailService;
 import com.estatica.servicos.service.ProdutoDBService;
 import com.estatica.servicos.service.impl.ProdutoDBServiceImpl;
 import com.estatica.servicos.view.ControlledScreen;
@@ -45,8 +47,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -97,7 +99,7 @@ public class ConsultaController implements Initializable, ControlledScreen {
 	@FXML
 	private ProgressIndicator progD;
 	@FXML
-	private ProgressBar progReport;
+	private ProgressIndicator progReport;
 	@FXML
 	private Button btConsultar;
 	@FXML
@@ -106,6 +108,8 @@ public class ConsultaController implements Initializable, ControlledScreen {
 	private Button btXls;
 	@FXML
 	private Button btClear;
+	@FXML
+	private CheckBox checkMail;
 
 	private static Tooltip TOOLTIP_BT_CLEAR = new Tooltip("Limpar consulta");
 	private static Tooltip TOOLTIP_BT_PDF = new Tooltip("Exportar relatório em PDF");
@@ -268,6 +272,8 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		btReport.setDisable(Boolean.TRUE);
 		btXls.setDisable(Boolean.TRUE);
 		btClear.setDisable(Boolean.TRUE);
+		txtLote.setDisable(Boolean.TRUE);
+		btConsultar.setDisable(Boolean.TRUE);
 		Task<Void> xlsTask = new Task<Void>() {
 			@Override
 			protected Void call() throws Exception {
@@ -316,6 +322,10 @@ public class ConsultaController implements Initializable, ControlledScreen {
 				btReport.setDisable(Boolean.FALSE);
 				btXls.setDisable(Boolean.FALSE);
 				btClear.setDisable(Boolean.FALSE);
+				txtLote.setDisable(Boolean.FALSE);
+				btConsultar.setDisable(Boolean.FALSE);
+				if(checkMail.isSelected())
+					sendMailReport(file);
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 				alert.setTitle("Concluído");
 				alert.setHeaderText("Planilha de dados emitida com sucesso. Deseja visualizar?");
@@ -354,6 +364,8 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		btReport.setDisable(Boolean.TRUE);
 		btXls.setDisable(Boolean.TRUE);
 		btClear.setDisable(Boolean.TRUE);
+		txtLote.setDisable(Boolean.TRUE);
+		btConsultar.setDisable(Boolean.TRUE);
 		Task<Integer> reportTask = new Task<Integer>() {
 			@Override
 			protected Integer call() throws Exception {
@@ -374,6 +386,8 @@ public class ConsultaController implements Initializable, ControlledScreen {
 				btReport.setDisable(Boolean.FALSE);
 				btXls.setDisable(Boolean.FALSE);
 				btClear.setDisable(Boolean.FALSE);
+				txtLote.setDisable(Boolean.FALSE);
+				btConsultar.setDisable(Boolean.FALSE);
 				int r = reportTask.getValue();
 				if (r != 1) {
 					Toolkit.getDefaultToolkit().beep();
@@ -386,6 +400,8 @@ public class ConsultaController implements Initializable, ControlledScreen {
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 				alert.setTitle("Concluído");
 				alert.setHeaderText("Relatório emitido com sucesso. Deseja visualizar?");
+				if (checkMail.isSelected())
+					sendMailReport(file);
 				Optional<ButtonType> result = alert.showAndWait();
 				if (result.get() == ButtonType.OK) {
 					try {
@@ -400,6 +416,31 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		progReport.progressProperty().bind(reportTask.progressProperty());
 
 		Thread t = new Thread(reportTask);
+		t.start();
+	}
+
+	private void sendMailReport(File file) {
+		Task<Void> mailTask = new Task<Void>() {
+			@Override
+			protected Void call() throws Exception {
+				ConsultaMailService mailService = new ConsultaMailService();
+				mailService.sendMailReport(produto, file);
+				return null;
+			}
+		};
+
+		mailTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+			@Override
+			public void handle(WorkerStateEvent event) {
+				String toastMsg = "E-mail enviado com sucesso.";
+				int toastMsgTime = 5000;
+				int fadeInTime = 600;
+				int fadeOutTime = 600;
+				Stage stage = (Stage) btConsultar.getScene().getWindow();
+				Toast.makeToast(stage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
+			}
+		});
+		Thread t = new Thread(mailTask);
 		t.start();
 	}
 
