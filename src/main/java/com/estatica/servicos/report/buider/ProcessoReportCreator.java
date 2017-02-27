@@ -22,14 +22,15 @@ public class ProcessoReportCreator {
 
 	// private static TermoLoggerService service = new TermoLoggerServiceImpl();
 
-	public static int build(Produto produto) {
+	public static int build(Produto produto, String path) {
 		FontBuilder boldFont = stl.fontArialBold().setFontSize(12);
 
 		TextColumnBuilder<Date> xColumn = col.column("Horário", "dtProcesso", type.dateYearToSecondType());
 		TextColumnBuilder<Double> y1Column = col.column("Temperatura(ºC)", "tempReator", type.doubleType());
 
 		try {
-			JasperPdfExporterBuilder pdfExporter = export.pdfExporter("c:/Users/Zander/lote_" + produto.getLote() + ".pdf");
+			JasperPdfExporterBuilder pdfExporter = export.pdfExporter(path);
+//			JasperPdfExporterBuilder pdfExporter = export.pdfExporter("c:/Users/Zander/lote_" + produto.getLote() + ".pdf");
 			report().setTemplate(ProcessoTemplate.reportTemplate).columns(xColumn, y1Column)
 					.title(ProcessoTemplate.createTitleComponent("Nº do lote: " + produto.getLote()))
 					.summary(cht.timeSeriesChart().setTitle("Histórico de acompanhamento").setTitleFont(boldFont)

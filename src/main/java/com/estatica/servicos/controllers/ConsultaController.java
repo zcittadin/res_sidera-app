@@ -1,6 +1,9 @@
 package com.estatica.servicos.controllers;
 
+import java.awt.Desktop;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -10,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.estatica.servicos.model.Processo;
@@ -35,9 +39,14 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
 
 public class ConsultaController implements Initializable, ControlledScreen {
 
@@ -82,6 +91,8 @@ public class ConsultaController implements Initializable, ControlledScreen {
 	@FXML
 	private ProgressIndicator progD;
 	@FXML
+	private ProgressBar progReport;
+	@FXML
 	private Button btConsultar;
 	@FXML
 	private Button btReport;
@@ -100,6 +111,7 @@ public class ConsultaController implements Initializable, ControlledScreen {
 
 	private static ProdutoDBService produtoService = new ProdutoDBServiceImpl();
 	ScreensController myController;
+	private File file;
 
 	@Override
 	public void setScreenParent(ScreensController screenPage) {
@@ -174,26 +186,65 @@ public class ConsultaController implements Initializable, ControlledScreen {
 	}
 
 	@FXML
-	private void generatePdfReport() {
+	public void saveReport() {
+		Stage stage = new Stage();
+		stage.initOwner(btReport.getScene().getWindow());
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.getExtensionFilters().addAll(new ExtensionFilter("PDF Files", "*.pdf"));
+		fileChooser.setTitle("Salvar relatório de processo");
+		fileChooser.setInitialFileName("lote_salvo.pdf");
+		File savedFile = fileChooser.showSaveDialog(stage);
+		if (savedFile != null) {
+			generatePdfReport(savedFile);
+		}
 
+	}
+
+	private void generatePdfReport(File file) {
+		progReport.setVisible(Boolean.TRUE);
+		btReport.setDisable(Boolean.TRUE);
 		Task<Integer> reportTask = new Task<Integer>() {
 			@Override
 			protected Integer call() throws Exception {
-				int r = ProcessoReportCreator.build(produto);
-				System.out.println("Report: " + r);
-				return null;
+				int result = ProcessoReportCreator.build(produto, file.getAbsolutePath());
+				int maximum = 20;
+				for (int i = 0; i < maximum; i++) {
+					updateProgress(i, maximum);
+				}
+				return new Integer(result);
 			}
 		};
 
 		reportTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 			@Override
 			public void handle(WorkerStateEvent event) {
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("Exportação");
-				alert.setHeaderText("Relatório emitido com sucesso.");
-				alert.showAndWait();
+				progReport.setVisible(Boolean.FALSE);
+				btReport.setDisable(Boolean.FALSE);
+				int r = reportTask.getValue();
+				if (r != 1) {
+					Toolkit.getDefaultToolkit().beep();
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setTitle("Erro");
+					alert.setHeaderText("Houve uma falha na emissão do relatório.");
+					alert.showAndWait();
+					return;
+				}
+				Alert alert = new Alert(AlertType.CONFIRMATION);
+				alert.setTitle("Concluído");
+				alert.setHeaderText("Relatório emitido com sucesso. Deseja visualizar?");
+				Optional<ButtonType> result = alert.showAndWait();
+				if (result.get() == ButtonType.OK) {
+					try {
+						Desktop.getDesktop().open(file);
+					} catch (IOException ex) {
+						ex.printStackTrace();
+					}
+				}
 			}
 		});
+
+		progReport.progressProperty().bind(reportTask.progressProperty());
+
 		Thread t = new Thread(reportTask);
 		t.start();
 	}
