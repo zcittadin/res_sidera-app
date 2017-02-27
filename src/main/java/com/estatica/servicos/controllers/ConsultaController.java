@@ -3,6 +3,7 @@ package com.estatica.servicos.controllers;
 import java.awt.Desktop;
 import java.awt.Toolkit;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -15,6 +16,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import com.estatica.servicos.model.Processo;
 import com.estatica.servicos.model.Produto;
@@ -96,10 +101,13 @@ public class ConsultaController implements Initializable, ControlledScreen {
 	private Button btConsultar;
 	@FXML
 	private Button btReport;
+	@FXML
+	private Button btXls;
 
 	private static XYChart.Series<String, Number> tempSeries;
 	private static DateTimeFormatter horasFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-	private static SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+	private static SimpleDateFormat horasSdf = new SimpleDateFormat("hh:mm:ss");
+	private static SimpleDateFormat dataHoraSdf = new SimpleDateFormat("dd/MM/YYYY hh:mm:ss");
 	final ObservableList<XYChart.Series<String, Number>> plotValuesList = FXCollections.observableArrayList();
 	final List<Node> valueMarks = new ArrayList<>();
 	// private static Double tempReator = new Double(0);
@@ -111,7 +119,6 @@ public class ConsultaController implements Initializable, ControlledScreen {
 
 	private static ProdutoDBService produtoService = new ProdutoDBServiceImpl();
 	ScreensController myController;
-	private File file;
 
 	@Override
 	public void setScreenParent(ScreensController screenPage) {
@@ -181,8 +188,46 @@ public class ConsultaController implements Initializable, ControlledScreen {
 				});
 			}
 		});
+
 		Thread t = new Thread(searchTask);
 		t.start();
+	}
+
+	@SuppressWarnings("resource")
+	@FXML
+	public void saveXls() {
+
+		HSSFWorkbook workbook = new HSSFWorkbook();
+		HSSFSheet firstSheet = workbook.createSheet("Aba1");
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream(new File("c:/Users/Zander/teste_xls.xls"));
+
+			int i = 0;
+			HSSFRow titleRow = firstSheet.createRow(i);
+			i++;
+			titleRow.createCell(0).setCellValue("Horário");
+			titleRow.createCell(1).setCellValue("Temperatura no reator");
+			titleRow.createCell(2).setCellValue("Set-point");
+			for (Processo processo : produto.getProcessos()) {
+				HSSFRow row = firstSheet.createRow(i);
+				row.createCell(0).setCellValue(dataHoraSdf.format(processo.getDtProcesso()));
+				row.createCell(1).setCellValue(processo.getTempReator());
+				row.createCell(2).setCellValue(processo.getSpReator());
+				i++;
+			}
+			workbook.write(fos);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Erro ao exportar arquivo");
+		} finally {
+			try {
+				fos.flush();
+				fos.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@FXML
@@ -291,8 +336,8 @@ public class ConsultaController implements Initializable, ControlledScreen {
 		lblTempMin.setText(String.valueOf(produto.getTempMin()));
 		lblTempMax.setText(String.valueOf(produto.getTempMax()));
 		lblSetPoint.setText(String.valueOf(produto.getProcessos().get(0).getSpReator()));
-		lblInicio.setText(sdf.format(produto.getDtInicial()));
-		lblEncerramento.setText(sdf.format(produto.getDtFinal()));
+		lblInicio.setText(horasSdf.format(produto.getDtInicial()));
+		lblEncerramento.setText(horasSdf.format(produto.getDtFinal()));
 		lblTempoProcesso.setText(formatPeriod(produto.getDtInicial(), produto.getDtFinal()));
 		lblOperador.setText(produto.getOperador());
 		calculaProducao();

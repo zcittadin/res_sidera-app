@@ -82,3 +82,7 @@
   -fx-graphic: url('img/report.png');
 }
 
+.btXls {
+  -fx-graphic: url('img/page_excel.png');
+}
+
