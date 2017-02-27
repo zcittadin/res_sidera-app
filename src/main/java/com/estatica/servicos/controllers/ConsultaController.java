@@ -49,6 +49,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -106,6 +107,13 @@ public class ConsultaController implements Initializable, ControlledScreen {
 	@FXML
 	private Button btClear;
 
+	private static Tooltip TOOLTIP_BT_CLEAR = new Tooltip("Limpar consulta");
+	private static Tooltip TOOLTIP_BT_PDF = new Tooltip("Exportar relatório em PDF");
+	private static Tooltip TOOLTIP_BT_XLS = new Tooltip("Exportar planilha de dados em XLS");
+	private static Tooltip TOOLTIP_BT_SEARCH = new Tooltip("Pesquisar lote de produção");
+	private static String TOOLTIP_CSS = "-fx-font-size: 8pt; -fx-font-weight: bold; -fx-font-style: normal; "
+			+ "-fx-background-color: #2F4F4F; -fx-border-color: white; -fx-border-radius: 10px;";
+
 	private static XYChart.Series<String, Number> tempSeries;
 	private static DateTimeFormatter horasFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 	private static SimpleDateFormat horasSdf = new SimpleDateFormat("hh:mm:ss");
@@ -130,7 +138,23 @@ public class ConsultaController implements Initializable, ControlledScreen {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		configLineChart();
-		txtLote.requestFocus();
+
+		TOOLTIP_BT_CLEAR.setStyle(TOOLTIP_CSS);
+		TOOLTIP_BT_PDF.setStyle(TOOLTIP_CSS);
+		TOOLTIP_BT_SEARCH.setStyle(TOOLTIP_CSS);
+		TOOLTIP_BT_XLS.setStyle(TOOLTIP_CSS);
+		Tooltip.install(btClear, TOOLTIP_BT_CLEAR);
+		Tooltip.install(btConsultar, TOOLTIP_BT_SEARCH);
+		Tooltip.install(btReport, TOOLTIP_BT_PDF);
+		Tooltip.install(btXls, TOOLTIP_BT_XLS);
+
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				txtLote.requestFocus();
+
+			}
+		});
 	}
 
 	@FXML

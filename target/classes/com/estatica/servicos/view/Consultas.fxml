@@ -34,7 +34,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <Button fx:id="btConsultar" layoutX="208.0" layoutY="66.0" mnemonicParsing="false" onAction="#findByLote" prefHeight="28.0" prefWidth="32.0" styleClass="btConsultar" stylesheets="@style.css">
+      <Button fx:id="btConsultar" layoutX="208.0" layoutY="105.0" mnemonicParsing="false" onAction="#findByLote" prefHeight="28.0" prefWidth="32.0" styleClass="btConsultar" stylesheets="@style.css">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
@@ -174,23 +174,23 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <MaskTextField fx:id="txtLote" layoutX="56.0" layoutY="68.0" mask="NNNNNNNNN" />
+      <MaskTextField fx:id="txtLote" layoutX="56.0" layoutY="107.0" mask="NNNNNNNNN" />
       <ProgressIndicator fx:id="progB" layoutX="757.0" layoutY="68.0" prefHeight="66.0" prefWidth="95.0" style="-fx-progress-color: #E0FFFF;" visible="false" />
       <ProgressIndicator fx:id="progA" layoutX="437.0" layoutY="68.0" prefHeight="66.0" prefWidth="95.0" style="-fx-progress-color: #E0FFFF;" visible="false" />
       <ProgressIndicator fx:id="progC" layoutX="1069.0" layoutY="68.0" prefHeight="66.0" prefWidth="95.0" style="-fx-progress-color: #E0FFFF;" visible="false" />
       <ProgressIndicator fx:id="progD" layoutX="557.0" layoutY="360.0" prefHeight="66.0" prefWidth="95.0" style="-fx-progress-color: #E0FFFF;" visible="false" />
-      <Button fx:id="btReport" disable="true" layoutX="118.0" layoutY="114.0" mnemonicParsing="false" onAction="#saveReport" prefHeight="28.0" prefWidth="32.0" styleClass="btReport" stylesheets="@style.css">
+      <Button fx:id="btReport" disable="true" layoutX="40.0" layoutY="49.0" mnemonicParsing="false" onAction="#saveReport" prefHeight="28.0" prefWidth="32.0" styleClass="btReport" stylesheets="@style.css">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
       <ProgressBar fx:id="progReport" layoutX="134.0" layoutY="12.0" opacity="0.7" prefHeight="18.0" prefWidth="173.0" progress="0.0" visible="false" />
-      <Button fx:id="btXls" disable="true" layoutX="150.0" layoutY="114.0" mnemonicParsing="false" onAction="#saveXls" prefHeight="28.0" prefWidth="32.0" styleClass="btXls" stylesheets="@style.css">
+      <Button fx:id="btXls" disable="true" layoutX="72.0" layoutY="49.0" mnemonicParsing="false" onAction="#saveXls" prefHeight="28.0" prefWidth="32.0" styleClass="btXls" stylesheets="@style.css">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button fx:id="btClear" layoutX="86.0" layoutY="114.0" mnemonicParsing="false" onAction="#clearConsulta" prefHeight="28.0" prefWidth="32.0" styleClass="btClear" stylesheets="@style.css">
+      <Button fx:id="btClear" layoutX="8.0" layoutY="49.0" mnemonicParsing="false" onAction="#clearConsulta" prefHeight="28.0" prefWidth="32.0" styleClass="btClear" stylesheets="@style.css">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
